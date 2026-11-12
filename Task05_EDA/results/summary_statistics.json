@@ -1,0 +1,37 @@
+{
+  "dataset": "FreshRetailNet-50K",
+  "split": "train",
+  "rows": 4500000,
+  "series_count": 50000,
+  "days": 90,
+  "sales": {
+    "mean": 0.999,
+    "median": 0.7,
+    "std": 1.41,
+    "skewness": 8.47,
+    "max": 44.9,
+    "zero_sales_day_pct": 4.46,
+    "zero_sales_hours_biz_pct": 69.06,
+    "zero_sales_hours_24h_pct": 77.78
+  },
+  "stockout": {
+    "biz_hours_stockout_pct": 19.88,
+    "days_with_any_stockout_pct": 44.27,
+    "days_all_16h_stockout_pct": 4.04,
+    "mean_stockout_hours_on_active_days": 7.18,
+    "min_hourly_stockout_hour": 7,
+    "min_hourly_stockout_pct": 5.0,
+    "max_hourly_stockout_hour": 22,
+    "max_hourly_stockout_pct": 41.9
+  },
+  "pareto": {
+    "top_20_pct_sku_sales_pct": 87.0,
+    "top_20_pct_series_sales_pct": 48.5,
+    "city_0_share_pct": 51.6
+  },
+  "seasonality": {
+    "weekend_sales_lift_pct": "18-20%",
+    "weekday_peaks": [9, 10, 16],
+    "weekend_peaks": [9, 10]
+  }
+}

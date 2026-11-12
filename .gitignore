@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Datasets & Storage (Do NOT upload to GitHub!)
+*.csv
+*.parquet
+*.npy
+*.h5
+*.hdf5
+*.tar.gz
+*.zip
+*.7z
+
+# Whitelist small result CSVs in Task folders
+!Task04_Data_Validation/results/*.csv
+!Task05_EDA/results/*.csv
+
+# Model Checkpoints & Logs
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.bin
+save/
+saved_models/
+demand/
+lightning_logs/
+runs/
+*.log
+
+# Environments & Virtual Envs
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary directories
+tmp/
+scratch/
+browser_evidence/
+frn-50k-baseline/
+task4/

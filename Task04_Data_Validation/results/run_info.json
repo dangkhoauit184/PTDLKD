@@ -1,0 +1,37 @@
+{
+  "file_type": "csv",
+  "batch_size": 20000,
+  "atol": 1e-06,
+  "rtol": 1e-05,
+  "expected": {
+    "train": {
+      "rows": 4500000,
+      "days": 90,
+      "start": "2024-03-28",
+      "end": "2024-06-25"
+    },
+    "eval": {
+      "rows": 350000,
+      "days": 7,
+      "start": "2024-06-26",
+      "end": "2024-07-02"
+    }
+  },
+  "python": "3.12.14",
+  "pandas": "3.0.1",
+  "numpy": "2.3.5",
+  "sources": {
+    "train": {
+      "path": "D:\\PTDLKD\\train.csv",
+      "bytes": 1212821860,
+      "mtime_ns": 1792079836446189700
+    },
+    "eval": {
+      "path": "D:\\PTDLKD\\eval.csv",
+      "bytes": 94341043,
+      "mtime_ns": 1792079831696818900
+    }
+  },
+  "sample_limit": "5 examples per rule per split",
+  "notes": "Input files read only. No CSV/Parquet equivalence verification."
+}
