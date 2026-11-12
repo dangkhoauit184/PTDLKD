@@ -10,9 +10,9 @@ Task 3 xây dựng môi trường điện toán đám mây hỗ trợ GPU (Googl
 4. Đảm bảo khả năng lưu trữ checkpoint an toàn về Google Drive tránh timeout.
 
 ## 📁 Cấu Trúc Thư Mục
-* `requirements.txt`: Danh sách phiên bản thư viện đã kiểm thử.
-* `scripts/setup_colab.sh`: Script bash cài đặt môi trường tự động trên Colab.
-* `scripts/download_data.py`: Script Python nạp dữ liệu từ Hugging Face và xuất Parquet.
+* [requirements.txt](requirements.txt): Danh sách phiên bản thư viện đã kiểm thử.
+* [scripts/setup_colab.sh](scripts/setup_colab.sh): Script bash cài đặt môi trường tự động trên Colab.
+* [scripts/download_data.py](scripts/download_data.py): Script Python nạp dữ liệu từ Hugging Face và xuất Parquet.
 
 ## 🔗 Liên Kết Báo Cáo
-Xem báo cáo đầy đủ chuẩn học thuật tại: [Task03_Report.md](../../reports/Task03_Report.md).
+Xem báo cáo đầy đủ chuẩn học thuật tại: [Task03_Report.md](../reports/Task03_Report.md).

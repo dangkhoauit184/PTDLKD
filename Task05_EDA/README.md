@@ -11,11 +11,9 @@ Task 5 thực hiện phân tích thống kê mô tả đa chiều trên tập hu
 5. Xác thực quy luật Pareto: $20\%$ sản phẩm chiếm $87.0\%$ tổng doanh số bán ra.
 
 ## 📁 Cấu Trúc Thư Mục
-* `notebooks/`:
-  * `Task5_EDA_01_tai_du_lieu.ipynb`: Tải dữ liệu, kiểm tra cấu trúc sơ bộ và tiền xử lý tối ưu RAM.
-  * `Task5_EDA_02_thong_ke_mo_ta.ipynb`: Phân tích thống kê chi tiết, trực quan hóa và kiểm định giả thuyết.
-* `results/`:
-  * `summary_statistics.json`: File tổng hợp các chỉ số thống kê quan trọng nhất.
+* [notebooks/Task5_EDA_01_tai_du_lieu.ipynb](notebooks/Task5_EDA_01_tai_du_lieu.ipynb): Tải dữ liệu, kiểm tra cấu trúc sơ bộ và tiền xử lý tối ưu RAM.
+* [notebooks/Task5_EDA_02_thong_ke_mo_ta.ipynb](notebooks/Task5_EDA_02_thong_ke_mo_ta.ipynb): Phân tích thống kê chi tiết, trực quan hóa và kiểm định giả thuyết.
+* [results/summary_statistics.json](results/summary_statistics.json): File tổng hợp các chỉ số thống kê quan trọng nhất.
 
 ## 🔗 Liên Kết Báo Cáo
-Xem báo cáo đầy đủ chuẩn học thuật tại: [Task05_Report.md](../../reports/Task05_Report.md).
+Xem báo cáo đầy đủ chuẩn học thuật tại: [Task05_Report.md](../reports/Task05_Report.md).

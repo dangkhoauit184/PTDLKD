@@ -9,8 +9,8 @@ Task 1 tập trung vào việc nghiên cứu chuyên sâu bài báo khoa học *
 3. Chốt phạm vi thí nghiệm nhóm cần tái lập: **Bảng 2** (Khôi phục nhu cầu MNAR) và **Bảng 3** (Dự báo 7 ngày).
 
 ## 📁 Cấu Trúc Thư Mục
-* `docs/paper_summary.md`: Tóm tắt chi tiết toàn bộ nội dung học thuật của bài báo.
-* `docs/replicated_tables_target.md`: Chi tiết Bảng 2 và Bảng 3 cùng các phân tích phản biện.
+* [docs/paper_summary.md](docs/paper_summary.md): Tóm tắt chi tiết toàn bộ nội dung học thuật của bài báo.
+* [docs/replicated_tables_target.md](docs/replicated_tables_target.md): Chi tiết Bảng 2 và Bảng 3 cùng các phân tích phản biện.
 
 ## 🔗 Liên Kết Báo Cáo
-Xem báo cáo đầy đủ chuẩn học thuật tại: [Task01_Report.md](../../reports/Task01_Report.md).
+Xem báo cáo đầy đủ chuẩn học thuật tại: [Task01_Report.md](../reports/Task01_Report.md).

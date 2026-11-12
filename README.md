@@ -11,6 +11,19 @@
 
 ---
 
+## 📑 Bảng Tra Cứu Nhanh Báo Cáo Học Thuật (Reports)
+
+| Báo Cáo | Nội Dung Chính | Liên Kết Trực Tiếp |
+| :--- | :--- | :---: |
+| **Báo Cáo Tổng Hợp** | Tổng quan toàn bộ đồ án, đánh giá chéo 5 task & kết luận | 👉 [**Synthesis_Report.md**](reports/Synthesis_Report.md) |
+| **Báo Cáo Task 1** | Phân tích bài báo FreshRetailNet-50K, cơ chế MNAR & Two-stage | 👉 [**Task01_Report.md**](reports/Task01_Report.md) |
+| **Báo Cáo Task 2** | Kế hoạch 15 cấu hình thực nghiệm dự báo & Siêu tham số | 👉 [**Task02_Report.md**](reports/Task02_Report.md) |
+| **Báo Cáo Task 3** | Môi trường Colab GPU, giải quyết dependency & Pipeline Parquet | 👉 [**Task03_Report.md**](reports/Task03_Report.md) |
+| **Báo Cáo Task 4** | Đối soát chất lượng dữ liệu: 48 quy tắc, kiểm định 4.85M dòng | 👉 [**Task04_Report.md**](reports/Task04_Report.md) |
+| **Báo Cáo Task 5** | Thống kê mô tả (EDA): Phân phối, quy luật chữ U hết hàng, Pareto | 👉 [**Task05_Report.md**](reports/Task05_Report.md) |
+
+---
+
 ## 📖 1. Giới Thiệu Đề Tài
 
 Trong ngành bán lẻ thực phẩm tươi sống với mô hình kho vệ tinh giao hàng nhanh 30 phút, tình trạng **hết hàng (stockout)** diễn ra liên tục do hạn sử dụng ngắn và nhu cầu biến động mạnh. Khi hết hàng, doanh số ghi nhận trên hệ thống rơi về $0$ dù nhu cầu thực tế của khách hàng vẫn tồn tại — hiện tượng này gọi là **Demand Censoring** (Nhu cầu bị che khuất).
@@ -43,13 +56,13 @@ Mô hình dự báo truyền thống nếu học trực tiếp từ doanh số b
 
 Dự án được phân chia thành 5 Task chuyên biệt với sự phối hợp chặt chẽ giữa các thành viên:
 
-| Task | Nhiệm vụ chính | Người phụ trách | Trạng thái |
-| :---: | :--- | :---: | :---: |
-| **Task 1** | **Đọc bài báo & Chốt phạm vi nghiên cứu:** Phân tích cơ chế MNAR, vòng lặp bias, chốt Bảng 2 & Bảng 3. | Thành viên nhóm | ✅ Hoàn thành |
-| **Task 2** | **Lập kế hoạch thực nghiệm:** Thiết lập 15 cấu hình dự báo, bóc tách siêu tham số 7 mô hình PyPOTS. | Thành viên nhóm | ✅ Hoàn thành |
-| **Task 3** | **Chuẩn bị môi trường & Pipeline:** Cấu hình Colab GPU, giải quyết xung đột thư viện, tối ưu hóa I/O Parquet. | Thành viên nhóm | ✅ Hoàn thành |
-| **Task 4** | **Kiểm tra và đối soát dữ liệu (Validation):** Xây dựng notebook kiểm định 48 quy tắc trên 4.85M dòng, phát hiện 34 dòng discount bất thường. | **Đăng Khoa** | ✅ Hoàn thành |
-| **Task 5** | **Khám phá thống kê mô tả (EDA):** Tối ưu RAM, phân tích phân phối lệch phải, quy luật chữ U của hết hàng, nguyên lý Pareto 20-87. | Thành viên nhóm | ✅ Hoàn thành |
+| Task | Nhiệm vụ chính | Người phụ trách | Báo cáo chi tiết | Thư mục làm việc |
+| :---: | :--- | :---: | :---: | :---: |
+| **Task 1** | **Đọc bài báo & Chốt phạm vi:** Phân tích MNAR, bias loop, Bảng 2 & 3. | Thành viên nhóm | [Task01_Report.md](reports/Task01_Report.md) | [Task01_Paper_Review/](Task01_Paper_Review/) |
+| **Task 2** | **Kế hoạch thực nghiệm:** 15 cấu hình dự báo, siêu tham số 7 mô hình. | Thành viên nhóm | [Task02_Report.md](reports/Task02_Report.md) | [Task02_Experiment_Plan/](Task02_Experiment_Plan/) |
+| **Task 3** | **Môi trường & Pipeline:** Cấu hình Colab GPU, pipeline Parquet. | Thành viên nhóm | [Task03_Report.md](reports/Task03_Report.md) | [Task03_Environment_Setup/](Task03_Environment_Setup/) |
+| **Task 4** | **Kiểm định dữ liệu (Validation):** 48 quy tắc trên 4.85M dòng. | **Đăng Khoa** | [Task04_Report.md](reports/Task04_Report.md) | [Task04_Data_Validation/](Task04_Data_Validation/) |
+| **Task 5** | **Thống kê mô tả (EDA):** Phân phối, quy luật chữ U, Pareto 20-87. | Thành viên nhóm | [Task05_Report.md](reports/Task05_Report.md) | [Task05_EDA/](Task05_EDA/) |
 
 ---
 
@@ -59,7 +72,7 @@ Dự án được phân chia thành 5 Task chuyên biệt với sự phối hợ
 PTDLKD/
 │
 ├── .gitignore                          # Loại trừ các file dataset nặng (>1.2GB) và checkpoint
-├── README.md                           # Tài liệu tổng quan dự án (file này)
+├── README.md                           # Trang chủ dự án (file này)
 ├── requirements.txt                    # Danh sách thư viện và phiên bản chính xác
 │
 ├── docs/                               # Tài liệu hướng dẫn và tổng quan

@@ -10,14 +10,14 @@ Task 4 do **Đăng Khoa** thực hiện, chịu trách nhiệm thiết lập h�
 4. Phát hiện $34$ bản ghi có `discount > 1.0` (max 1.088) trong tập train và đề xuất giải pháp xử lý.
 
 ## 📁 Cấu Trúc Thư Mục
-* `notebooks/04_data_validation_colab.ipynb`: Notebook hoàn chỉnh chạy được trên Google Colab và Local.
-* `results/`:
-  * `validation_summary.csv`: Bảng tổng hợp trạng thái 98 hạng mục kiểm tra.
-  * `column_profile.csv`: Hồ sơ kiểu dữ liệu, số lượng null, giá trị min/max của 19 cột.
-  * `issue_examples.csv`: Các dòng mẫu vi phạm để kiểm tra chi tiết.
-  * `pairs_only_in_train.csv` / `pairs_only_in_eval.csv`: Đối soát chéo độ phủ $50.000$ cặp chuỗi ($0$ vi phạm).
-  * `overlapping_keys.csv`: Xác minh tính không trùng lặp thời gian giữa train và eval ($0$ vi phạm).
-  * `run_info.json`: Thông số môi trường và cấu hình chi tiết của lượt chạy kiểm định.
+* [notebooks/04_data_validation_colab.ipynb](notebooks/04_data_validation_colab.ipynb): Notebook hoàn chỉnh chạy được trên Google Colab và Local.
+* **Kết quả đối soát:**
+  * [results/validation_summary.csv](results/validation_summary.csv): Bảng tổng hợp trạng thái 98 hạng mục kiểm tra.
+  * [results/column_profile.csv](results/column_profile.csv): Hồ sơ kiểu dữ liệu, số lượng null, giá trị min/max của 19 cột.
+  * [results/issue_examples.csv](results/issue_examples.csv): Các dòng mẫu vi phạm để kiểm tra chi tiết.
+  * [results/pairs_only_in_train.csv](results/pairs_only_in_train.csv) / [results/pairs_only_in_eval.csv](results/pairs_only_in_eval.csv): Đối soát chéo độ phủ $50.000$ cặp chuỗi ($0$ vi phạm).
+  * [results/overlapping_keys.csv](results/overlapping_keys.csv): Xác minh tính không trùng lặp thời gian giữa train và eval ($0$ vi phạm).
+  * [results/run_info.json](results/run_info.json): Thông số môi trường và cấu hình chi tiết của lượt chạy kiểm định.
 
 ## 🔗 Liên Kết Báo Cáo
-Xem báo cáo đầy đủ chuẩn học thuật tại: [Task04_Report.md](../../reports/Task04_Report.md).
+Xem báo cáo đầy đủ chuẩn học thuật tại: [Task04_Report.md](../reports/Task04_Report.md).

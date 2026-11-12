@@ -10,8 +10,8 @@ Task 2 thiết lập ma trận thực nghiệm khoa học, chuẩn hóa các si�
 4. Định nghĩa quy tắc phân nhóm: Overall, High Sale (top 20% chuỗi), Low Sale (80% còn lại).
 
 ## 📁 Cấu Trúc Thư Mục
-* `docs/15_forecasting_configurations.md`: Bảng chi tiết 15 cấu hình dự báo thực nghiệm.
-* `docs/model_hyperparameters.md`: Bảng tổng hợp siêu tham số các mô hình Imputation trong PyPOTS.
+* [docs/15_forecasting_configurations.md](docs/15_forecasting_configurations.md): Bảng chi tiết 15 cấu hình dự báo thực nghiệm.
+* [docs/model_hyperparameters.md](docs/model_hyperparameters.md): Bảng tổng hợp siêu tham số các mô hình Imputation trong PyPOTS.
 
 ## 🔗 Liên Kết Báo Cáo
-Xem báo cáo đầy đủ chuẩn học thuật tại: [Task02_Report.md](../../reports/Task02_Report.md).
+Xem báo cáo đầy đủ chuẩn học thuật tại: [Task02_Report.md](../reports/Task02_Report.md).
