@@ -1,0 +1,104 @@
+{
+  "run_utc": "2026-11-13T08:23:02.850933+00:00",
+  "method": "full_row_aligned_exact_csv_vs_parquet_after_type_conversion",
+  "project_base_commit": "da2e3ccd7e64bfc944c7b28d9c4c77e975e4fe05",
+  "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pyarrow": "26.0.1",
+  "sources": {
+    "train": {
+      "csv": {
+        "path": "train.csv",
+        "bytes": 1212821860,
+        "mtime_ns": 1792079836446189700,
+        "sha256": "cfdf8cdb1287d09fce4a63bedd0f66a951339f65acd2f985e7909c3a6958bea3"
+      },
+      "parquet": {
+        "path": "train.parquet",
+        "bytes": 61075680,
+        "mtime_ns": 1792079830265095800,
+        "sha256": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96"
+      },
+      "task4_size_matches": true,
+      "task4_mtime_matches": true
+    },
+    "eval": {
+      "csv": {
+        "path": "eval.csv",
+        "bytes": 94341043,
+        "mtime_ns": 1792079831696818900,
+        "sha256": "e2ef67662e450610d80a0b22f667ad8346f0bcb943649d64b279f49af2541288"
+      },
+      "parquet": {
+        "path": "eval.parquet",
+        "bytes": 5451872,
+        "mtime_ns": 1792079815902032000,
+        "sha256": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872"
+      },
+      "task4_size_matches": true,
+      "task4_mtime_matches": true
+    }
+  },
+  "summary": [
+    {
+      "split": "train",
+      "parquet_path": "train.parquet",
+      "columns": 19,
+      "rows": 4500000,
+      "pairs": 50000,
+      "date_start": "2024-03-28",
+      "date_end": "2024-06-25",
+      "duplicate_keys": 0,
+      "incomplete_pairs": 0,
+      "invalid_24_hour_arrays": 0,
+      "discount_review_rows": 34,
+      "csv_parquet_mismatched_rows": 0,
+      "scope": "full",
+      "status": "PASS"
+    },
+    {
+      "split": "eval",
+      "parquet_path": "eval.parquet",
+      "columns": 19,
+      "rows": 350000,
+      "pairs": 50000,
+      "date_start": "2024-06-26",
+      "date_end": "2024-07-02",
+      "duplicate_keys": 0,
+      "incomplete_pairs": 0,
+      "invalid_24_hour_arrays": 0,
+      "discount_review_rows": 0,
+      "csv_parquet_mismatched_rows": 0,
+      "scope": "full",
+      "status": "PASS"
+    }
+  ],
+  "sample_check": {
+    "pairs": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    "timesnet_shape": [
+      6,
+      480,
+      6
+    ],
+    "timesnet_masked_hours": 586,
+    "ssa_continuous_shape": [
+      2,
+      97,
+      3
+    ],
+    "ssa_train_days": 90,
+    "ssa_eval_days": 7
+  },
+  "task4_run_info": "Task04_Data_Validation/results/run_info.json",
+  "task4_summary": "Task04_Data_Validation/results/validation_summary.csv"
+}

@@ -85,7 +85,7 @@ print("-> Đã xuất thành công train.parquet và eval.parquet!")
 ```
 
 ### 5.2. Hàm Cố Định Hạt Giống Ngẫu Nhiên (Reproducibility Seed)
-Trong `app.py`, hàm `set_seed` đảm bảo mọi kết quả huấn luyện mô hình sâu là hoàn toàn nhất quán giữa các lần chạy:
+Mã gốc gọi `set_seed(seed_value=1024)` trong `app.py`. Đoạn minh họa dưới đây dùng seed `2024` theo kế hoạch Task 10. Cố định seed giúp giảm biến thiên giữa các lần chạy; vẫn cần ghi lại phiên bản thư viện và phần cứng thực tế.
 ```python
 def set_seed(seed_value=2024):
     np.random.seed(seed_value)

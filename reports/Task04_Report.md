@@ -60,9 +60,9 @@ Quy trình thực hiện tuần tự qua 5 bước trong notebook:
 ## 5. Kết Quả Thực Nghiệm và Bảng Đối Soát Tổng Hợp
 
 ### 5.1. Bảng Tổng Hợp Trạng Thái Kiểm Định (Trích xuất từ `validation_summary.csv`)
-* **Tổng số quy tắc được đánh giá:** 98 hạng mục kiểm tra trên cả 2 tập.
+* **Tổng số quy tắc được đánh giá:** 97 hạng mục kiểm tra trên hai tập và phần đối chiếu giữa hai tập.
 * **Trạng thái:**
-  * **97 hạng mục đạt trạng thái `OK` ($0$ trường hợp vi phạm).**
+  * **96 hạng mục đạt trạng thái `OK` ($0$ trường hợp vi phạm).**
   * **1 hạng mục trạng thái `REVIEW` (Cần xác minh nghiệp vụ).**
 
 | Tập dữ liệu | Hạng mục Kiểm tra | Số vi phạm | Số mẫu đánh giá | Trạng thái | Ghi chú kết quả |
@@ -113,13 +113,13 @@ Quy trình thực hiện tuần tự qua 5 bước trong notebook:
    * Kết quả đối soát xác nhận rõ ràng rằng cột `stock_hour6_22_cnt` **chỉ tính cho 16 giờ ban ngày (từ 6h sáng đến trước 22h tối)**, không phải 24 giờ. Điều này phản ánh chính xác giờ mở cửa của các kho hàng tươi sống Dingdong Fresh.
 3. **Phân Tích 34 Bản Ghi `discount > 1.0`:**
    * Trong tập train, có 34 dòng ghi nhận giá trị discount lớn hơn $1.0$ (giá trị cao nhất đạt $1.088$).
-   * Đối chiếu với dữ liệu cho thấy đây có thể là trường hợp phụ phí dịch vụ đóng gói hàng tươi sống hoặc biến động giá điều chỉnh nhẹ. Với tỷ lệ $34 / 4.500.000 \approx 0.00075\%$, sai lệch này không ảnh hưởng đến xu hướng chung nhưng cần được clip về $1.0$ khi đưa vào huấn luyện mô hình sâu.
+   * Nguồn gốc của các giá trị này chưa được xác minh. Chúng chiếm khoảng 0,00076% số dòng train và được giữ ở trạng thái REVIEW.
 
 ---
 
 ## 7. Kết Luận và Đề Xuất Cho Toàn Nhóm
-* **Kết luận chất lượng dữ liệu:** Bộ dữ liệu FreshRetailNet-50K trong thư mục dự án **đạt chất lượng xuất sắc, hoàn toàn sạch sẽ, không có giá trị khuyết và sẵn sàng $100\%$ cho việc huấn luyện mô hình.**
+* **Kết luận chất lượng dữ liệu:** Bộ dữ liệu FreshRetailNet-50K trong thư mục dự án **đáp ứng các kiểm tra cấu trúc đã thực hiện**; còn một mục REVIEW về discount.
 * **Đề xuất hướng xử lý kỹ thuật cho Task 5 (EDA) và Task 8–11 (Mô hình hóa):**
   1. Thống nhất quy ước: Trong `hours_stock_status`, giá trị $1$ là hết hàng và $0$ là còn hàng.
   2. Mẫu số chuẩn khi tính tỷ lệ hết hàng là **$16$ giờ/ngày** (khung giờ hoạt động 6..21).
-  3. Xử lý giá trị discount: Áp dụng `np.clip(df['discount'], 0.0, 1.0)` khi đưa vào các mô hình nơ-ron (TimesNet, TFT) để tránh gây bất ổn định gradient.
+  3. Giữ nguyên 34 dòng discount trong lượt tái lập chính. [Task 6](../Task06_Data_Preparation/) đã xác nhận các giá trị này vẫn khớp giữa CSV và Parquet.

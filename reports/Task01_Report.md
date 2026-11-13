@@ -76,7 +76,7 @@ Bài báo đánh giá 7 kiến trúc tiêu biểu:
 | iTransformer | 29.76% | -2.12% | 29.26% | 0.57% | 30.69% | 4.35% |
 | DLinear | 30.00% | -1.49% | 29.71% | 2.63% | 30.60% | 4.02% |
 | Raw Sales (Gốc) | 31.97% | -10.50% | 31.75% | -7.37% | 31.56% | -4.89% |
-| **Nhóm High Sale (Bán chạy - 20% SKU)** | | | | | | |
+| **Nhóm High Sale (doanh số ngày trung bình trong train ≥ 1)** | | | | | | |
 | TimesNet | **23.98%** | -1.12% | **23.03%** | 0.87% | 23.58% | 2.98% |
 | Raw Sales (Gốc) | 27.40% | -12.26% | 27.95% | -11.46% | 25.68% | -7.63% |
 | **Nhóm Low Sale (Bán chậm / Đuôi dài)** | | | | | | |
