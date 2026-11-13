@@ -1,0 +1,3 @@
+split,parquet_path,columns,rows,pairs,date_start,date_end,duplicate_keys,incomplete_pairs,invalid_24_hour_arrays,discount_review_rows,csv_parquet_mismatched_rows,scope,status
+train,train.parquet,19,4500000,50000,2024-03-28,2024-06-25,0,0,0,34,0,full,PASS
+eval,eval.parquet,19,350000,50000,2024-06-26,2024-07-02,0,0,0,0,0,full,PASS

@@ -16,6 +16,7 @@ __pycache__/
 # Whitelist small result CSVs in Task folders
 !Task04_Data_Validation/results/*.csv
 !Task05_EDA/results/*.csv
+!Task06_Data_Preparation/results/*/input_check.csv
 
 # Model Checkpoints & Logs
 checkpoints/

@@ -12,11 +12,11 @@ Trong ngành bán lẻ thực phẩm tươi sống với mô hình kho vệ tinh
 Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của bài báo *FreshRetailNet-50K: A Stockout-Annotated Censored Demand Dataset for Latent Demand Recovery and Forecasting in Fresh Retail* (arXiv:2505.16319v5, công bố bởi Dingdong Ltd.). Mục tiêu của nhóm là:
 1. Đánh giá chất lượng dữ liệu và kiểm chứng tính logic nghiệp vụ của $50.000$ chuỗi thời gian ($4.850.000$ bản ghi).
 2. Tái lập khung giải pháp 2 giai đoạn: sử dụng mô hình học sâu **TimesNet** để khôi phục nhu cầu ẩn trong các giờ hết hàng, sau đó áp dụng thuật toán thống kê **Similar Scenario Average (SSA)** để dự báo doanh số cho $7$ ngày tương lai.
-3. So sánh hiệu năng giữa Pipeline truyền thống (Raw Sales) và Pipeline có khôi phục nhu cầu (Imputation-Augmented), chứng minh việc khôi phục giúp giảm sai số WAPE và xóa bỏ thiên lệch dự báo thiếu (Under-forecasting bias).
+3. So sánh hiệu năng giữa Pipeline truyền thống (Raw Sales) và Pipeline có khôi phục nhu cầu (Imputation-Augmented), kiểm tra việc khôi phục có làm giảm WAPE và độ lệch dự báo hay không.
 
 ---
 
-## 2. Danh Sách 5 Task và Phân Công Nhiệm Vụ
+## 2. Tiến độ Task 1–6
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -25,6 +25,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **3** | **Task 3** | **Chuẩn bị môi trường & Pipeline** | Thành viên nhóm | Thiết lập Google Colab GPU, giải quyết tương thích PyPOTS, tối ưu hóa I/O Parquet. |
 | **4** | **Task 4** | **Kiểm tra dữ liệu (Validation)** | **Đăng Khoa (Bạn)** | **Notebook đối soát 48 quy tắc trên 4.85M dòng, bảng profile 19 cột, phát hiện 34 dòng discount bất thường.** |
 | **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số. |
+| **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | TV1 | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
 
 ---
 
@@ -48,7 +49,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 ### Task 4 — Kiểm Định Toàn Vẹn Dữ Liệu (Data Validation)
 * Thực thi 48 quy tắc kiểm định trên toàn bộ $4.500.000$ dòng train và $350.000$ dòng eval bằng kỹ thuật batch reading $20.000$ dòng/lô.
 * Xác nhận tính toàn vẹn đạt **$100\%$**: $0$ giá trị thiếu, $0$ khóa trùng lặp, $100\%$ mảng giờ khớp doanh số ngày, $100\%$ số giờ hết hàng khớp nhãn kho trong khung $06:00 - 22:00$.
-* Định vị duy nhất 34 dòng vi phạm điều kiện `discount <= 1.0` (giá trị cao nhất đạt 1.088), đề xuất hướng xử lý clip dữ liệu.
+* Có 96 hạng mục OK và một hạng mục REVIEW: 34 dòng train có `discount > 1.0`. Lượt tái lập chính giữ nguyên các giá trị này.
 
 ### Task 5 — Khám Phá Thống Kê & Đặc Trưng Nghiệp Vụ (EDA)
 * Phát hiện phân phối doanh số lệch phải mạnh (`skewness = 8.47`, `mean = 0.999`, `median = 0.700`).
@@ -56,35 +57,28 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 * Xác nhận hiện tượng hết hàng diễn ra trên $19.88\%$ số giờ kinh doanh và tuân theo **quy luật chữ U**: thấp nhất lúc 7h sáng ($5.0\%$) và cao nhất lúc 22h đêm ($41.9\%$).
 * Khẳng định tính tập trung cao độ: $20\%$ mặt hàng chiếm tới $87\%$ tổng doanh số bán ra.
 
+### Task 6 — Xác nhận dữ liệu đầu vào
+* Hai bản Parquet hiện có khớp đầy đủ với CSV trên 4.850.000 dòng × 19 cột, kể cả từng phần tử của các mảng giờ.
+* Train và eval cùng 50.000 cặp, đủ 90 và 7 ngày/cặp, không trùng khóa ngày. Kiểm tra mẫu cho TimesNet và SSA đạt kích thước kỳ vọng.
+* Xem [báo cáo Task 6](Task06_Report.md) và [file kết quả](../Task06_Data_Preparation/).
+
 ---
 
-## 4. Kết Quả Chính và Bảng Đối Chiếu Tổng Thể
+## 4. Số tham chiếu từ Bảng 3 của bài báo
 
-### Bảng Đối Chiếu Chỉ Số Mục Tiêu và Kết Quả Thực Nghiệm
+Các chỉ số dưới đây là số công bố trong bài báo. Task 6 xác nhận đầu vào; kết quả dự báo của nhóm sẽ lấy từ các lượt thực nghiệm tiếp theo.
 | Nhóm Sản Phẩm | Pipeline Dự Báo | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
 | :--- | :--- | :---: | :---: | :--- |
 | **Overall (Toàn bộ)** | **SSA trên Doanh số gốc (Task 8)** | **$31.97\%$** | **$-10.50\%$** | Bị thiên lệch dự báo thiếu nặng nề |
-| | **SSA trên Nhu cầu TimesNet (Task 11)** | **$29.79\%$** | **$+1.39\%$** | **Giảm sai số 2.18%, xóa bỏ bias âm** |
+| | **SSA trên Nhu cầu TimesNet (Task 11)** | **$29.79\%$** | **$+1.39\%$** | **WAPE giảm 2,18 điểm phần trăm; WPE chuyển dương** |
 | | *TFT trên Nhu cầu TimesNet (SOTA)* | *$29.02\%$* | *$+2.58\%$* | Mức cải thiện cao nhất của bài báo |
 | **High Sale (Bán chạy)** | SSA trên Doanh số gốc | $27.40\%$ | $-12.26\%$ | Dự báo thiếu hơn $12\%$ nhu cầu thực |
-| | **SSA trên Nhu cầu TimesNet** | **$23.98\%$** | **$-1.12\%$** | **Giảm sai số 3.42%, bias chỉ còn -1.1%** |
+| | **SSA trên Nhu cầu TimesNet** | **$23.98\%$** | **$-1.12\%$** | **WAPE giảm 3,42 điểm phần trăm; WPE còn −1,12%** |
 | **Low Sale (Bán chậm)** | SSA trên Doanh số gốc | $38.33\%$ | $-8.03\%$ | Sai số cao do dữ liệu thưa |
 | | SSA trên Nhu cầu TimesNet | $37.87\%$ | $+4.89\%$ | Chuyển sang thiên lệch dương nhẹ |
 
 ---
 
-## 5. Đánh Giá Tổng Quan và Nhận Xét Chuyên Sâu
-1. **Tính Cần Thiết Của Giai Đoạn Khôi Phục:**
-   * Việc bỏ qua tình trạng hết hàng và đưa trực tiếp doanh số thô vào mô hình dự báo khiến hệ thống luôn đánh giá thấp nhu cầu thực tế từ $10\%$ đến $12\%$.
-   * Sử dụng TimesNet khôi phục dữ liệu ở cấp độ giờ trước khi gộp ngày giúp đưa sai số WPE từ $-10.50\%$ về $+1.39\%$, hoàn toàn phá vỡ vòng lặp sai lệch dự báo thấp.
-2. **Giá Trị Kinh Tế Tập Trung Ở Nhóm High-Sale:**
-   * Vì $20\%$ sản phẩm bán chạy chiếm tới $87\%$ doanh số và thường xuyên chịu cảnh hết hàng vào buổi tối, việc cải thiện WAPE từ $27.40\%$ xuống $23.98\%$ trên nhóm này mang lại giá trị giảm thất thoát doanh thu vượt trội cho doanh nghiệp bán lẻ.
-3. **Cảnh Báo Về Hiện Tượng Over-Forecasting Ở Nhóm Low-Sale:**
-   * Đối với các mặt hàng bán chậm, việc khôi phục nhu cầu có xu hướng đẩy WPE lên $+4.89\%$ (hoặc thậm chí $+7.78\%$ với TFT). Trong bán lẻ thực phẩm tươi sống, dự báo thừa đồng nghĩa với việc tăng lượng hàng ế hỏng phải tiêu hủy. Cần áp dụng chiến lược dự báo thận trọng cho nhóm này.
+## 5. Việc tiếp theo
 
----
-
-## 6. Kết Luận Chung Của Đồ Án
-* Nhóm đã hoàn thành xuất sắc và đồng bộ cả 5 Task nền tảng của đồ án IS403.
-* Dữ liệu được kiểm định nghiêm ngặt đạt độ tin cậy tuyệt đối, pipeline kỹ thuật được chuẩn hóa và các phân tích thống kê định lượng đã chứng minh đầy đủ luận điểm khoa học của bài báo.
-* Toàn bộ tài liệu, notebook và mã nguồn đã được cấu trúc chuyên nghiệp, sẵn sàng cho việc bảo vệ đồ án và nộp bài cuối kỳ.
+Nhóm đã có dữ liệu đầu vào được xác nhận. Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm chạy thử TimesNet → SSA, chạy SSA trên doanh số gốc, đánh giá TimesNet với thiếu nhân tạo và tạo nhu cầu khôi phục cho Task 11. Khi có kết quả tự chạy, đối chiếu theo cùng tập eval, cùng quy tắc lọc và cùng nhóm đánh giá với bài báo.

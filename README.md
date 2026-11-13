@@ -15,12 +15,13 @@
 
 | Báo Cáo | Nội Dung Chính | Liên Kết Trực Tiếp |
 | :--- | :--- | :---: |
-| **Báo Cáo Tổng Hợp** | Tổng quan toàn bộ đồ án, đánh giá chéo 5 task & kết luận | 👉 [**Synthesis_Report.md**](reports/Synthesis_Report.md) |
+| **Báo Cáo Tổng Hợp** | Tổng quan toàn bộ đồ án, tiến độ Task 1–6 và kết quả tham chiếu | 👉 [**Synthesis_Report.md**](reports/Synthesis_Report.md) |
 | **Báo Cáo Task 1** | Phân tích bài báo FreshRetailNet-50K, cơ chế MNAR & Two-stage | 👉 [**Task01_Report.md**](reports/Task01_Report.md) |
 | **Báo Cáo Task 2** | Kế hoạch 15 cấu hình thực nghiệm dự báo & Siêu tham số | 👉 [**Task02_Report.md**](reports/Task02_Report.md) |
 | **Báo Cáo Task 3** | Môi trường Colab GPU, giải quyết dependency & Pipeline Parquet | 👉 [**Task03_Report.md**](reports/Task03_Report.md) |
 | **Báo Cáo Task 4** | Đối soát chất lượng dữ liệu: 48 quy tắc, kiểm định 4.85M dòng | 👉 [**Task04_Report.md**](reports/Task04_Report.md) |
 | **Báo Cáo Task 5** | Thống kê mô tả (EDA): Phân phối, quy luật chữ U hết hàng, Pareto | 👉 [**Task05_Report.md**](reports/Task05_Report.md) |
+| **Báo cáo Task 6** | Đối chiếu toàn bộ CSV với Parquet và kiểm tra đầu vào TimesNet/SSA | [Task06_Report.md](reports/Task06_Report.md) |
 
 ---
 
@@ -39,7 +40,7 @@ Mô hình dự báo truyền thống nếu học trực tiếp từ doanh số b
 ┌────────────────────────────────────────────────────────┐
 │ Giai đoạn 1: TimesNet Latent Demand Recovery          │
 │ • Imputation chuỗi thời gian với mặt nạ stockout       │
-│ • Đầu ra: demand.parquet (Nhu cầu giờ đã khôi phục)    │
+│ • Đầu ra: demand.parquet (Nhu cầu theo ngày)           │
 └────────────────────────────────────────────────────────┘
            │
            ▼ (Tích lũy 24h thành ngày)
@@ -54,7 +55,7 @@ Mô hình dự báo truyền thống nếu học trực tiếp từ doanh số b
 
 ## 👥 2. Thành Viên Nhóm & Phân Công Nhiệm Vụ
 
-Dự án được phân chia thành 5 Task chuyên biệt với sự phối hợp chặt chẽ giữa các thành viên:
+Repo đã lưu sản phẩm của Task 1–6. Xem [phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md) để biết phần việc và yêu cầu bàn giao.
 
 | Task | Nhiệm vụ chính | Người phụ trách | Báo cáo chi tiết | Thư mục làm việc |
 | :---: | :--- | :---: | :---: | :---: |
@@ -63,6 +64,7 @@ Dự án được phân chia thành 5 Task chuyên biệt với sự phối hợ
 | **Task 3** | **Môi trường & Pipeline:** Cấu hình Colab GPU, pipeline Parquet. | Thành viên nhóm | [Task03_Report.md](reports/Task03_Report.md) | [Task03_Environment_Setup/](Task03_Environment_Setup/) |
 | **Task 4** | **Kiểm định dữ liệu (Validation):** 48 quy tắc trên 4.85M dòng. | **Đăng Khoa** | [Task04_Report.md](reports/Task04_Report.md) | [Task04_Data_Validation/](Task04_Data_Validation/) |
 | **Task 5** | **Thống kê mô tả (EDA):** Phân phối, quy luật chữ U, Pareto 20-87. | Thành viên nhóm | [Task05_Report.md](reports/Task05_Report.md) | [Task05_EDA/](Task05_EDA/) |
+| **Task 6** | **Xác nhận đầu vào:** Đối chiếu CSV–Parquet và kiểm tra mảng mẫu | TV1 | [Task06_Report.md](reports/Task06_Report.md) | [Task06_Data_Preparation/](Task06_Data_Preparation/) |
 
 ---
 
@@ -85,7 +87,8 @@ PTDLKD/
 │   ├── Task03_Report.md                # Báo cáo Task 3: Môi trường & Pipeline
 │   ├── Task04_Report.md                # Báo cáo Task 4: Đối soát chất lượng dữ liệu
 │   ├── Task05_Report.md                # Báo cáo Task 5: Thống kê mô tả (EDA)
-│   └── Synthesis_Report.md             # Báo cáo tổng hợp toàn bộ 5 Task của dự án
+│   ├── Task06_Report.md                # Báo cáo Task 6: Xác nhận dữ liệu đầu vào
+│   └── Synthesis_Report.md             # Tiến độ và kết quả tham chiếu
 │
 ├── Task01_Paper_Review/                # Thư mục làm việc Task 1
 │   ├── README.md
@@ -101,7 +104,6 @@ PTDLKD/
 │
 ├── Task03_Environment_Setup/           # Thư mục làm việc Task 3
 │   ├── README.md
-│   ├── requirements.txt
 │   └── scripts/
 │       ├── setup_colab.sh              # Cài đặt tự động trên Google Colab
 │       └── download_data.py            # Tải dữ liệu HuggingFace xuất Parquet
@@ -116,13 +118,15 @@ PTDLKD/
 │       ├── issue_examples.csv
 │       └── run_info.json
 │
-└── Task05_EDA/                         # Thư mục làm việc Task 5
+├── Task05_EDA/                         # Thống kê mô tả và biểu đồ
+│   ├── README.md
+│   ├── notebooks/
+│   └── results/
+│
+└── Task06_Data_Preparation/            # Xác nhận dữ liệu đầu vào
     ├── README.md
-    ├── notebooks/
-    │   ├── Task5_EDA_01_tai_du_lieu.ipynb  # Tải dữ liệu & Tiền xử lý RAM
-    │   └── Task5_EDA_02_thong_ke_mo_ta.ipynb # Thống kê chi tiết & Vẽ biểu đồ
-    └── results/
-        └── summary_statistics.json     # Tóm tắt chỉ số thống kê
+    ├── notebooks/06_prepare_data.ipynb
+    └── results/                        # Bảng đối soát và biên bản chạy
 ```
 
 ---
@@ -133,7 +137,7 @@ PTDLKD/
 * Đã kiểm định toàn bộ $4.500.000$ dòng train và $350.000$ dòng eval qua $48$ quy tắc nghiêm ngặt:
   * **$100\%$ toàn vẹn:** $0$ giá trị null, $0$ khóa trùng lặp, $100\%$ các cặp có đủ $90$ ngày train và $7$ ngày eval.
   * **$100\%$ nhất quán:** Tổng doanh số giờ khớp hoàn toàn doanh số ngày; số giờ hết hàng khớp với số bit $1$ trong khung giờ $6..21$.
-  * **Phát hiện dị thường:** Tìm thấy duy nhất $34$ bản ghi có `discount > 1.0` (max 1.088) trong tập train và đã đề xuất xử lý clip về $1.0$.
+  * **Mục cần xác minh:** 34 dòng train có `discount > 1.0` (lớn nhất 1,088), được giữ nguyên cho lượt tái lập chính.
 
 ### Task 5 (Thống kê Mô tả & EDA)
 * **Phân phối doanh số:** Lệch phải mạnh (`mean = 0.999`, `median = 0.700`, `skewness = 8.47`).
@@ -141,11 +145,17 @@ PTDLKD/
 * **Hiện tượng hết hàng:** Chiếm $19.88\%$ số giờ kinh doanh, có dạng **chữ U** đạt đỉnh $41.9\%$ vào lúc 22h đêm.
 * **Nguyên tắc Pareto:** $20\%$ sản phẩm chiếm tới $87.0\%$ tổng doanh số bán ra toàn mạng lưới.
 
-### Đối chiếu Hiệu năng Dự báo (Bảng 3 Tái lập)
+### Task 6 (Xác nhận dữ liệu đầu vào)
+
+Đối chiếu toàn bộ **4.850.000 dòng × 19 cột** giữa CSV và Parquet, gồm từng phần tử trong hai mảng theo giờ; cả hai tập đều đạt. Hai cặp mẫu tạo được đầu vào TimesNet `(6, 480, 6)` và mảng đặc trưng số SSA `(2, 97, 3)`. Xem [notebook và biên bản Task 6](Task06_Data_Preparation/README.md).
+
+### Số tham chiếu dự báo từ Bảng 3 của bài báo
+
+Các số dưới đây là số công bố trong bài báo, chưa phải kết quả chạy của nhóm.
 | Nhóm Đánh Giá | SSA trên Doanh số Gốc | SSA trên Nhu cầu TimesNet | Mức Độ Cải Thiện |
 | :--- | :---: | :---: | :--- |
-| **Overall (Toàn bộ)** | WAPE $31.97\%$ \| WPE $-10.50\%$ | **WAPE $29.79\%$ \| WPE $+1.39\%$** | **WAPE giảm $2.18\%$, xóa bỏ bias âm** |
-| **High Sale (Bán chạy)** | WAPE $27.40\%$ \| WPE $-12.26\%$ | **WAPE $23.98\%$ \| WPE $-1.12\%$** | **WAPE giảm $3.42\%$, bias chỉ còn $-1.1\%$** |
+| **Overall (Toàn bộ)** | WAPE $31.97\%$ \| WPE $-10.50\%$ | **WAPE $29.79\%$ \| WPE $+1.39\%$** | **WAPE giảm 2,18 điểm phần trăm; WPE chuyển dương** |
+| **High Sale (Bán chạy)** | WAPE $27.40\%$ \| WPE $-12.26\%$ | **WAPE $23.98\%$ \| WPE $-1.12\%$** | **WAPE giảm 3,42 điểm phần trăm; WPE còn −1,12%** |
 | **Low Sale (Bán chậm)** | WAPE $38.33\%$ \| WPE $-8.03\%$ | WAPE $37.87\%$ \| WPE $+4.89\%$ | Giảm sai số tuyệt đối, xuất hiện bias dương nhẹ |
 
 ---
@@ -153,9 +163,9 @@ PTDLKD/
 ## 🚀 5. Hướng Dẫn Cài Đặt và Chạy
 
 ### Cách 1: Chạy trên Google Colab (Khuyến nghị cho huấn luyện GPU)
-1. Mở notebook cần chạy trong thư mục `Task04_Data_Validation/notebooks/` hoặc `Task05_EDA/notebooks/` bằng Google Colab.
-2. Đổi môi trường thực thi: **Runtime** $\rightarrow$ **Change runtime type** $\rightarrow$ Chọn **T4 GPU** hoặc **L4 GPU**.
-3. Chạy ô đầu tiên để kết nối Google Drive và cài đặt thư viện tự động.
+1. Mở notebook Task 4, Task 5 hoặc [Task 6](Task06_Data_Preparation/notebooks/06_prepare_data.ipynb) bằng Colab.
+2. Task 6 chạy bằng CPU; với các lượt huấn luyện TimesNet sau đó, dùng môi trường GPU theo hướng dẫn Task 3.
+3. Kết nối Drive, kiểm tra đường dẫn dữ liệu trong ô cấu hình rồi chạy từ đầu.
 
 ### Cách 2: Chạy trên Máy Cá Nhân (Local)
 ```bash
