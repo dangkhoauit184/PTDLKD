@@ -16,7 +16,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Task 1–6
+## 2. Tiến độ Task 1–6 và Task 8
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -26,6 +26,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **4** | **Task 4** | **Kiểm tra dữ liệu (Validation)** | **Đăng Khoa (Bạn)** | **Notebook đối soát 48 quy tắc trên 4.85M dòng, bảng profile 19 cột, phát hiện 34 dòng discount bất thường.** |
 | **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số. |
 | **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | TV1 | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
+| **8** | **Task 8** | **SSA trên doanh số gốc** | TV3 | [Báo cáo và kết quả baseline](Task08_Report.md). |
 
 ---
 
@@ -66,7 +67,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ## 4. Số tham chiếu từ Bảng 3 của bài báo
 
-Các chỉ số dưới đây là số công bố trong bài báo. Task 6 xác nhận đầu vào; kết quả dự báo của nhóm sẽ lấy từ các lượt thực nghiệm tiếp theo.
+Các chỉ số dưới đây là số công bố trong bài báo. Kết quả nhóm tự chạy ở [Task 8](Task08_Report.md) khớp WAPE/WPE của SSA trên doanh số gốc ở độ chính xác công bố. Kết quả SSA trên nhu cầu TimesNet sẽ lấy từ Task 11.
 | Nhóm Sản Phẩm | Pipeline Dự Báo | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
 | :--- | :--- | :---: | :---: | :--- |
 | **Overall (Toàn bộ)** | **SSA trên Doanh số gốc (Task 8)** | **$31.97\%$** | **$-10.50\%$** | Bị thiên lệch dự báo thiếu nặng nề |
@@ -81,4 +82,4 @@ Các chỉ số dưới đây là số công bố trong bài báo. Task 6 xác n
 
 ## 5. Việc tiếp theo
 
-Nhóm đã có dữ liệu đầu vào được xác nhận. Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm chạy thử TimesNet → SSA, chạy SSA trên doanh số gốc, đánh giá TimesNet với thiếu nhân tạo và tạo nhu cầu khôi phục cho Task 11. Khi có kết quả tự chạy, đối chiếu theo cùng tập eval, cùng quy tắc lọc và cùng nhóm đánh giá với bài báo.
+Nhóm đã có dữ liệu đầu vào và [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv). Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm chạy thử TimesNet → SSA, đánh giá TimesNet với thiếu nhân tạo và tạo nhu cầu khôi phục cho Task 11. Khi so sánh hai nhánh SSA, giữ cùng tập eval, quy tắc lọc và cách chia nhóm.

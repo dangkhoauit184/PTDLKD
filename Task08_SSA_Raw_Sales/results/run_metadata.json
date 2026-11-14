@@ -1,0 +1,31 @@
+{
+  "config_id": "SSA_RawSales",
+  "run_utc": "2026-11-14T07:28:24.457706+00:00",
+  "runtime": "Windows CPU",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "pandas": "3.0.1",
+  "pyarrow": "26.0.1",
+  "ssa_reference_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "inputs": {
+    "train": {
+      "filename": "train.parquet",
+      "sha256": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+      "bytes": 61075680,
+      "rows": 4500000
+    },
+    "eval": {
+      "filename": "eval.parquet",
+      "sha256": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+      "bytes": 5451872,
+      "rows": 350000
+    }
+  },
+  "eligible_eval_rows": 206562,
+  "metrics_rows": 3,
+  "metric_units": {
+    "wape_pct": "percent",
+    "wpe_pct": "percent",
+    "mae": "normalized sales"
+  }
+}
