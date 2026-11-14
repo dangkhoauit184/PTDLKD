@@ -22,6 +22,7 @@
 | **Báo Cáo Task 4** | Đối soát chất lượng dữ liệu: 48 quy tắc, kiểm định 4.85M dòng | 👉 [**Task04_Report.md**](reports/Task04_Report.md) |
 | **Báo Cáo Task 5** | Thống kê mô tả (EDA): Phân phối, quy luật chữ U hết hàng, Pareto | 👉 [**Task05_Report.md**](reports/Task05_Report.md) |
 | **Báo cáo Task 6** | Đối chiếu toàn bộ CSV với Parquet và kiểm tra đầu vào TimesNet/SSA | [Task06_Report.md](reports/Task06_Report.md) |
+| **Báo cáo Task 8** | Kết quả SSA trên doanh số gốc, dùng làm mốc cho Task 11 | [Task08_Report.md](reports/Task08_Report.md) |
 
 ---
 
@@ -55,7 +56,7 @@ Mô hình dự báo truyền thống nếu học trực tiếp từ doanh số b
 
 ## 👥 2. Thành Viên Nhóm & Phân Công Nhiệm Vụ
 
-Repo đã lưu sản phẩm của Task 1–6. Xem [phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md) để biết phần việc và yêu cầu bàn giao.
+Repo đã lưu sản phẩm của Task 1–6 và Task 8. Xem [phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md) để biết phần việc và yêu cầu bàn giao.
 
 | Task | Nhiệm vụ chính | Người phụ trách | Báo cáo chi tiết | Thư mục làm việc |
 | :---: | :--- | :---: | :---: | :---: |
@@ -65,6 +66,7 @@ Repo đã lưu sản phẩm của Task 1–6. Xem [phân công Task 6–10](docs
 | **Task 4** | **Kiểm định dữ liệu (Validation):** 48 quy tắc trên 4.85M dòng. | **Đăng Khoa** | [Task04_Report.md](reports/Task04_Report.md) | [Task04_Data_Validation/](Task04_Data_Validation/) |
 | **Task 5** | **Thống kê mô tả (EDA):** Phân phối, quy luật chữ U, Pareto 20-87. | Thành viên nhóm | [Task05_Report.md](reports/Task05_Report.md) | [Task05_EDA/](Task05_EDA/) |
 | **Task 6** | **Xác nhận đầu vào:** Đối chiếu CSV–Parquet và kiểm tra mảng mẫu | TV1 | [Task06_Report.md](reports/Task06_Report.md) | [Task06_Data_Preparation/](Task06_Data_Preparation/) |
+| **Task 8** | **SSA trên doanh số gốc:** WAPE, WPE và MAE cho ba nhóm | TV3 | [Task08_Report.md](reports/Task08_Report.md) | [Task08_SSA_Raw_Sales/](Task08_SSA_Raw_Sales/) |
 
 ---
 
@@ -151,7 +153,7 @@ PTDLKD/
 
 ### Số tham chiếu dự báo từ Bảng 3 của bài báo
 
-Các số dưới đây là số công bố trong bài báo, chưa phải kết quả chạy của nhóm.
+Các số dưới đây là số công bố trong bài báo. [Kết quả nhóm tự chạy cho SSA trên doanh số gốc](Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv) được lưu riêng và khớp WAPE/WPE ở độ chính xác công bố. Nhánh SSA trên nhu cầu TimesNet sẽ được đánh giá ở Task 11.
 | Nhóm Đánh Giá | SSA trên Doanh số Gốc | SSA trên Nhu cầu TimesNet | Mức Độ Cải Thiện |
 | :--- | :---: | :---: | :--- |
 | **Overall (Toàn bộ)** | WAPE $31.97\%$ \| WPE $-10.50\%$ | **WAPE $29.79\%$ \| WPE $+1.39\%$** | **WAPE giảm 2,18 điểm phần trăm; WPE chuyển dương** |
