@@ -60,3 +60,7 @@ scratch/
 browser_evidence/
 frn-50k-baseline/
 task4/
+
+# Small Task 7 smoke result tables
+!Task07_Smoke_Test/smoke_pairs.csv
+!Task07_Smoke_Test/smoke_metrics.csv
