@@ -1,51 +1,56 @@
 # Task 7 — Thông tin lượt chạy smoke
 
-## Trạng thái thực tế
-
-**not_run** — chưa có bước chọn cặp, SSA, TimesNet hoặc SSA trên nhu cầu TimesNet nào được thực thi. `smoke_pairs.csv` chỉ chứa header; các metric để trống. Không tạo `demand_timesnet_smoke.parquet` vì không có mô hình chạy. Các log ghi lý do `not_run`, không chứa số liệu mô phỏng.
-
-## Dữ liệu
-
-- Ưu tiên Task 6: `train.parquet` và `eval.parquet` ở repo root.
-- Task 6 tham chiếu train SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96` và eval SHA-256 `61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872`; các file không có trong workspace để kiểm tra hash.
-- Hugging Face fallback chính thức: `Dingdong-Inc/FreshRetailNet-50K`. Chưa nạp hoặc tải dữ liệu vì Python runtime/package `datasets` không khả dụng.
-- Số cặp, dòng train/eval, khóa đã kiểm tra: **0**. Chưa có eval nào dùng trong huấn luyện.
-
-## Môi trường và nguyên nhân
-
-- Repo baseline: `19483da785f171cb28699e3cba2ae16d6512089a` (`feature/task07-smoke-test`).
-- Mã tác giả dự kiến: `Dingdong-Inc/frn-50k-baseline` commit `8af694a09a5a427d1d50648d348c022565a781f2`.
-- `python --version` không chạy được: lệnh trỏ tới Windows App Execution Alias và báo Python không được cài. Không tìm thấy `py`, Conda, hoặc Python đã cấu hình trong VS Code.
-- Vì không có Python, chưa thể import/kiểm tra thực tế PyTorch, NumPy, pandas, PyArrow, `datasets` hoặc native extensions.
-- Có GPU NVIDIA GeForce RTX 4060, driver 566.26 / CUDA driver 12.7; tại lúc kiểm tra GPU đang dùng 6.159/8.188 MiB. GPU driver không cung cấp Python/PyTorch runtime. WSL không khả dụng (`REGDB_E_CLASSNOTREG`); không tìm thấy runtime Colab/kernel đã cấu hình.
-- Không cài package, không đổi hệ thống và không bỏ qua bảo vệ môi trường.
-
-## Cấu hình dự kiến — chưa chạy
-
+- Thời điểm ghi: `2026-11-17T21:53:39.688255+00:00`
+- Repo baseline: `19483da785f171cb28699e3cba2ae16d6512089a`
+- Mã tác giả FreshRetailNet-50K: `8af694a09a5a427d1d50648d348c022565a781f2` ([repo](https://github.com/Dingdong-Inc/frn-50k-baseline/tree/8af694a09a5a427d1d50648d348c022565a781f2)).
+- Dataset dự phòng chính thức: `Dingdong-Inc/FreshRetailNet-50K`.
 - Seed chọn cặp: `2024`.
 - TimesNet: `--model TimesNet --missing_rate 0 --epochs 1 --batch_size 128 --seed 1024`.
-- `load_data` và `_demand_recovery` trong bản runtime tạm sẽ cùng đọc `train_smoke.parquet`; lệnh phục hồi và cả hai SSA sẽ nhận đường dẫn rõ ràng. SSA raw và SSA TimesNet sẽ dùng cùng `eval_smoke.parquet` 700 dòng.
-- Baseline `EPOCHS=5`; một epoch là giảm smoke đã định trước, không phải kết quả đã chạy.
+- Eval chỉ dùng để chọn/đánh giá cặp; không dùng để huấn luyện.
 
-## Lệnh tái chạy
+## Nguồn dữ liệu
 
-Trong kernel Python tương thích theo `Task03_Environment_Setup/` và `requirements.txt`, mở `07_smoke_test.ipynb` rồi chạy tất cả cell từ đầu. Pipeline ghi CSV/log/run_info, lấy Parquet Task 6 nếu hash đúng hoặc dùng Hugging Face chính thức. Các lệnh con được tạo bởi notebook:
+- Nguồn: Task 6 train.parquet/eval.parquet không có ở repo root; Hugging Face `Dingdong-Inc/FreshRetailNet-50K` là fallback nhưng chưa được nạp
+- SHA-256 train tham chiếu Task 6: `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96`
+- SHA-256 eval tham chiếu Task 6: `61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872`
+- Chỉ ghi hash thực tế ở các dòng dưới sau khi dữ liệu được đọc và xác minh.
+- SHA-256 train: chưa kiểm tra
+- SHA-256 eval: chưa kiểm tra
+- Khi chọn cặp thành công, train/eval thử được ghi thành Parquet riêng và truyền đường dẫn tường minh cho TimesNet lẫn SSA.
 
-```text
-python Task07_Smoke_Test/smoke_pipeline.py
-python app.py --model TimesNet --missing_rate 0 --train_path <train_smoke.parquet> --demand_path <Task07_Smoke_Test/demand_timesnet_smoke.parquet> --epochs 1 --batch_size 128 --seed 1024
-python ssa_forecasting_smoke.py --train_path <train_smoke.parquet> --eval_path <eval_smoke.parquet> --metrics_path <raw_metrics.csv>
-python ssa_forecasting_smoke.py --demand --demand_path <Task07_Smoke_Test/demand_timesnet_smoke.parquet> --eval_path <eval_smoke.parquet> --metrics_path <timesnet_metrics.csv>
-```
+## Môi trường
 
-Các lệnh SSA là bản CLI tạm được tạo từ đúng commit tác giả để thêm `--train_path`, `--eval_path` và metrics CSV; logic dự báo/đánh giá SSA được giữ nguyên. Mọi bản patch, file Parquet thử và output huấn luyện nằm trong `smoke/tmp/`, không đưa vào Git.
+- Python: 3.15.2
+- Interpreter: `C:\Users\trong\AppData\Roaming\uv\python\cpython-3.15.2-windows-x86_64-none\python.exe`
+- NumPy: chưa import được
+- pandas: chưa import được
+- PyArrow: chưa import được
+- PyTorch/CUDA: chưa import được
 
-## Bàn giao hiện có
+## Kiểm tra dữ liệu
 
-- `07_smoke_test.ipynb`, `smoke_pipeline.py`: quy trình có thể tái chạy, gồm kiểm tra hash, chọn cặp, đường dẫn train/eval tường minh, đối soát khóa, metric và log.
-- `smoke_pairs.csv`: header-only do chưa thể chọn cặp.
-- `smoke_metrics.csv`: hai hàng Overall `not_run`, metric để trống.
-- `smoke/ssa_raw.log`, `smoke/timesnet.log`, `smoke/ssa_timesnet.log`: trạng thái và lỗi/điều kiện chạy.
-- `demand_timesnet_smoke.parquet`: **không tồn tại**, không tạo file giả.
+- Cặp đã chọn: 0 / 100
+- Train đã kiểm tra: 0 / 9.000 dòng; 0 khóa duy nhất
+- Eval đã kiểm tra: 0 / 700 dòng; 0 khóa duy nhất
+- Eval hợp lệ (`stock_hour6_22_cnt == 0`): 0 dòng
+- Đầu ra nhu cầu: `demand_timesnet_smoke.parquet` chưa được tạo.
 
-CSV, Parquet và log bị `.gitignore` loại khỏi Git theo `docs/Contribution_Guide.md`; chỉ notebook, pipeline và biên bản được đưa lên nhánh. Chưa có số liệu smoke để ghi vào Bảng 3.
+## Trạng thái
+
+- `SSA_RawSales`: **not_run**
+- `TimesNet`: **not_run**
+- `SSA_TimesNet`: **not_run**
+
+## Lệnh chạy
+
+- Tái chạy pipeline: `python Task07_Smoke_Test/smoke_pipeline.py` (hoặc chạy tất cả cell trong `07_smoke_test.ipynb`).
+- TimesNet dự kiến: `python app.py --model TimesNet --missing_rate 0 --train_path <train_smoke.parquet> --demand_path <Task07_Smoke_Test/demand_timesnet_smoke.parquet> --epochs 1 --batch_size 128 --seed 1024`.
+- SSA raw dự kiến: `python ssa_forecasting_smoke.py --train_path <train_smoke.parquet> --eval_path <eval_smoke.parquet> --metrics_path <raw_metrics.csv>`.
+- SSA TimesNet dự kiến: `python ssa_forecasting_smoke.py --demand --demand_path <Task07_Smoke_Test/demand_timesnet_smoke.parquet> --eval_path <eval_smoke.parquet> --metrics_path <timesnet_metrics.csv>`.
+- Các lệnh dự kiến chưa được chạy nếu chưa xuất hiện trong phần `Đã chạy`.
+
+## Lỗi / giới hạn
+
+- Data/preflight: RuntimeError: Required imports failed: numpy: ModuleNotFoundError: No module named 'numpy'; pandas: ModuleNotFoundError: No module named 'pandas'; pyarrow: ModuleNotFoundError: No module named 'pyarrow'; torch: ModuleNotFoundError: No module named 'torch'
+
+Các CSV, Parquet và log thuộc dữ liệu/kết quả của lượt chạy; giữ ngoài Git theo `docs/Contribution_Guide.md`. Không chép kết quả smoke vào Bảng 3.

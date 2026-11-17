@@ -132,6 +132,13 @@ def render_run_info(
 ) -> str:
     now = datetime.now(timezone.utc).isoformat()
     source_lines = [f"- Nguồn: {source or 'chưa xác định'}"]
+    source_lines.extend(
+        [
+            f"- SHA-256 train tham chiếu Task 6: `{EXPECTED_SHA256['train']}`",
+            f"- SHA-256 eval tham chiếu Task 6: `{EXPECTED_SHA256['eval']}`",
+            "- Chỉ ghi hash thực tế ở các dòng dưới sau khi dữ liệu được đọc và xác minh.",
+        ]
+    )
     for split in ("train", "eval"):
         digest = source_hashes.get(split, "")
         source_lines.append(
@@ -143,6 +150,7 @@ def render_run_info(
             source_lines.append(f"- SHA-256 {split}: `{digest}`")
     version_lines = [
         f"- Python: {versions.get('python', platform.python_version())}",
+        f"- Interpreter: `{sys.executable}`",
         f"- NumPy: {versions.get('numpy', 'chưa import được')}",
         f"- pandas: {versions.get('pandas', 'chưa import được')}",
         f"- PyArrow: {versions.get('pyarrow', 'chưa import được')}",
@@ -162,9 +170,25 @@ def render_run_info(
         f"- Eval hợp lệ (`stock_hour6_22_cnt == 0`): "
         f"{counts.get('eval_valid_rows', 0)} dòng",
     ]
-    command_lines = [f"- `{command}`" for command in commands] or [
-        "- Chưa chạy lệnh mô hình."
-    ]
+    command_lines = [f"- Đã chạy: `{command}`" for command in commands]
+    command_lines.extend(
+        [
+            "- Tái chạy pipeline: `python Task07_Smoke_Test/smoke_pipeline.py` "
+            "(hoặc chạy tất cả cell trong `07_smoke_test.ipynb`).",
+            "- TimesNet dự kiến: `python app.py --model TimesNet --missing_rate 0 "
+            "--train_path <train_smoke.parquet> --demand_path "
+            "<Task07_Smoke_Test/demand_timesnet_smoke.parquet> --epochs "
+            f"{EPOCHS} --batch_size {BATCH_SIZE} --seed {MODEL_SEED}`.",
+            "- SSA raw dự kiến: `python ssa_forecasting_smoke.py --train_path "
+            "<train_smoke.parquet> --eval_path <eval_smoke.parquet> "
+            "--metrics_path <raw_metrics.csv>`.",
+            "- SSA TimesNet dự kiến: `python ssa_forecasting_smoke.py --demand "
+            "--demand_path <Task07_Smoke_Test/demand_timesnet_smoke.parquet> "
+            "--eval_path <eval_smoke.parquet> --metrics_path "
+            "<timesnet_metrics.csv>`.",
+            "- Các lệnh dự kiến chưa được chạy nếu chưa xuất hiện trong phần `Đã chạy`.",
+        ]
+    )
     error_lines = [f"- {error.replace(chr(10), ' ')}" for error in errors] or [
         "- Không có lỗi được ghi nhận."
     ]
@@ -779,7 +803,15 @@ def run_pipeline() -> int:
     }
     records = []
     pairs = []
-    source = ""
+    source = (
+        "Task 6 Parquet (hash sẽ kiểm tra nếu tồn tại); "
+        "nếu thiếu, dùng Hugging Face nhưng chưa nạp trước khi qua preflight"
+    )
+    if not (ROOT / "train.parquet").is_file() or not (ROOT / "eval.parquet").is_file():
+        source = (
+            "Task 6 train.parquet/eval.parquet không có ở repo root; "
+            f"Hugging Face `{DATASET_ID}` là fallback nhưng chưa được nạp"
+        )
     source_hashes = {}
     counts = {
         "pairs": 0,
