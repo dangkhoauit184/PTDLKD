@@ -1,0 +1,25 @@
+# command: /usr/bin/python3 -u /content/run_task09.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/drive/MyDrive/FRN50K/raw/data/train.parquet --work_dir /content/task09_work/full --model TimesNet --missing_rate 0.3 --seed 1024 --batch_size 128 --epochs 5 --saving_path /content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints
+[task09] data_path=/content/drive/MyDrive/FRN50K/raw/data/train.parquet
+[task09] train_rows=4500000 pairs=50000 dt_min=2024-03-28 dt_max=2024-06-25 stockout_points_6_21=14311536 ram_gb=2.0
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794880033.639933    2328 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794880035.943762    2328 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+cuda:0
+[task09] pypots_path=/content/frn-50k-baseline/latent_demand_recovery/pypots torch=2.14.1+cu130 cuda=True gpu=Tesla T4
+[task09] CONFIG {"model": "TimesNet", "saving_path": "/content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints", "EPOCHS": 5, "batch_size": 128, "patience": 5, "n_layers": 2, "d_model": 64, "d_ffn": 32, "n_heads": 4, "d_k": 16, "d_v": 16, "dropout": 0.0, "attn_dropout": 0.0, "lr": 0.001, "weight_decay": 1e-05, "OT": 1, "missing_rate": 0.3, "n_patches": 7, "alpha": 0.01}
+[task09] seed=1024
+9163425
+[task09] n_samples=150000 n_points_6_21=72000000 stockout_points=14311536 (khớp dữ liệu: True) artificially_masked=9163425 actual_mask_ratio=0.158843 ram_gb=5.5
+2026-11-17 01:47:22 [INFO]: Using the given device: cuda:0
+2026-11-17 01:47:22 [INFO]: Model files will be saved to /content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722
+2026-11-17 01:47:22 [INFO]: Tensorboard file will be saved to /content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722/tensorboard
+2026-11-17 01:47:22 [INFO]: TimesNet initialized with the given hyperparameters, the number of trainable parameters: 1,354,438
+2026-11-17 02:22:30 [INFO]: Epoch 001 - training loss: 0.0643
+2026-11-17 02:57:42 [INFO]: Epoch 002 - training loss: 0.0626
+2026-11-17 03:33:26 [INFO]: Epoch 003 - training loss: 0.0622
+2026-11-17 04:09:58 [INFO]: Epoch 004 - training loss: 0.0621
+2026-11-17 04:45:58 [INFO]: Epoch 005 - training loss: 0.0619
+2026-11-17 04:45:58 [INFO]: Finished training. The best model is from epoch#5.
+2026-11-17 04:45:58 [INFO]: Saved the model to /content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722/TimesNet.pypots

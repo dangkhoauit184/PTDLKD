@@ -1,0 +1,34 @@
+# command: /usr/bin/python3 -u /content/run_task09.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/drive/MyDrive/FRN50K/raw/data/train.parquet --work_dir /content/task09_work/smoke --model TimesNet --missing_rate 0.3 --seed 1024 --batch_size 128 --pairs 200 --epochs 5 --verify_equivalence
+[task09] data_path=/content/drive/MyDrive/FRN50K/raw/data/train.parquet
+[task09] train_rows=18000 pairs=200 dt_min=2024-03-28 dt_max=2024-06-25 stockout_points_6_21=57796 ram_gb=0.9
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794967589.417706    8897 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1794967592.724235    8897 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+cuda:0
+[task09] pypots_path=/content/frn-50k-baseline/latent_demand_recovery/pypots torch=2.14.1+cu130 cuda=True gpu=Tesla T4
+[task09] CONFIG {"model": "TimesNet", "saving_path": "/content/task09_work/smoke/save", "EPOCHS": 5, "batch_size": 128, "patience": 5, "n_layers": 2, "d_model": 64, "d_ffn": 32, "n_heads": 4, "d_k": 16, "d_v": 16, "dropout": 0.0, "attn_dropout": 0.0, "lr": 0.001, "weight_decay": 1e-05, "OT": 1, "missing_rate": 0.3, "n_patches": 7, "alpha": 0.01}
+[task09] seed=1024
+[task09] equivalence X=True valid_idx=True ts_origin=True evaluation_mnar=True (['wape 1.4936614069640615', 'wpe 1.1150996807273241'] vs ['wape 1.4936614069640615', 'wpe 1.1150996807273241']) equivalence_ok=True
+34390
+[task09] n_samples=600 n_points_6_21=288000 stockout_points=57796 (khớp dữ liệu: True) artificially_masked=34390 actual_mask_ratio=0.149389 ram_gb=2.1
+2026-11-18 02:06:35 [INFO]: Using the given device: cuda:0
+2026-11-18 02:06:35 [INFO]: Model files will be saved to /content/task09_work/smoke/save/TimesNet/20261118_T020635
+2026-11-18 02:06:35 [INFO]: Tensorboard file will be saved to /content/task09_work/smoke/save/TimesNet/20261118_T020635/tensorboard
+2026-11-18 02:06:35 [INFO]: TimesNet initialized with the given hyperparameters, the number of trainable parameters: 1,354,438
+[task09] fit_start ram_gb=2.3
+2026-11-18 02:06:45 [INFO]: Epoch 001 - training loss: 0.0853
+2026-11-18 02:06:52 [INFO]: Epoch 002 - training loss: 0.0762
+2026-11-18 02:06:59 [INFO]: Epoch 003 - training loss: 0.0742
+2026-11-18 02:07:06 [INFO]: Epoch 004 - training loss: 0.0729
+2026-11-18 02:07:13 [INFO]: Epoch 005 - training loss: 0.0715
+2026-11-18 02:07:13 [INFO]: Finished training. The best model is from epoch#5.
+2026-11-18 02:07:13 [INFO]: Saved the model to /content/task09_work/smoke/save/TimesNet/20261118_T020635/TimesNet.pypots
+[task09] fit_end ram_gb=3.5
+[task09] predict_start ram_gb=3.5
+[task09] predict_end shape=(600, 480, 6) ram_gb=3.5
+wape 0.28551964811794156
+wpe -0.17122278981527123
+[task09] eval_days=2956 ram_gb=3.5
+[task09] finished elapsed_sec=66 ram_gb=3.5

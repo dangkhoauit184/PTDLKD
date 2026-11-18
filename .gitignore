@@ -60,3 +60,7 @@ scratch/
 browser_evidence/
 frn-50k-baseline/
 task4/
+
+!Task09_TimesNet_MNAR/results/*.csv
+!Task09_TimesNet_MNAR/results/full/*.log
+!Task09_TimesNet_MNAR/results/smoke/*.log

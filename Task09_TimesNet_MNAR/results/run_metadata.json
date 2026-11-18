@@ -1,0 +1,74 @@
+{
+  "task": "Task 9 - TimesNet MNAR",
+  "run_utc": "2026-11-18T02:00:01.033792+00:00",
+  "author_repo": "https://github.com/Dingdong-Inc/frn-50k-baseline.git",
+  "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "data": {
+    "path": "/content/drive/MyDrive/FRN50K/raw/data/train.parquet",
+    "sha256": "6706832db892bbae4969c19d87e07975d2543d2ba7d7d4756360654785de5a3d",
+    "bytes": 106436287,
+    "rows": 4500000,
+    "columns": 19,
+    "pairs": 50000,
+    "all_pairs_90_days": true,
+    "dt_min": "2024-03-28",
+    "dt_max": "2024-06-25",
+    "duplicate_keys": 0,
+    "same_file_as_task6": false
+  },
+  "params": {
+    "model": "TimesNet",
+    "missing_rate": 0.3,
+    "seed": 1024,
+    "epochs": 5,
+    "batch_size": 128,
+    "other_config": "giữ nguyên CONFIG trong app.py (lr 0.001, d_model 64, n_layers 2, ...)"
+  },
+  "environment": {
+    "python": "3.13.16",
+    "torch": "2.14.1+cu130",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3",
+    "pyarrow": "23.0.1",
+    "pygrinder": "0.4",
+    "tsdb": "0.3.1",
+    "gpu": "Tesla T4, 15360 MiB",
+    "ram_gb": 12.7
+  },
+  "smoke": {
+    "pairs": 200,
+    "epochs": 5,
+    "returncode": 1,
+    "wape": null,
+    "wpe": null,
+    "artificially_masked": 34390,
+    "actual_mask_ratio": 0.149389,
+    "stockout_points": 57796,
+    "n_samples": 600,
+    "train_rows": 18000,
+    "elapsed_sec": null,
+    "equivalence_ok": true,
+    "eval_days": null,
+    "peak_ram_gb": 2.9
+  },
+  "full": {
+    "returncode": 0,
+    "wape": 0.27814111138152964,
+    "wpe": 0.02042859483248714,
+    "artificially_masked": 9163425,
+    "actual_mask_ratio": 0.158843,
+    "stockout_points": 14311536,
+    "n_samples": 150000,
+    "train_rows": 4500000,
+    "elapsed_sec": 826,
+    "equivalence_ok": null,
+    "eval_days": 783078,
+    "peak_ram_gb": 9.2,
+    "status": "ok",
+    "resumed_from_checkpoint": "/content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722/TimesNet.pypots"
+  },
+  "commands": {
+    "smoke": "/usr/bin/python3 -u /content/run_task09.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/drive/MyDrive/FRN50K/raw/data/train.parquet --work_dir /content/task09_work/smoke --model TimesNet --missing_rate 0.3 --seed 1024 --batch_size 128 --pairs 200 --epochs 5 --verify_equivalence",
+    "full": "/usr/bin/python3 -u /content/run_task09.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/drive/MyDrive/FRN50K/raw/data/train.parquet --work_dir /content/task09_work/full --model TimesNet --missing_rate 0.3 --seed 1024 --batch_size 128 --epochs 5 --resume_ckpt /content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722/TimesNet.pypots"
+  }
+}
