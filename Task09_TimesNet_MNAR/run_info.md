@@ -45,12 +45,14 @@
 | 16/11 | thành viên phụ trách Task 9 | Chạy thử 200 cặp + kiểm chứng tương đương | `equivalence_ok=True`; WAPE 28,55%, WPE −17,12% (chỉ kiểm tra luồng chạy) |
 | 16/11 | thành viên phụ trách Task 9 | Huấn luyện đầy đủ 5 epoch (khoảng 3 giờ) | Xong huấn luyện; tiến trình dừng khi bắt đầu dự đoán, checkpoint lưu local nên mất |
 | 17/11 | thành viên khác (hạn mức GPU tính theo tài khoản) | Huấn luyện đầy đủ 5 epoch, checkpoint lưu Drive | Training loss từng epoch giống hệt lần 16/11 (0,0643 → 0,0619); `mã thoát -9` (hết RAM) khi bắt đầu dự đoán → `results/full/timesnet_mnar.log` |
-| 18/11 | cùng tài khoản 17/11 | Chạy thử lại tới bước kiểm chứng (`equivalence_ok=True`, sau đó dừng tay); ô 6b: nạp checkpoint 17/11, dự đoán, đánh giá | **WAPE 27,81%, WPE 2,04%**, `mã thoát 0`, 826 giây, RAM cao nhất 9,2 GB → `results/full/timesnet_mnar_predict_from_ckpt.log` |
+| 18/11 | cùng tài khoản 17/11 | Ô 6b: nạp checkpoint 17/11, dự đoán, đánh giá | **WAPE 27,81%, WPE 2,04%**, `mã thoát 0`, 826 giây, RAM cao nhất 9,2 GB → `results/full/timesnet_mnar_predict_from_ckpt.log` |
+| 18/11 | cùng tài khoản 17/11 | Chạy lại lượt chạy thử 200 cặp đến hết (lần chạy đầu trong phiên bị dừng tay giữa chừng) | `equivalence_ok=True`; WAPE 28,55%, WPE −17,12% – **trùng khớp hoàn toàn** với lượt chạy thử 16/11 trên tài khoản khác → `results/smoke/timesnet_mnar_smoke.log` |
 
 ## Kết quả
 
 | Lượt | Quy mô | Epoch | WAPE | WPE | Trạng thái |
 |---|---|---|---|---|---|
+| Chạy thử (smoke) | 200 cặp, 600 mẫu | 5 | 28,55% | −17,12% | chỉ kiểm tra luồng chạy, không dùng làm kết quả |
 | Đầy đủ (huấn luyện 17/11 + dự đoán 18/11) | 50.000 cặp, 150.000 mẫu | 5 | 27,81% | 2,04% | ok |
 | Bài báo (Bảng 2, TimesNet) | – | – | 27,62% | 1,43% | số công bố, chỉ để đối chiếu |
 
@@ -61,7 +63,7 @@ Số ngày được đánh giá: 783.078. Chênh lệch: WAPE +0,19 điểm %, W
 - `results/mnar_metrics.csv`: 1 dòng TimesNet (WAPE/WPE theo %, giữ dấu WPE).
 - `results/full/timesnet_mnar.log`: log huấn luyện đầy đủ (17/11).
 - `results/full/timesnet_mnar_predict_from_ckpt.log`: log dự đoán + đánh giá từ checkpoint (18/11), chứa hai dòng `wape`, `wpe` dùng cho CSV.
-- `results/smoke/timesnet_mnar_smoke.log`: log chạy thử 18/11 (tới bước kiểm chứng tương đương).
+- `results/smoke/timesnet_mnar_smoke.log`: log chạy thử 18/11 (200 cặp, 5 epoch, kiểm chứng tương đương `equivalence_ok=True`, WAPE 28,55%, WPE −17,12% – chỉ để kiểm tra luồng chạy).
 - `results/run_metadata.json`: môi trường, SHA-256, tham số, lệnh chạy.
 - Checkpoint `checkpoints/TimesNet/20261117_T014722/TimesNet.pypots` lưu trên Drive của tài khoản chạy 17/11; file imputation `.npy` chỉ lưu tạm trên Colab. Cả hai không đưa lên GitHub.
 
