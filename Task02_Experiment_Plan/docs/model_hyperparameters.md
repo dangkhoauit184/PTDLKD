@@ -5,7 +5,7 @@ Nguồn: Đối chiếu giữa Bảng 2 bài báo và `models.py` trong repo bas
 | Mô hình | Tham số tầng / Ẩn | Tham số đặc thù trong `models.py` | Optimizer & Loss |
 | :--- | :--- | :--- | :--- |
 | **TimesNet** | `n_layers=2`, `d_model=64`, `d_ffn=32` | `top_k=7`, `n_kernels=5`, `apply_nonstationary_norm=True` | Adam, lr=0.001, MAE loss |
-| **ImputeFormer** | `n_layers=2`, `d_proj=64`, `d_ffn=32` | `n_temporal_heads=4`, `d_input_embed=64`, `d_learnable_embed=32` | Adam, lr=0.001, ORT+MIT loss |
+| **ImputeFormer** | `n_layers=2`, `d_proj=64`, `d_ffn=32` | `n_temporal_heads=4`, `d_input_embed=64`, `d_learnable_embed=64` | Adam, lr=0.001, ORT+MIT loss |
 | **SAITS** | `n_layers=2`, `d_model=64`, `n_heads=4` | `d_k=16`, `d_v=16`, `diagonal_attention_mask=True` | Adam, lr=0.001, customized MAE |
 | **iTransformer** | `n_layers=2`, `d_model=64`, `n_heads=4` | `d_k=16`, `d_v=16`, `d_ffn=32` | Adam, lr=0.001, ORT+MIT loss |
 | **GPVAE** | `encoder=(64,64)`, `decoder=(64,64)` | `latent_size=4`, `kernel="cauchy"`, `beta=0.01`, `sigma=1.0`, `length_scale=48.0` | Adam, lr=0.001 |

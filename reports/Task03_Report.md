@@ -25,14 +25,12 @@
 ## 3. Các Thư viện, Công cụ và Công nghệ Sử dụng
 * **Hệ điều hành:** Linux (Ubuntu trên Google Colab) hoặc Windows 11 với môi trường Conda.
 * **Tăng tốc phần cứng:** NVIDIA GPU (Tesla T4 16GB, V100 16GB hoặc L4 24GB).
-* **Python Runtime:** Python 3.8 (môi trường lý tưởng cho PyPOTS ban đầu) hoặc Python 3.10/3.12 (đã cập nhật tương thích).
+* **Python Runtime:** Python 3.8–3.10 (môi trường gốc của PyPOTS) hoặc Python 3.12–3.13 trên Google Colab / Windows hiện tại (giữ PyTorch/NumPy sẵn có, dùng `pypots` đi kèm repo và cài `--no-deps pygrinder==0.4 tsdb==0.3.1`).
 * **Các thư viện chính:**
-  * `torch==2.0.1+cu118`
-  * `pytorch-lightning==1.9.4`
-  * `pytorch-forecasting==1.0.0`
-  * `pypots==0.1.2` (kèm theo mã nguồn trong `frn-50k-baseline/latent_demand_recovery`)
-  * `datasets==3.1.0`
-  * `pyarrow>=12.0.0`, `duckdb>=0.9.0`
+  * `torch>=2.0.1` (`2.0.1+cu118` trên Python 3.8–3.10; `2.14.1+cu130` thực tế trên Colab Python 3.13)
+  * `pytorch-lightning>=1.9.4`, `pytorch-forecasting>=1.0.0` (khi mở rộng mô hình TFT)
+  * `pypots` đi kèm mã nguồn trong `frn-50k-baseline/latent_demand_recovery` (`pygrinder==0.4`, `tsdb==0.3.1`)
+  * `datasets>=2.14.0`, `pyarrow>=12.0.0`, `duckdb>=0.9.0`
 
 ---
 
@@ -109,9 +107,9 @@ def set_seed(seed_value=2024):
 1. **Quản lý phiên chạy (Session Timeout) trên Colab:**
    * Google Colab miễn phí có thể tự động ngắt kết nối sau 12 giờ hoặc khi không có tương tác.
    * **Giải pháp:** Cấu hình mã nguồn luôn lưu checkpoint sau mỗi epoch (`best_model.ckpt`) trực tiếp vào thư mục Google Drive (`/content/drive/MyDrive/...`), không lưu tại ổ đĩa tạm thời của Colab.
-2. **Quản lý RAM hệ thống:**
-   * Tập dữ liệu $4.500.000$ dòng khi bung đầy đủ các cột dạng đối tượng (objects) có thể chiếm hơn $10\text{ GB}$ RAM.
-   * Cần loại bỏ ngay các cột không dùng sau khi xử lý và ép kiểu dữ liệu số (`int32`, `float32`).
+2. **Quản lý RAM hệ thống (12,7 GB trên Colab miễn phí):**
+   * Tập dữ liệu $4.500.000$ dòng khi bung đầy đủ các cột ở `float64` hoặc để `pypots` tự khởi tạo `norm_val = np.ones(X.shape)` ở `float64` ($3.5\text{ GB}$) sẽ vượt quá ngưỡng $12.7\text{ GB}$ RAM và bị hệ điều hành ngắt tiến trình (`exit -9`).
+   * **Giải pháp chuẩn hóa (đã kiểm chứng ở Task 9):** Cấp phát trực tiếp mảng đầu vào `(150000, 480, 6)` ở kiểu `float32`, giải phóng cột không dùng ngay sau khi đọc, và truyền sẵn `norm_val` dạng thu gọn `(n, 1, 6)` bằng $1$ khi gọi `predict` (giữ RAM đỉnh quanh mức $\approx 9.2\text{ GB}$ mà kết quả số học không đổi).
 
 ---
 

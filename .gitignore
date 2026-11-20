@@ -17,10 +17,17 @@ __pycache__/
 !Task04_Data_Validation/results/*.csv
 !Task05_EDA/results/*.csv
 !Task06_Data_Preparation/results/*/input_check.csv
+!Task07_Smoke_Test/smoke_pairs.csv
+!Task07_Smoke_Test/smoke_metrics.csv
+!Task08_SSA_Raw_Sales/results/*.csv
+!Task09_TimesNet_MNAR/results/*.csv
+!Task10_TimesNet_Recovery/results/*.csv
+!Task11_SSA_TimesNet/results/*.csv
 
 # Model Checkpoints & Logs
 checkpoints/
 *.ckpt
+*.pypots
 *.pt
 *.pth
 *.onnx
@@ -31,6 +38,15 @@ demand/
 lightning_logs/
 runs/
 *.log
+
+# Whitelist small execution logs in Task folders
+!Task07_Smoke_Test/smoke/*.log
+!Task08_SSA_Raw_Sales/results/full/*.log
+!Task09_TimesNet_MNAR/results/full/*.log
+!Task09_TimesNet_MNAR/results/smoke/*.log
+!Task10_TimesNet_Recovery/results/full/*.log
+!Task10_TimesNet_Recovery/results/smoke/*.log
+!Task11_SSA_TimesNet/results/full/*.log
 
 # Environments & Virtual Envs
 .env
@@ -60,7 +76,3 @@ scratch/
 browser_evidence/
 frn-50k-baseline/
 task4/
-
-!Task09_TimesNet_MNAR/results/*.csv
-!Task09_TimesNet_MNAR/results/full/*.log
-!Task09_TimesNet_MNAR/results/smoke/*.log

@@ -62,7 +62,7 @@
 * `weight_decay`: $1\text{e-}5$.
 * `optimizer`: `Adam`.
 * `patience` (Early stopping): $5$ epochs.
-* `EPOCHS`: $5$ (baseline) / $20$ (huấn luyện tối ưu).
+* `EPOCHS`: $5$ (mặc định trong `CONFIG` của `app.py` dùng cho lượt tái lập chính; mức $20$ chỉ xét khi thử nghiệm mở rộng riêng).
 * `OT` (Observed Target): $1$ (kênh doanh số).
 
 ### 5.2. Tham số Kiến trúc Riêng Từng Mô hình (`models.py`)
@@ -75,7 +75,7 @@
 2. **ImputeFormer:**
    * `n_layers`: $2$
    * `n_temporal_heads`: $4$
-   * `d_input_embed`: $64$, `d_learnable_embed`: $32$, `d_proj`: $64$
+   * `d_input_embed`: $64$, `d_learnable_embed`: $64$ (`CONFIG['d_model']`), `d_proj`: $64$
    * `ORT_weight`: $1.0$, `MIT_weight`: $1.0$
 3. **SAITS:**
    * `n_layers`: $2$, `n_heads`: $4$, `d_k`: $16$, `d_v`: $16$, `d_model`: $64$
@@ -94,17 +94,19 @@
    $$\text{WAPE} = \frac{\sum_{i,t} |y_{i,t} - \hat{y}_{i,t}|}{\sum_{i,t} y_{i,t}}$$
 2. **WPE (Weighted Percentage Error - Đo độ thiên vị hệ thống):**
    $$\text{WPE} = \frac{\sum_{i,t} (\hat{y}_{i,t} - y_{i,t})}{\sum_{i,t} y_{i,t}}$$
+   * **Lưu ý chi tiết thực thi trong mã tác giả:**
+     * Ở Giai đoạn 1 (`evaluation_mnar` trong `app.py`), WAPE và WPE được tính gộp trên toàn bộ các ngày hợp lệ trong `train` (các ngày có ít nhất 1 giờ bị che nhân tạo và không có hết hàng thực trong khung `6..21`).
+     * Ở Giai đoạn 2 (`evaluation` trong `ssa_forecasting.py`), WAPE, WPE và MAE được tính **riêng cho từng ngày `dt`** trên các dòng `eval` thỏa `stock_hour6_22_cnt == 0` thuộc từng nhóm (`Overall: psd >= 0`, `Low Sale: psd < 1`, `High Sale: psd >= 1`, với `psd` là doanh số ngày gốc trung bình trong `train`), sau đó **lấy trung bình cộng qua 7 ngày**.
 3. **Decoupling Score ($\rho_{DS}$):**
-   $$\rho_{DS} = \sum_{i \in \mathcal{P}} w_i \cdot \text{Pearson}(SR_i, \hat{d}_i), \quad w_i = \frac{\mu_i}{\sum_j \mu_j}$$
-   * $SR_i$: Tỷ lệ hết hàng của cặp $i$.
-   * $\hat{d}_i$: Nhu cầu khôi phục.
-   * Doanh số thô có $\rho_{DS} = -0.57$. Giá trị $\rho_{DS} \to 0$ thể hiện thành công trong việc bóc tách nhu cầu khỏi hạn chế tồn kho.
+   $$\rho_{DS} = \frac{\sum_{g \in \mathcal{G}} \mu_g \cdot \text{Pearson}(C_g, \hat{D}_g)}{\sum_{g \in \mathcal{G}} \mu_g}$$
+   * Theo hàm `evaluation_decoupling` (`app.py`): xét các ngày có hết hàng (`stock_hour6_22_cnt > 0`), gom theo từng nhóm $g = (\text{store\_id}, \text{product\_id}, \text{holiday\_flag})$ có trên 3 mức `stock_hour6_22_cnt` khác nhau (`nunique > 3`), tính tương quan Pearson giữa số giờ hết hàng $C_g$ (`stock_hour6_22_cnt`) và doanh số ngày (`sale_amount` hoặc `sale_amount_pred`), rồi lấy trung bình trọng số theo $\mu_g$ (doanh số ngày trung bình của cặp đó vào những ngày `stock_hour6_22_cnt == 0`).
+   * Doanh số thô trên bài báo có $\rho_{DS} = -0.57$. Giá trị $\rho_{DS} \to 0$ thể hiện việc tách thành công nhu cầu ước lượng khỏi mức độ thiếu hụt tồn kho.
 
 ---
 
 ## 7. Quy Ước Đặt Tên Thư Mục, Log Và File Kết Quả
 
-Quy ước lưu trữ cấu trúc đầu ra đồng bộ cho toàn nhóm:
+Cấu trúc dự kiến ban đầu khi lập kế hoạch ở Task 2:
 ```text
 outputs/
 ├── task1_latent_recovery/
@@ -123,10 +125,12 @@ outputs/
     │       └── metrics_{recovery_model}.json
 ```
 
+> **Cập nhật chuẩn hóa khi triển khai thực tế (từ Task 6–11):** Để mỗi thành viên làm việc độc lập trên nhánh Git riêng mà không xung đột đường dẫn, nhóm chuẩn hóa sang các thư mục cấp cao `Task06_Data_Preparation/`, `Task07_Smoke_Test/`, `Task08_SSA_Raw_Sales/`, `Task09_TimesNet_MNAR/`, `Task10_TimesNet_Recovery/`, `Task11_SSA_TimesNet/` (lưu CSV chỉ số, `run_info.md`, `run_metadata.json` và log nhỏ trên Git; lưu dữ liệu Parquet, `.npy` và checkpoint `.pypots` trên Google Drive). Đối với TimesNet, các lượt baseline giữ `seed=1024` và `EPOCHS=5` theo CLI gốc của `app.py` (nếu thử `seed=2024` phải ghi tách biệt trong `run_info.md`). Chi tiết quy định tại [docs/Task06-10_Phan_cong_chi_tiet.md](../docs/Task06-10_Phan_cong_chi_tiet.md).
+
 ---
 
 ## 8. Kết luận và Kế hoạch Thực hiện
 * **Kế hoạch ưu tiên thực hiện của nhóm:**
   - *Giai đoạn 1:* Chạy cấu hình `SSA_RawSales` (Task 8) để hoàn thành mốc đánh giá baseline.
-  - *Giai đoạn 2:* Chạy khôi phục nhu cầu bằng `TimesNet` (Task 10) với seed 2024.
-  - *Giai đoạn 3:* Chạy cấu hình `SSA_TimesNet` (Task 11) và so sánh trực tiếp với Bảng 3 bài báo.
+  - *Giai đoạn 2:* Đánh giá `TimesNet` với thiếu nhân tạo MNAR đối chiếu Bảng 2 (Task 9) và chạy khôi phục nhu cầu trên giờ hết hàng thực tế xuất `demand_timesnet.parquet` (Task 10).
+  - *Giai đoạn 3:* Chạy cấu hình `SSA_TimesNet` (Task 11) trên cùng tập `eval` và quy tắc phân nhóm như Task 8 để so sánh trực tiếp với Bảng 3 bài báo.

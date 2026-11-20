@@ -10,9 +10,9 @@ Task 4 do **Đăng Khoa** thực hiện, chịu trách nhiệm thiết lập h�
 4. Phát hiện $34$ bản ghi có `discount > 1.0` (max 1.088) trong tập train và đề xuất giải pháp xử lý.
 
 ## 📁 Cấu Trúc Thư Mục
-* [notebooks/04_data_validation_colab.ipynb](notebooks/04_data_validation_colab.ipynb): Notebook hoàn chỉnh chạy được trên Google Colab và Local.
+* [notebooks/04_data_validation_colab.ipynb](notebooks/04_data_validation_colab.ipynb): Notebook kiểm định chạy được trên Google Colab và Local (toàn bộ bảng kết quả và metadata thực chạy được xuất trực tiếp vào thư mục `results/` bên dưới).
 * **Kết quả đối soát:**
-  * [results/validation_summary.csv](results/validation_summary.csv): Bảng tổng hợp trạng thái 98 hạng mục kiểm tra.
+  * [results/validation_summary.csv](results/validation_summary.csv): Bảng tổng hợp trạng thái 97 hạng mục kiểm tra (96 `OK`, 1 `REVIEW`).
   * [results/column_profile.csv](results/column_profile.csv): Hồ sơ kiểu dữ liệu, số lượng null, giá trị min/max của 19 cột.
   * [results/issue_examples.csv](results/issue_examples.csv): Các dòng mẫu vi phạm để kiểm tra chi tiết.
   * [results/pairs_only_in_train.csv](results/pairs_only_in_train.csv) / [results/pairs_only_in_eval.csv](results/pairs_only_in_eval.csv): Đối soát chéo độ phủ $50.000$ cặp chuỗi ($0$ vi phạm).

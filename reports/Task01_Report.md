@@ -20,7 +20,7 @@ Bài báo công bố bộ dữ liệu lớn **FreshRetailNet-50K** thu thập t�
 * **Quy mô:** $50.000$ chuỗi thời gian (cặp `store_id` – `product_id`) trải dài trên $898$ cửa hàng kho tại $18$ thành phố lớn, đại diện cho $863$ SKU tươi sống.
 * **Độ phân giải:** Theo từng giờ (Hourly), tổng quy mô xấp xỉ $0,1$ tỷ bản ghi theo giờ.
 * **Thời gian:** Khoảng thời gian 90 ngày (tháng 3 đến tháng 6 năm 2024).
-* **Đặc tính then chốt:** Bộ dữ liệu đầu tiên trong ngành hàng tươi sống được gắn nhãn tình trạng tồn kho theo giờ (`hours_stock_status`), cho phép phân biệt rõ giữa "không ai muốn mua" ($s_t = 0$ và doanh số $= 0$) với "muốn mua nhưng hết hàng" ($s_t = 1$ và doanh số $= 0$).
+* **Đặc tính then chốt:** Bộ dữ liệu đầu tiên trong ngành hàng tươi sống được gắn nhãn tình trạng tồn kho theo giờ (`hours_stock_status`), cho phép phân biệt rõ giữa "không ai muốn mua" (`hours_stock_status = 0` — còn hàng, tương ứng chỉ báo $s_t = 1$ trong bài báo — và doanh số $= 0$) với "muốn mua nhưng hết hàng" (`hours_stock_status = 1` — hết hàng, tương ứng $s_t = 0$ — và doanh số $= 0$).
 
 ---
 
@@ -33,10 +33,10 @@ Bài báo công bố bộ dữ liệu lớn **FreshRetailNet-50K** thu thập t�
 
 ## 4. Quy trình Xử lý và Phân tích Dữ liệu
 Bài báo đề xuất khung tiếp cận 2 giai đoạn (Two-Stage Framework):
-1. **Giai đoạn 1 (Latent Demand Recovery):** Biến đổi bài toán khôi phục nhu cầu thành bài toán nội suy chuỗi thời gian (time-series imputation) với mặt nạ là nhãn hết hàng $s_t$:
+1. **Giai đoạn 1 (Latent Demand Recovery):** Biến đổi bài toán khôi phục nhu cầu thành bài toán nội suy chuỗi thời gian (time-series imputation) với chỉ báo còn hàng $s_t = 1 - \text{hours\_stock\_status}_t \in \{0, 1\}$:
    $$d_t = y_t \odot s_t + \hat{d}_t \odot (1 - s_t)$$
-   Trong đó, khi còn hàng ($s_t = 1$), giữ nguyên doanh số quan sát $y_t$; khi hết hàng ($s_t = 0$), thay thế bằng giá trị ước lượng $\hat{d}_t$ từ mô hình.
-2. **Giai đoạn 2 (Demand Forecasting):** Tích lũy nhu cầu theo giờ đã khôi phục thành nhu cầu ngày $D_t = \sum_{\tau=1}^{24} d_{t,\tau}$, sau đó thực hiện dự báo đa bước cho $7$ ngày tương lai:
+   Trong đó, khi còn hàng ($s_t = 1$, tức `hours_stock_status = 0`), giữ nguyên doanh số quan sát $y_t$; khi hết hàng ($s_t = 0$, tức `hours_stock_status = 1`), thay thế bằng giá trị ước lượng $\hat{d}_t \ge 0$ từ mô hình. Trong mã thực tế (`_demand_recovery`), mô hình khôi phục trên 16 giờ kinh doanh `[6:22]` (06:00 đến trước 22:00) và giữ nguyên doanh số quan sát ở 8 giờ đêm (`[0:6]`, `[22:24]`).
+2. **Giai đoạn 2 (Demand Forecasting):** Tích lũy nhu cầu theo giờ thành nhu cầu ngày $D_t = \sum_{\tau=0}^{23} d_{t,\tau}$ (lưu ở cột `sale_amount_pred`), sau đó thực hiện dự báo đa bước cho $7$ ngày tương lai:
    $$\hat{D}_{T+1:T+7} = f(D_{T-H:T}, P, W, C)$$
 
 ---
@@ -101,6 +101,6 @@ Bài báo đánh giá 7 kiến trúc tiêu biểu:
 ## 8. Kết luận và Chốt Phạm Vi Đồ Án Của Nhóm
 * **Chốt phạm vi cốt lõi:** Nhóm thống nhất tập trung tái lập nhánh thực nghiệm có tính đại diện cao nhất:
   1. *Thực nghiệm 1 (Baseline):* Thuật toán dự báo **SSA trên doanh số gốc (Raw Sales)** $\rightarrow$ Báo cáo WAPE, WPE, MAE trên 3 nhóm (Overall, High-sale, Low-sale).
-  2. *Thực nghiệm 2 (Proposed):* Huấn luyện **TimesNet** để khôi phục nhu cầu trên $50.000$ chuỗi $\rightarrow$ Xuất file `demand.parquet`.
+  2. *Thực nghiệm 2 (Proposed):* Huấn luyện **TimesNet** để khôi phục nhu cầu trên $50.000$ chuỗi $\rightarrow$ Xuất file nhu cầu khôi phục (`demand_timesnet.parquet`, chứa cột nhu cầu ngày `sale_amount_pred`).
   3. *Thực nghiệm 3 (Comparison):* Thuật toán dự báo **SSA trên nhu cầu đã khôi phục** $\rightarrow$ Đối chiếu trực tiếp độ cải thiện chỉ số với Thực nghiệm 1.
 * **Hạn chế được ghi nhận:** Việc huấn luyện mô hình sâu trên $50.000$ chuỗi thời gian đỏi hỏi tài nguyên tính toán lớn (GPU VRAM và thời gian huấn luyện); nhóm sẽ giải quyết thông qua tối ưu hóa môi trường ở Task 3.

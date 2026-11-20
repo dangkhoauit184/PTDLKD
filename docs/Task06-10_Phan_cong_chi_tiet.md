@@ -92,6 +92,8 @@ config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,
 
 **Xong khi:** có log chạy trên dữ liệu đầy đủ và ba dòng chỉ số tự chạy. SSA không tạo checkpoint huấn luyện.
 
+**Đã hoàn thành:** xem [báo cáo và kết quả Task 8](../reports/Task08_Report.md). Kết quả tự chạy của cả ba nhóm khớp Bảng 3 ở độ chính xác công bố (chênh lệch 0,00 điểm phần trăm).
+
 ## TV4 — Task 9: Đánh giá TimesNet khi tạo thiếu nhân tạo
 
 **Thư mục:** `Task09_TimesNet_MNAR/`. **Mục tiêu:** lấy WAPE/WPE của TimesNet cho phần tham chiếu Bảng 2. Task 9 không xuất nhu cầu làm đầu vào dự báo.
@@ -115,6 +117,8 @@ model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,w
 
 **Xong khi:** có WAPE/WPE hữu hạn và cấu hình đủ để chạy lại. Bảng 2 dùng kết quả này để đối chiếu; không lấy các số công bố làm kết quả của nhóm.
 
+**Đã hoàn thành:** xem [báo cáo Task 9](../reports/Task09_Report.md) và [biên bản chạy](../Task09_TimesNet_MNAR/run_info.md). Kết quả tự chạy đạt WAPE 27,81%, WPE +2,04% (so với Bảng 2: 27,62% và +1,43%).
+
 ## TV5 — Task 10: Khôi phục nhu cầu bằng TimesNet tại giờ hết hàng thực tế
 
 **Thư mục:** `Task10_TimesNet_Recovery/`. **Mục tiêu:** tạo đầu vào TimesNet trên toàn bộ train cho `SSA_TimesNet` ở Task 11.
@@ -135,6 +139,12 @@ model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,w
 
 **Xong khi:** file nhu cầu đầy đủ đã đối soát, mở được từ Drive và có log/config tương ứng. Task này dừng sau khôi phục; TV5 không phải chạy SSA để hoàn thành Task 10.
 
+> **Lưu ý kỹ thuật bắt buộc cho Task 10 trên Colab miễn phí (12,7 GB RAM — rút từ Task 9):**
+> - **Môi trường Colab Python 3.12+:** Giữ nguyên PyTorch/NumPy có sẵn, dùng thư mục `pypots` đi kèm repo và cài `pip install -q --no-deps pygrinder==0.4 tsdb==0.3.1`.
+> - **Chống tràn RAM (`exit -9`):** Tái sử dụng cách nạp `float32` một lần cấp phát, lưu checkpoint `.pypots` trực tiếp lên Drive và truyền `norm_val` thu gọn dạng `(n, 1, 6)` bằng `1` khi gọi `predict` như trong [Task09_TimesNet_MNAR/notebooks/09_timesnet_mnar.ipynb](../Task09_TimesNet_MNAR/notebooks/09_timesnet_mnar.ipynb) (giữ đỉnh RAM quanh ~9,2 GB).
+> - **Bảo toàn công thức `_demand_recovery` và `evaluation_decoupling`:** Chỉ thay lát giờ kinh doanh `hours_sale[..., 6:22]` bằng `imputation` (đã chặn dưới 0), **giữ nguyên 8 giờ đêm (`[0:6]`, `[22:24]`)** rồi cộng đủ 24 giờ thành `sale_amount_pred`; cột `hours_sale` trong Parquet đầu ra vẫn giữ nguyên doanh số giờ quan sát gốc. Chạy kiểm chứng tương đương (`equivalence_ok=True`) trên 200 cặp trước khi huấn luyện toàn bộ.
+> - **Đồng bộ đầu vào với Task 8 & Task 9:** Ưu tiên dùng bản `train.parquet` có SHA-256 của Task 6 (`b7e01c71...`) và giữ `seed=1024` của CLI gốc (hoặc ghi rõ nếu chọn `2024`).
+
 ## Mẫu bàn giao cho từng thành viên
 
 Mỗi người gửi link notebook hoặc nhánh GitHub và link **thư mục Drive của đúng lượt chạy**. Trước khi gửi, mở thử link, kiểm tra notebook có output và đối chiếu số trong CSV với log. Có thể dùng mẫu sau:
@@ -150,4 +160,4 @@ Thiết lập khác với kế hoạch hoặc lượt chưa xong (nếu có):
 
 ## Sau Task 6–10
 
-**Task 11 — SSA trên nhu cầu TimesNet:** dùng `demand_timesnet.parquet` từ Task 10 làm lịch sử `sale_amount_pred`; đánh giá trên cùng eval, cùng cách chia nhóm và cách tính chỉ số như Task 8. Giữ `sale_amount` gốc để tính `psd` cho cả hai cấu hình. Đặt cạnh nhau `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale; ghi riêng **số nhóm chạy, số bài báo, chênh lệch**. Đây là bước kế tiếp, chưa giao cho ai trong bảng 6–10.
+**Task 11 — SSA trên nhu cầu TimesNet:** dùng `demand_timesnet.parquet` từ Task 10 làm lịch sử `sale_amount_pred`; đánh giá trên cùng eval (`eval.parquet` SHA-256 `61cfd3cb...` của Task 6, lọc đúng **206.562 dòng** `stock_hour6_22_cnt == 0`), cùng cách chia nhóm và cách tính chỉ số như Task 8. Giữ `sale_amount` gốc để tính `psd` cho cả hai cấu hình để danh sách cặp thuộc `Low Sale` (`psd < 1`) và `High Sale` (`psd >= 1`) trùng khớp 100% với Task 8. Đặt cạnh nhau `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale; ghi riêng **số nhóm chạy, số bài báo, chênh lệch**. Đây là bước kế tiếp, chưa giao cho ai trong bảng 6–10.

@@ -24,7 +24,7 @@ Hết hàng $\to$ doanh số bị cắt cụt $\to$ mô hình học từ doanh s
 ## 3. Khung Giải Pháp Hai Giai Đoạn (Two-Stage Framework)
 * **Giai đoạn 1 (Latent Demand Recovery):**
   $$d = y \odot s + \hat{d} \odot (1 - s), \quad \hat{d} = f_\theta(y \odot s, p, w, c, s)$$
-  Ý tưởng: giữ nguyên doanh số ở những giờ còn hàng, chỉ thay bằng giá trị ước lượng $\hat{d}$ ở những giờ hết hàng.
+  Ý tưởng: giữ nguyên doanh số ở những giờ còn hàng ($s_t = 1$), chỉ thay bằng giá trị ước lượng $\hat{d} \ge 0$ ở những giờ hết hàng ($s_t = 0$). *(Lưu ý quy ước dữ liệu: trong cột `hours_stock_status` của dataset, `0` là còn hàng và `1` là hết hàng, tức $s_t = 1 - \text{hours\_stock\_status}_t$; mã nguồn khôi phục trên lát giờ kinh doanh `[6:22]` và giữ nguyên 8 giờ đêm).*
 * **Giai đoạn 2 (Censoring-Robust Forecasting):**
-  Nhu cầu đã khôi phục được gộp thành nhu cầu ngày $D_t = \sum_{\tau=1}^{24} d_\tau$, sau đó dự báo trước 7 ngày:
+  Nhu cầu đã khôi phục được gộp thành nhu cầu ngày $D_t = \sum_{\tau=0}^{23} d_{t,\tau}$ (cột `sale_amount_pred`), sau đó dự báo trước 7 ngày:
   $$\hat{D}_{T+1:T+7} = f(D_{T-H:T}, P, W, C)$$

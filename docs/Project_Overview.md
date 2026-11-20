@@ -21,14 +21,15 @@ Dự án tái lập quy trình 2 giai đoạn do Dingdong Fresh đề xuất tro
 
 ```
 [Dữ liệu thô 50K chuỗi]
-  │ (Doanh số theo giờ y_t + Nhãn hết hàng theo giờ s_t + Khuyến mãi + Thời tiết + Lịch)
+  │ (Doanh số theo giờ y_t + Nhãn kho hours_stock_status + Khuyến mãi + Thời tiết + Lịch)
   ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │ Giai đoạn 1: Khôi phục Nhu cầu Ẩn (Latent Demand Recovery)             │
-│ • Xem bài toán như Time-Series Imputation với mặt nạ stockout          │
-│ • Giữ nguyên y_t khi còn hàng (s_t=0), ước lượng d_t khi s_t=1         │
-│ • Mô hình trọng tâm: TimesNet, ImputeFormer, SAITS, DLinear           │
-│ • Đầu ra: demand.parquet (Nhu cầu theo giờ đã khôi phục)               │
+│ • Xem bài toán như Time-Series Imputation trên khung giờ [6:22]        │
+│ • Giữ nguyên y_t khi còn hàng (hours_stock_status=0, tức s_t=1);       │
+│   ước lượng d_t khi hết hàng (hours_stock_status=1, tức s_t=0)         │
+│ • Mô hình trọng tâm: TimesNet (đối chiếu ImputeFormer, SAITS, DLinear) │
+│ • Đầu ra: demand_timesnet.parquet (19 cột gốc + sale_amount_pred ngày) │
 └────────────────────────────────────────────────────────────────────────┘
   │
   ▼ (Tích lũy 24 giờ thành nhu cầu ngày D_t)

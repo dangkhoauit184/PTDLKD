@@ -7,7 +7,7 @@ Task 2 thiết lập ma trận thực nghiệm khoa học, chuẩn hóa các si�
 1. Lên danh sách 15 cấu hình dự báo kết hợp giữa 3 thuật toán dự báo (SSA, TFT, DLinear) và 5 nguồn dữ liệu nhu cầu (Raw Sales + 4 mô hình khôi phục).
 2. Trích xuất và hệ thống hóa siêu tham số của 7 mô hình khôi phục nhu cầu trong `models.py`.
 3. Chuẩn hóa công thức các chỉ số đánh giá: WAPE, WPE, Decoupling Score ($\rho_{DS}$).
-4. Định nghĩa quy tắc phân nhóm: Overall, High Sale (top 20% chuỗi), Low Sale (80% còn lại).
+4. Định nghĩa quy tắc phân nhóm đánh giá dự báo theo mã nguồn tác giả (`ssa_forecasting.py`): `Overall` (`psd >= 0`), `High Sale` (`psd >= 1`), `Low Sale` (`psd < 1`), với `psd` là doanh số ngày gốc trung bình trong tập train của từng cặp *(khác quy tắc Pareto top 20% sản phẩm trong EDA)*.
 
 ## 📁 Cấu Trúc Thư Mục
 * [docs/15_forecasting_configurations.md](docs/15_forecasting_configurations.md): Bảng chi tiết 15 cấu hình dự báo thực nghiệm.
