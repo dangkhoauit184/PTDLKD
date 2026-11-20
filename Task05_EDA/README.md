@@ -14,6 +14,7 @@ Task 5 thực hiện phân tích thống kê mô tả đa chiều trên tập hu
 * [notebooks/Task5_EDA_01_tai_du_lieu.ipynb](notebooks/Task5_EDA_01_tai_du_lieu.ipynb): Tải dữ liệu, kiểm tra cấu trúc sơ bộ và tiền xử lý tối ưu RAM.
 * [notebooks/Task5_EDA_02_thong_ke_mo_ta.ipynb](notebooks/Task5_EDA_02_thong_ke_mo_ta.ipynb): Phân tích thống kê chi tiết, trực quan hóa và kiểm định giả thuyết.
 * [results/summary_statistics.json](results/summary_statistics.json): File tổng hợp các chỉ số thống kê quan trọng nhất.
+* [results/figures/](results/figures/): Thư mục chứa 8 biểu đồ phân tích EDA trích xuất từ lượt chạy thực tế để phục vụ báo cáo và slide trình bày.
 
 ## 🔗 Liên Kết Báo Cáo
 Xem báo cáo đầy đủ chuẩn học thuật tại: [Task05_Report.md](../reports/Task05_Report.md).

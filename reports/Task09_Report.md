@@ -11,10 +11,10 @@
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **TimesNet** | 27.81% | +2.04% | 27.62% | +1.43% | +0.19 pp | +0.61 pp |
 
-## 3. Nhận xét
-- WAPE gần khớp Bảng 2 (chênh 0,19 điểm phần trăm). WPE dương ở cả kết quả nhóm và bài báo, tức mô hình khôi phục hơi cao hơn doanh số thật trên các ngày bị che; mức chênh WPE là 0,61 điểm phần trăm.
-- Các nguồn chênh lệch có thể có: môi trường khác tác giả (Python 3.13, torch 2.14 trên GPU T4 thay vì torch 2.0.1), tính không tất định của huấn luyện trên GPU, và việc chưa xác nhận `missing_rate = 0.3` là cấu hình bài báo dùng. Phần nạp dữ liệu và tạo thiếu là tất định: số điểm che thêm giống nhau ở mọi lần chạy, và training loss từng epoch của hai lần huấn luyện độc lập (16/11, 17/11) trùng nhau.
-- Để chạy được với 12,7 GB RAM của Colab miễn phí, `load_data`/`evaluation_mnar` được viết lại (cùng công thức, cùng thứ tự số ngẫu nhiên) và `norm_val` được truyền sẵn ở dạng nhỏ. Bản viết lại được kiểm chứng trùng bản gốc trên 200 cặp (`equivalence_ok=True`). Chi tiết ở [run_info.md](../Task09_TimesNet_MNAR/run_info.md).
+## 3. Nhận xét kỹ thuật và ý nghĩa nghiệp vụ
+- **Độ sát với Bảng 2 và xu hướng sai số:** WAPE tự chạy (`27.81%`) bám rất sát mức công bố của bài báo (`27.62%`, chênh `+0.19 pp`), thấp hơn rõ rệt so với mức tham chiếu của các mô hình khôi phục khác trong Bảng 2 (như DLinear `29.99%` hay ImputeFormer `35.65%`). WPE mang dấu dương nhẹ ở cả kết quả tự chạy (`+2.04%`) và bài báo (`+1.43%`, chênh `+0.61 pp`), cho thấy mô hình khôi phục đã triệt tiêu độ chệch âm do thiếu hàng mà không gây thổi phồng nhu cầu quá mức.
+- **Giải thích cơ chế tạo thiếu và độ lệch nhỏ:** Hàm `mimic_missing` kết hợp che theo cụm nhiều ngày liên tiếp (`conti_idx`, độ dài 3–7 ngày) và che nửa đầu/nửa cuối ngày (`intra_idx`) để mô phỏng hành vi cạn tồn kho thực tế, nên tham số `missing_rate = 0.3` tạo ra tỷ lệ che thực tế `15,88%` trên các giờ còn hàng (`9.163.425 / 57.688.464` điểm giờ). Phần tạo thiếu hoàn toàn tất định theo `seed = 1024` (số điểm che và training loss từng epoch `0.0643 -> 0.0619` lặp lại khớp nhau qua hai lần huấn luyện độc lập ngày 16/11 và 17/11). Độ chênh nhỏ so với bài báo có thể đến từ khác biệt phiên bản thư viện/phần cứng (`Python 3.13`, `PyTorch 2.14.1+cu130` trên GPU Tesla T4 so với `PyTorch 2.0.1`) và việc bài báo không công bố tường minh tham số `missing_rate` đã dùng cho Bảng 2.
+- **Tối ưu hóa bộ nhớ có kiểm chứng tương đương:** Để vận hành trong giới hạn 12,7 GB RAM của Google Colab miễn phí, `load_data` và `evaluation_mnar` được tối ưu cấp phát `float32` một lần và truyền sẵn `norm_val` dạng `(n, 1, 6)` khi dự đoán (giữ RAM đỉnh ở `9,2 GB`). Bản tối ưu đã được kiểm chứng cho kết quả trùng khớp 100% với hàm gốc trên tập thử 200 cặp (`equivalence_ok=True`) và là cơ sở kỹ thuật trực tiếp để triển khai Task 10. Chi tiết ở [run_info.md](../Task09_TimesNet_MNAR/run_info.md).
 
 ## 4. Bàn giao
 

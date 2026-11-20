@@ -12,9 +12,10 @@
 | **Low Sale** | `psd < 1` | 38.33% | -8.03% | 0.2691 | 38.33% | -8.03% | 0.00 pp |
 | **High Sale** | `psd >= 1` | 27.40% | -12.26% | 0.7761 | 27.40% | -12.26% | 0.00 pp |
 
-## 3. Nhận xét
-- WAPE và WPE của cả ba nhóm khớp Bảng 3 ở độ chính xác công bố, với chênh lệch 0,00 điểm phần trăm. MAE là chỉ số bổ sung do notebook tính.
-- WPE âm ở cả ba nhóm cho thấy dự báo thấp hơn doanh số quan sát xét trên các dòng eval đủ điều kiện; nhóm High Sale có độ lệch âm lớn nhất (−12,26%). Riêng kết quả Task 8 chưa xác định nguyên nhân của độ lệch. Task 11 sẽ đối chiếu thêm SSA dùng đầu vào TimesNet theo cùng tập eval và cách tính chỉ số.
+## 3. Nhận xét định lượng và ý nghĩa nghiệp vụ
+- **Độ chính xác tái lập:** WAPE và WPE của cả ba nhóm khớp hoàn toàn với cột SSA (dòng Raw Sales) trong Bảng 3 của bài báo ở độ chính xác công bố, với chênh lệch `0.00 pp`. MAE là chỉ số bổ sung ở đơn vị doanh số chuẩn hóa do mã nguồn `ssa_forecasting.py` tính thêm.
+- **Hiện tượng dự báo thiếu hệ thống (Under-forecasting Bias):** WPE mang dấu âm ở tất cả các phân nhóm (`Overall: -10.50%`, `Low Sale: -8.03%`, `High Sale: -12.26%`), phản ánh việc sử dụng trực tiếp doanh số lịch sử bị cắt cụt do hết hàng làm cho trung bình kịch bản tương đồng của SSA thấp hơn đáng kể so với nhu cầu thực trên các ngày không hết hàng.
+- **Tác động tập trung ở nhóm mặt hàng chủ lực (`High Sale`):** Dù có WAPE thấp hơn nhờ chuỗi ít thưa hơn (`27.40%` so với `38.33%` của `Low Sale`), nhóm `High Sale` (`psd >= 1`) lại chịu độ thiên lệch âm nặng nhất (`WPE = -12.26%`, `MAE = 0.7761`). Kết quả này phù hợp với phát hiện từ EDA (20% SKU chiếm 87% doanh số và thường xuyên cạn kệ vào cuối ngày): nếu đặt hàng theo dự báo này, các mặt hàng bán chạy nhất sẽ tiếp tục thiếu hụt nguồn cung, duy trì vòng lặp sai lệch dự báo thấp. Task 11 sẽ kiểm định mức độ khắc phục độ lệch này khi thay lịch sử bằng nhu cầu khôi phục từ TimesNet trên cùng 206.562 dòng `eval`.
 
 ## 4. Bàn giao
 

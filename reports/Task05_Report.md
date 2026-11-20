@@ -57,6 +57,8 @@
 | Tỷ lệ giờ có doanh số $= 0$ (khung 6..21) | **$69.06\%$** | Dữ liệu giờ cực kỳ thưa thớt |
 | Tỷ lệ giờ có doanh số $= 0$ (cả 24 giờ) | **$77.78\%$** | Ban đêm lượng giao dịch xấp xỉ 0 |
 
+![Phân phối doanh số theo ngày](../Task05_EDA/results/figures/01_daily_sales_distribution.png)
+
 ### 5.2. Thống Kê Hiện Tượng Hết Hàng (Stockout Insights)
 * **Tỷ lệ hết hàng trung bình:** Chiếm **$19.88\%$** tổng số giờ trong khung giờ kinh doanh $6..21$ (tương đương $\approx 20\%$ đúng như bài báo công bố).
 * **Mức độ ảnh hưởng:** **$44.27\%$** số cặp cửa hàng–sản phẩm–ngày có ít nhất $1$ giờ bị hết hàng.
@@ -64,6 +66,10 @@
 * **Quy luật chữ U theo giờ trong ngày (Diurnal U-shape):**
   * Tỷ lệ hết hàng thấp nhất lúc **$07:00$ sáng ($5.0\%$)** ngay sau khi kho vệ tinh hoàn tất đợt nhập hàng rạng sáng.
   * Tỷ lệ hết hàng tăng dần liên tục trong ngày và đạt đỉnh cao nhất lúc **$22:00$ đêm ($41.9\%$)**.
+
+![Phân phối số giờ hết hàng và quy luật chữ U theo giờ](../Task05_EDA/results/figures/03_hourly_stockout_ushape.png)
+
+![Tỷ lệ hết hàng theo thành phố và danh mục cấp 1](../Task05_EDA/results/figures/04_stockout_by_city_and_category.png)
 
 ### 5.3. Bóc Tách Nguyên Nhân Doanh Số Bằng 0
 * Khi cửa hàng **KHÔNG hết hàng**: Tỷ lệ ngày có doanh số $= 0$ chỉ là **$1.87\%$**.
@@ -75,12 +81,20 @@ $\rightarrow$ **Chứng minh:** Phần lớn các trường hợp doanh số b�
 * **Ở cấp độ chuỗi:** Top **$20\%$** chuỗi thời gian chiếm **$48.5\%$** tổng doanh số.
 * **Ở cấp độ địa lý:** Thành phố $0$ chiếm tỷ trọng áp đảo với **$51.6\%$** tổng số bản ghi ($2.322.990 / 4.500.000$ dòng).
 
+![Độ tập trung doanh số và biến thiên giữa các chuỗi](../Task05_EDA/results/figures/02_series_pareto_concentration.png)
+
 ### 5.5. Đặc Tính Chu Kỳ Thời Gian
 * **Chu kỳ ngày trong tuần (Weekly Seasonality):** Thứ Bảy và Chủ Nhật có doanh số cao hơn ngày thường từ **$18\%$ đến $20\%$**.
 * **Đỉnh bán hàng trong ngày:**
   * *Ngày thường:* Xuất hiện 2 đỉnh rõ rệt vào lúc **$09:00 - 10:00$ sáng** (chuẩn bị bữa trưa) và **$16:00$ chiều** (chuẩn bị bữa tối).
   * *Cuối tuần:* Xuất hiện 1 đỉnh cực lớn duy nhất vào lúc **$09:00 - 10:00$ sáng** với cường độ vượt trội.
 * **Xu hướng tăng trưởng (Non-stationarity):** Tổng doanh số toàn mạng lưới tăng khoảng $50\%$ sau 90 ngày (từ $\approx 40.000$ lên $\approx 60.000$ đơn vị chuẩn hóa), đồng thời tỷ lệ hết hàng giảm từ $37\%$ xuống $15 - 20\%$.
+
+![Xu hướng tổng doanh số và tỷ lệ hết hàng trong 90 ngày](../Task05_EDA/results/figures/05_90day_sales_and_stockout_trend.png)
+
+![Mùa vụ theo giờ trong ngày tách ngày thường và cuối tuần](../Task05_EDA/results/figures/06_intraday_sales_seasonality.png)
+
+![Mùa vụ doanh số theo thứ trong tuần](../Task05_EDA/results/figures/07_weekly_sales_seasonality.png)
 
 ---
 
@@ -94,6 +108,8 @@ $\rightarrow$ **Chứng minh:** Phần lớn các trường hợp doanh số b�
 3. **Đặc điểm Thời tiết:**
    * Dữ liệu thời tiết được ghi nhận theo cấp độ **cửa hàng - ngày** (mọi sản phẩm trong cùng một cửa hàng vào một ngày có chung một giá trị thời tiết).
    * Cột lượng mưa `precpt` có $62.9\%$ giá trị nằm trong khoảng $(1; 5]$, chỉ $0.2\%$ bằng $0$, mang tính chất giá trị chỉ số chuẩn hóa chứ không phải milimet mưa thực tế.
+
+![Quan hệ quan sát được với giảm giá, khuyến mãi và ngày lễ](../Task05_EDA/results/figures/08_exogenous_discount_promo_holiday.png)
 
 ---
 
