@@ -1,6 +1,7 @@
 {
   "task": "Task 9 - TimesNet MNAR",
   "run_utc": "2026-11-18T02:00:01.033792+00:00",
+  "repo_base_commit": "226253adffaa1e2bb66e3525f3900433ae90be78",
   "author_repo": "https://github.com/Dingdong-Inc/frn-50k-baseline.git",
   "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
   "data": {
@@ -38,18 +39,19 @@
   "smoke": {
     "pairs": 200,
     "epochs": 5,
-    "returncode": 1,
-    "wape": null,
-    "wpe": null,
+    "returncode": 0,
+    "wape": 0.28551964811794156,
+    "wpe": -0.17122278981527123,
     "artificially_masked": 34390,
     "actual_mask_ratio": 0.149389,
     "stockout_points": 57796,
     "n_samples": 600,
     "train_rows": 18000,
-    "elapsed_sec": null,
+    "elapsed_sec": 66,
     "equivalence_ok": true,
-    "eval_days": null,
-    "peak_ram_gb": 2.9
+    "eval_days": 2956,
+    "peak_ram_gb": 3.5,
+    "note": "Synced from results/smoke/timesnet_mnar_smoke.log (completed rerun at 2026-11-18 02:06:35)."
   },
   "full": {
     "returncode": 0,
@@ -66,6 +68,11 @@
     "peak_ram_gb": 9.2,
     "status": "ok",
     "resumed_from_checkpoint": "/content/drive/MyDrive/PTDLKD/task09_outputs/checkpoints/TimesNet/20261117_T014722/TimesNet.pypots"
+  },
+  "logs": {
+    "smoke": "results/smoke/timesnet_mnar_smoke.log",
+    "full_train": "results/full/timesnet_mnar.log",
+    "full_eval": "results/full/timesnet_mnar_predict_from_ckpt.log"
   },
   "commands": {
     "smoke": "/usr/bin/python3 -u /content/run_task09.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/drive/MyDrive/FRN50K/raw/data/train.parquet --work_dir /content/task09_work/smoke --model TimesNet --missing_rate 0.3 --seed 1024 --batch_size 128 --pairs 200 --epochs 5 --verify_equivalence",
