@@ -16,7 +16,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Task 1–6 và Task 8
+## 2. Tiến độ Task 1–6, Task 8 và Task 9
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -27,6 +27,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số. |
 | **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | TV1 | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
 | **8** | **Task 8** | **SSA trên doanh số gốc** | TV3 | [Báo cáo và kết quả baseline](Task08_Report.md). |
+| **9** | **Task 9** | **TimesNet với thiếu nhân tạo (MNAR)** | TV4 | [Báo cáo và kết quả đối chiếu Bảng 2](Task09_Report.md). |
 
 ---
 
@@ -65,9 +66,15 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 4. Số tham chiếu từ Bảng 3 của bài báo
+## 4. Kết quả nhóm đã tự chạy và số tham chiếu bài báo
 
-Các chỉ số dưới đây là số công bố trong bài báo. Kết quả nhóm tự chạy ở [Task 8](Task08_Report.md) khớp WAPE/WPE của SSA trên doanh số gốc ở độ chính xác công bố. Kết quả SSA trên nhu cầu TimesNet sẽ lấy từ Task 11.
+### 4.1. Kết quả nhóm đã tự chạy
+- **Task 8 (`SSA_RawSales` — đối chiếu Bảng 3):** Đã chạy trên toàn bộ `train`/`eval`, đánh giá 206.562 dòng `eval` không hết hàng (`stock_hour6_22_cnt == 0`). Overall: WAPE **31,97%**, WPE **−10,50%**, MAE **0,3982**; Low Sale: WAPE **38,33%**, WPE **−8,03%**, MAE **0,2691**; High Sale: WAPE **27,40%**, WPE **−12,26%**, MAE **0,7761** (khớp Bảng 3 bài báo, chênh lệch 0,00 pp; chi tiết tại [Task08_Report.md](Task08_Report.md)).
+- **Task 9 (`TimesNet` MNAR — đối chiếu Bảng 2):** Đã chạy với `--missing_rate 0.3` (tham số mô phỏng theo README tác giả; che thêm thực tế 15,88% = 9.163.425 giờ quan sát), `seed 1024`, `5` epoch, đánh giá trên 783.078 ngày hợp lệ: WAPE **27,81%** (bài báo 27,62%, chênh **+0,19 pp**), WPE **+2,04%** (bài báo +1,43%, chênh **+0,61 pp**; chi tiết tại [Task09_Report.md](Task09_Report.md)).
+
+### 4.2. Số tham chiếu từ Bảng 3 của bài báo
+
+Các chỉ số dưới đây là số công bố trong bài báo. Kết quả nhóm tự chạy ở [Task 8](Task08_Report.md) khớp phần SSA trên doanh số gốc; phần SSA trên nhu cầu TimesNet sẽ lấy từ Task 11.
 | Nhóm Sản Phẩm | Pipeline Dự Báo | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
 | :--- | :--- | :---: | :---: | :--- |
 | **Overall (Toàn bộ)** | **SSA trên Doanh số gốc (Task 8)** | **$31.97\%$** | **$-10.50\%$** | Bị thiên lệch dự báo thiếu nặng nề |
@@ -82,4 +89,4 @@ Các chỉ số dưới đây là số công bố trong bài báo. Kết quả n
 
 ## 5. Việc tiếp theo
 
-Nhóm đã có dữ liệu đầu vào và [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv). Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm chạy thử TimesNet → SSA, đánh giá TimesNet với thiếu nhân tạo và tạo nhu cầu khôi phục cho Task 11. Khi so sánh hai nhánh SSA, giữ cùng tập eval, quy tắc lọc và cách chia nhóm.
+Nhóm đã có dữ liệu đầu vào ([Task 6](Task06_Report.md)), [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv) và [kết quả TimesNet MNAR](../Task09_TimesNet_MNAR/results/mnar_metrics.csv). Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm hoàn tất chạy thử TimesNet → SSA (Task 7), tạo nhu cầu khôi phục `demand_timesnet.parquet` trên train đầy đủ (Task 10) và chạy `SSA_TimesNet` (Task 11). Khi so sánh hai nhánh SSA, giữ cùng tập eval, quy tắc lọc và cách chia nhóm.

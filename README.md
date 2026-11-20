@@ -1,193 +1,90 @@
-# IS403 - Phân Tích Dữ Liệu Kinh Doanh | Đồ Án Nhóm
-## Tái Lập và Đánh Giá Thực Nghiệm Bộ Dữ Liệu Bán Lẻ Đồ Tươi Sống FreshRetailNet-50K
+# Đồ án IS403 — Tái lập FreshRetailNet-50K
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8%20%7C%203.10%20%7C%203.12-blue.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0.1-EE4C2C.svg)](https://pytorch.org/)
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Repository](https://img.shields.io/badge/GitHub-PTDLKD-green.svg)](https://github.com/dangkhoauit184/PTDLKD)
+Đồ án phân tích bộ dữ liệu bán lẻ đồ tươi sống FreshRetailNet-50K và tái lập một phần các thực nghiệm trong bài báo [FreshRetailNet-50K: A Stockout-Annotated Censored Demand Dataset for Latent Demand Recovery and Forecasting in Fresh Retail](https://arxiv.org/abs/2505.16319).
 
-> **Đề tài:** Khôi phục Nhu cầu Tiềm ẩn bằng TimesNet và Dự báo Doanh số Kháng Hết hàng bằng SSA trên Bộ dữ liệu FreshRetailNet-50K.  
-> **Bài báo tham chiếu:** *FreshRetailNet-50K: A Stockout-Annotated Censored Demand Dataset for Latent Demand Recovery and Forecasting in Fresh Retail* (arXiv: [2505.16319v5](https://arxiv.org/abs/2505.16319), Dingdong Ltd.).
+## Đồ án cần làm gì?
 
----
+Khi một mặt hàng hết hàng, doanh số ghi nhận có thể bằng 0 dù khách vẫn muốn mua. Đây là hiện tượng **nhu cầu bị che khuất** (*demand censoring*). Đồ án kiểm tra quy trình hai giai đoạn trong bài báo:
 
-## 📑 Bảng Tra Cứu Nhanh Báo Cáo Học Thuật (Reports)
+1. Dùng **TimesNet** khôi phục nhu cầu ở những giờ có nhãn hết hàng.
+2. Cộng nhu cầu theo giờ thành nhu cầu ngày, rồi dùng **SSA (Similar Scenario Average)** dự báo 7 ngày.
+3. So sánh SSA dùng doanh số gốc với SSA dùng nhu cầu đã khôi phục bằng TimesNet trên cùng tập đánh giá.
+4. Đối chiếu kết quả tự chạy với các bảng trong bài báo, ghi rõ thiết lập, sai khác và giới hạn tái lập.
 
-| Báo Cáo | Nội Dung Chính | Liên Kết Trực Tiếp |
-| :--- | :--- | :---: |
-| **Báo Cáo Tổng Hợp** | Tổng quan toàn bộ đồ án, tiến độ Task 1–6 và kết quả tham chiếu | 👉 [**Synthesis_Report.md**](reports/Synthesis_Report.md) |
-| **Báo Cáo Task 1** | Phân tích bài báo FreshRetailNet-50K, cơ chế MNAR & Two-stage | 👉 [**Task01_Report.md**](reports/Task01_Report.md) |
-| **Báo Cáo Task 2** | Kế hoạch 15 cấu hình thực nghiệm dự báo & Siêu tham số | 👉 [**Task02_Report.md**](reports/Task02_Report.md) |
-| **Báo Cáo Task 3** | Môi trường Colab GPU, giải quyết dependency & Pipeline Parquet | 👉 [**Task03_Report.md**](reports/Task03_Report.md) |
-| **Báo Cáo Task 4** | Đối soát chất lượng dữ liệu: 48 quy tắc, kiểm định 4.85M dòng | 👉 [**Task04_Report.md**](reports/Task04_Report.md) |
-| **Báo Cáo Task 5** | Thống kê mô tả (EDA): Phân phối, quy luật chữ U hết hàng, Pareto | 👉 [**Task05_Report.md**](reports/Task05_Report.md) |
-| **Báo cáo Task 6** | Đối chiếu toàn bộ CSV với Parquet và kiểm tra đầu vào TimesNet/SSA | [Task06_Report.md](reports/Task06_Report.md) |
-| **Báo cáo Task 8** | Kết quả SSA trên doanh số gốc, dùng làm mốc cho Task 11 | [Task08_Report.md](reports/Task08_Report.md) |
+Phạm vi trọng tâm của nhóm là hai cấu hình **`SSA_RawSales`** và **`SSA_TimesNet`**. Các số trong bài báo chỉ là số tham chiếu; chỉ số được gọi là kết quả của nhóm khi có lượt chạy, log và tệp kết quả tương ứng.
 
----
+## Tiến độ và sản phẩm hiện có
 
-## 📖 1. Giới Thiệu Đề Tài
+Trạng thái dưới đây được tổng hợp từ các thư mục, notebook, báo cáo và kết quả hiện có trong repository.
 
-Trong ngành bán lẻ thực phẩm tươi sống với mô hình kho vệ tinh giao hàng nhanh 30 phút, tình trạng **hết hàng (stockout)** diễn ra liên tục do hạn sử dụng ngắn và nhu cầu biến động mạnh. Khi hết hàng, doanh số ghi nhận trên hệ thống rơi về $0$ dù nhu cầu thực tế của khách hàng vẫn tồn tại — hiện tượng này gọi là **Demand Censoring** (Nhu cầu bị che khuất).
+| Task | Nội dung | Trạng thái | Sản phẩm / ghi chú |
+|---|---|---|---|
+| **1** | Đọc bài báo, giải thích vấn đề MNAR và chốt phạm vi tái lập | **Đã hoàn thành** | [Báo cáo Task 1](reports/Task01_Report.md), [tóm tắt bài báo](Task01_Paper_Review/docs/paper_summary.md), [bảng mục tiêu cần tái lập](Task01_Paper_Review/docs/replicated_tables_target.md) |
+| **2** | Lập kế hoạch thực nghiệm, quy tắc đánh giá và cấu hình mô hình | **Đã hoàn thành** | [Báo cáo Task 2](reports/Task02_Report.md), [15 cấu hình dự báo](Task02_Experiment_Plan/docs/15_forecasting_configurations.md), [siêu tham số](Task02_Experiment_Plan/docs/model_hyperparameters.md) |
+| **3** | Chuẩn bị môi trường và cách tải/chuyển dữ liệu sang Parquet | **Đã có hướng dẫn và script** | [Hướng dẫn Task 3](Task03_Environment_Setup/README.md), [script tải dữ liệu và xuất Parquet](Task03_Environment_Setup/scripts/download_data.py), [báo cáo Task 3](reports/Task03_Report.md). Hai file dữ liệu lớn không được lưu trong GitHub. |
+| **4** | Kiểm định chất lượng và logic dữ liệu train/eval | **Đã hoàn thành** | [Notebook kiểm định](Task04_Data_Validation/notebooks/04_data_validation_colab.ipynb), [báo cáo Task 4](reports/Task04_Report.md), thư mục `Task04_Data_Validation/results/`. Có 34 dòng train mang trạng thái `REVIEW` do `discount > 1`; lượt tái lập chính giữ nguyên dữ liệu. |
+| **5** | EDA và thống kê mô tả dữ liệu | **Đã hoàn thành** | Hai notebook trong [Task05_EDA/notebooks](Task05_EDA/notebooks/), [báo cáo Task 5](reports/Task05_Report.md). |
+| **6** | Đối chiếu CSV–Parquet và xác nhận dữ liệu sẵn sàng cho thực nghiệm | **Đã hoàn thành** | [Notebook Task 6](Task06_Data_Preparation/notebooks/06_prepare_data.ipynb), [báo cáo](reports/Task06_Report.md), [biên bản và SHA-256](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md). Đã xác nhận 4.500.000 dòng train và 350.000 dòng eval. |
+| **7** | Chạy thử khép kín TimesNet → SSA trên tập nhỏ | **Chưa thấy sản phẩm trong repo** | Cần tạo `Task07_Smoke_Test/`, thử cùng một tập nhỏ cho hai nhánh, lưu log và chỉ số thử. Đây là bước kiểm tra pipeline, không dùng số thử làm kết quả chính thức. |
+| **8** | SSA trên doanh số gốc (`SSA_RawSales`) | **Đã hoàn thành** | [Notebook](Task08_SSA_Raw_Sales/notebooks/08_ssa_raw_sales.ipynb), [bảng kết quả](Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv), [báo cáo](reports/Task08_Report.md). WAPE/WPE của ba nhóm khớp số công bố ở độ chính xác báo cáo. |
+| **9** | Đánh giá TimesNet với các điểm thiếu nhân tạo (MNAR) | **Đã hoàn thành** | [Notebook](Task09_TimesNet_MNAR/notebooks/09_timesnet_mnar.ipynb), [bảng kết quả](Task09_TimesNet_MNAR/results/mnar_metrics.csv), [báo cáo](reports/Task09_Report.md), [biên bản](Task09_TimesNet_MNAR/run_info.md). Chạy `--missing_rate 0.3` (seed 1024, 5 epoch) để đối chiếu Bảng 2; không tạo đầu vào cho SSA. |
+| **10** | Chạy TimesNet trên giờ hết hàng thực tế để khôi phục nhu cầu | **Chưa thấy sản phẩm trong repo** | Cần tạo `Task10_TimesNet_Recovery/` và xuất `demand_timesnet.parquet` đầy đủ, kiểm tra khóa/giá trị, lưu decoupling score và log. File này là đầu vào của Task 11. |
+| **11** | Chạy SSA trên nhu cầu TimesNet và so sánh với Task 8 | **Chưa hoàn thành; phụ thuộc Task 10** | Tạo `Task11_SSA_TimesNet/`, dùng cùng eval và cách chia nhóm như Task 8; báo cáo song song `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale. |
 
-Mô hình dự báo truyền thống nếu học trực tiếp từ doanh số bị che khuất sẽ rơi vào **vòng lặp sai lệch dự báo thấp (Under-forecasting Bias Loop)**. Đồ án này triển khai khung nghiên cứu **2 giai đoạn (Two-Stage Framework)**:
-1. **Giai đoạn 1 (Latent Demand Recovery):** Dùng mô hình học sâu chuỗi thời gian đa chu kỳ **TimesNet** để khôi phục lượng bán bị che trong các giờ hết hàng.
-2. **Giai đoạn 2 (Demand Forecasting):** Tích lũy nhu cầu đã khôi phục lên cấp độ ngày và áp dụng thuật toán **Similar Scenario Average (SSA)** để dự báo 7 ngày tương lai.
+Chi tiết phân công Task 6–10 nằm trong [docs/Task06-10_Phan_cong_chi_tiet.md](docs/Task06-10_Phan_cong_chi_tiet.md). Báo cáo tổng hợp hiện có ở [reports/Synthesis_Report.md](reports/Synthesis_Report.md); cần cập nhật báo cáo này khi các task còn lại hoàn tất.
 
-```
-[Dữ liệu 50K chuỗi: Giờ bán + Nhãn hết hàng]
-           │
-           ▼
-┌────────────────────────────────────────────────────────┐
-│ Giai đoạn 1: TimesNet Latent Demand Recovery          │
-│ • Imputation chuỗi thời gian với mặt nạ stockout       │
-│ • Đầu ra: demand.parquet (Nhu cầu theo ngày)           │
-└────────────────────────────────────────────────────────┘
-           │
-           ▼ (Tích lũy 24h thành ngày)
-┌────────────────────────────────────────────────────────┐
-│ Giai đoạn 2: Censoring-Robust Demand Forecasting (SSA) │
-│ • Dự báo 7 ngày trên nhóm Overall, High-sale, Low-sale│
-│ • Đối chứng: Raw Sales Pipeline vs TimesNet Pipeline  │
-└────────────────────────────────────────────────────────┘
-```
+## Kết quả nhóm đã tự chạy
 
----
+Task 8 đã chạy SSA trên dữ liệu đầy đủ. Kết quả WAPE/WPE tự chạy khớp số bài báo ở độ chính xác công bố:
 
-## 👥 2. Thành Viên Nhóm & Phân Công Nhiệm Vụ
+| Nhóm | WAPE | WPE | MAE |
+|---|---:|---:|---:|
+| Overall | 31,97% | −10,50% | 0,3982 |
+| Low Sale | 38,33% | −8,03% | 0,2691 |
+| High Sale | 27,40% | −12,26% | 0,7761 |
 
-Repo đã lưu sản phẩm của Task 1–6 và Task 8. Xem [phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md) để biết phần việc và yêu cầu bàn giao.
+Đây là kết quả **SSA trên doanh số gốc**. Số SSA trên nhu cầu TimesNet vẫn là mục tiêu tham chiếu từ bài báo cho tới khi Task 10 và Task 11 chạy xong; không được trình bày các số tham chiếu ấy như kết quả của nhóm.
 
-| Task | Nhiệm vụ chính | Người phụ trách | Báo cáo chi tiết | Thư mục làm việc |
-| :---: | :--- | :---: | :---: | :---: |
-| **Task 1** | **Đọc bài báo & Chốt phạm vi:** Phân tích MNAR, bias loop, Bảng 2 & 3. | Thành viên nhóm | [Task01_Report.md](reports/Task01_Report.md) | [Task01_Paper_Review/](Task01_Paper_Review/) |
-| **Task 2** | **Kế hoạch thực nghiệm:** 15 cấu hình dự báo, siêu tham số 7 mô hình. | Thành viên nhóm | [Task02_Report.md](reports/Task02_Report.md) | [Task02_Experiment_Plan/](Task02_Experiment_Plan/) |
-| **Task 3** | **Môi trường & Pipeline:** Cấu hình Colab GPU, pipeline Parquet. | Thành viên nhóm | [Task03_Report.md](reports/Task03_Report.md) | [Task03_Environment_Setup/](Task03_Environment_Setup/) |
-| **Task 4** | **Kiểm định dữ liệu (Validation):** 48 quy tắc trên 4.85M dòng. | **Đăng Khoa** | [Task04_Report.md](reports/Task04_Report.md) | [Task04_Data_Validation/](Task04_Data_Validation/) |
-| **Task 5** | **Thống kê mô tả (EDA):** Phân phối, quy luật chữ U, Pareto 20-87. | Thành viên nhóm | [Task05_Report.md](reports/Task05_Report.md) | [Task05_EDA/](Task05_EDA/) |
-| **Task 6** | **Xác nhận đầu vào:** Đối chiếu CSV–Parquet và kiểm tra mảng mẫu | TV1 | [Task06_Report.md](reports/Task06_Report.md) | [Task06_Data_Preparation/](Task06_Data_Preparation/) |
-| **Task 8** | **SSA trên doanh số gốc:** WAPE, WPE và MAE cho ba nhóm | TV3 | [Task08_Report.md](reports/Task08_Report.md) | [Task08_SSA_Raw_Sales/](Task08_SSA_Raw_Sales/) |
+Task 9 đã chạy đánh giá TimesNet với thiếu nhân tạo (`--missing_rate 0.3` theo ví dụ README tác giả, tỷ lệ che thực tế 15,88% = 9.163.425 giờ quan sát khung 6..21; seed 1024, 5 epoch) trên 783.078 ngày hợp lệ để đối chiếu Bảng 2:
 
----
+| Mô hình | Nhóm tự chạy (WAPE / WPE) | Tham chiếu bài báo (WAPE / WPE) | Chênh lệch |
+|---|---:|---:|---:|
+| TimesNet (MNAR) | 27,81% / +2,04% | 27,62% / +1,43% | +0,19 pp / +0,61 pp |
 
-## 📂 3. Cấu Trúc Repository
+## Dữ liệu và cách lấy hai file Parquet
 
-```text
-PTDLKD/
-│
-├── .gitignore                          # Loại trừ các file dataset nặng (>1.2GB) và checkpoint
-├── README.md                           # Trang chủ dự án (file này)
-├── requirements.txt                    # Danh sách thư viện và phiên bản chính xác
-│
-├── docs/                               # Tài liệu hướng dẫn và tổng quan
-│   ├── Project_Overview.md             # Phân tích sâu bài toán kinh doanh và cơ chế MNAR
-│   └── Contribution_Guide.md           # Quy định Git Workflow (Branch, PR, Merge) cho nhóm
-│
-├── reports/                            # Báo cáo chuẩn hóa 8 phần theo chuẩn học thuật
-│   ├── Task01_Report.md                # Báo cáo Task 1: Nghiên cứu bài báo
-│   ├── Task02_Report.md                # Báo cáo Task 2: Kế hoạch thực nghiệm
-│   ├── Task03_Report.md                # Báo cáo Task 3: Môi trường & Pipeline
-│   ├── Task04_Report.md                # Báo cáo Task 4: Đối soát chất lượng dữ liệu
-│   ├── Task05_Report.md                # Báo cáo Task 5: Thống kê mô tả (EDA)
-│   ├── Task06_Report.md                # Báo cáo Task 6: Xác nhận dữ liệu đầu vào
-│   └── Synthesis_Report.md             # Tiến độ và kết quả tham chiếu
-│
-├── Task01_Paper_Review/                # Thư mục làm việc Task 1
-│   ├── README.md
-│   └── docs/
-│       ├── paper_summary.md
-│       └── replicated_tables_target.md
-│
-├── Task02_Experiment_Plan/             # Thư mục làm việc Task 2
-│   ├── README.md
-│   └── docs/
-│       ├── 15_forecasting_configurations.md
-│       └── model_hyperparameters.md
-│
-├── Task03_Environment_Setup/           # Thư mục làm việc Task 3
-│   ├── README.md
-│   └── scripts/
-│       ├── setup_colab.sh              # Cài đặt tự động trên Google Colab
-│       └── download_data.py            # Tải dữ liệu HuggingFace xuất Parquet
-│
-├── Task04_Data_Validation/             # Thư mục làm việc Task 4 (Đăng Khoa)
-│   ├── README.md
-│   ├── notebooks/
-│   │   └── 04_data_validation_colab.ipynb  # Notebook kiểm định 48 quy tắc
-│   └── results/                        # Kết quả đối soát dữ liệu (CSV & JSON)
-│       ├── validation_summary.csv
-│       ├── column_profile.csv
-│       ├── issue_examples.csv
-│       └── run_info.json
-│
-├── Task05_EDA/                         # Thống kê mô tả và biểu đồ
-│   ├── README.md
-│   ├── notebooks/
-│   └── results/
-│
-└── Task06_Data_Preparation/            # Xác nhận dữ liệu đầu vào
-    ├── README.md
-    ├── notebooks/06_prepare_data.ipynb
-    └── results/                        # Bảng đối soát và biên bản chạy
-```
+Các tệp `train.parquet` và `eval.parquet` được tạo/tải trong bước Task 3, rồi được Task 6 kiểm tra. Trong bản làm việc local, chúng nằm ở thư mục gốc dự án cạnh `README.md`. Chúng bị loại khỏi Git bởi `.gitignore` vì đây là dữ liệu lớn, nên người clone GitHub cần tự tải hoặc dùng bản nhóm lưu trên Drive.
 
----
+Để tạo lại từ nguồn Hugging Face, cài thư viện `datasets` và chạy script từ thư mục dự án:
 
-## 📊 4. Tóm Tắt Kết Quả Nổi Bật Của Các Task
-
-### Task 4 (Kiểm định Dữ liệu)
-* Đã kiểm định toàn bộ $4.500.000$ dòng train và $350.000$ dòng eval qua $48$ quy tắc nghiêm ngặt:
-  * **$100\%$ toàn vẹn:** $0$ giá trị null, $0$ khóa trùng lặp, $100\%$ các cặp có đủ $90$ ngày train và $7$ ngày eval.
-  * **$100\%$ nhất quán:** Tổng doanh số giờ khớp hoàn toàn doanh số ngày; số giờ hết hàng khớp với số bit $1$ trong khung giờ $6..21$.
-  * **Mục cần xác minh:** 34 dòng train có `discount > 1.0` (lớn nhất 1,088), được giữ nguyên cho lượt tái lập chính.
-
-### Task 5 (Thống kê Mô tả & EDA)
-* **Phân phối doanh số:** Lệch phải mạnh (`mean = 0.999`, `median = 0.700`, `skewness = 8.47`).
-* **Độ thưa thớt theo giờ:** Chỉ $4.46\%$ số ngày có doanh số $= 0$, nhưng có tới $69.06\%$ số giờ trong khung $6..21$ bằng $0$.
-* **Hiện tượng hết hàng:** Chiếm $19.88\%$ số giờ kinh doanh, có dạng **chữ U** đạt đỉnh $41.9\%$ vào lúc 22h đêm.
-* **Nguyên tắc Pareto:** $20\%$ sản phẩm chiếm tới $87.0\%$ tổng doanh số bán ra toàn mạng lưới.
-
-### Task 6 (Xác nhận dữ liệu đầu vào)
-
-Đối chiếu toàn bộ **4.850.000 dòng × 19 cột** giữa CSV và Parquet, gồm từng phần tử trong hai mảng theo giờ; cả hai tập đều đạt. Hai cặp mẫu tạo được đầu vào TimesNet `(6, 480, 6)` và mảng đặc trưng số SSA `(2, 97, 3)`. Xem [notebook và biên bản Task 6](Task06_Data_Preparation/README.md).
-
-### Số tham chiếu dự báo từ Bảng 3 của bài báo
-
-Các số dưới đây là số công bố trong bài báo. [Kết quả nhóm tự chạy cho SSA trên doanh số gốc](Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv) được lưu riêng và khớp WAPE/WPE ở độ chính xác công bố. Nhánh SSA trên nhu cầu TimesNet sẽ được đánh giá ở Task 11.
-| Nhóm Đánh Giá | SSA trên Doanh số Gốc | SSA trên Nhu cầu TimesNet | Mức Độ Cải Thiện |
-| :--- | :---: | :---: | :--- |
-| **Overall (Toàn bộ)** | WAPE $31.97\%$ \| WPE $-10.50\%$ | **WAPE $29.79\%$ \| WPE $+1.39\%$** | **WAPE giảm 2,18 điểm phần trăm; WPE chuyển dương** |
-| **High Sale (Bán chạy)** | WAPE $27.40\%$ \| WPE $-12.26\%$ | **WAPE $23.98\%$ \| WPE $-1.12\%$** | **WAPE giảm 3,42 điểm phần trăm; WPE còn −1,12%** |
-| **Low Sale (Bán chậm)** | WAPE $38.33\%$ \| WPE $-8.03\%$ | WAPE $37.87\%$ \| WPE $+4.89\%$ | Giảm sai số tuyệt đối, xuất hiện bias dương nhẹ |
-
----
-
-## 🚀 5. Hướng Dẫn Cài Đặt và Chạy
-
-### Cách 1: Chạy trên Google Colab (Khuyến nghị cho huấn luyện GPU)
-1. Mở notebook Task 4, Task 5 hoặc [Task 6](Task06_Data_Preparation/notebooks/06_prepare_data.ipynb) bằng Colab.
-2. Task 6 chạy bằng CPU; với các lượt huấn luyện TimesNet sau đó, dùng môi trường GPU theo hướng dẫn Task 3.
-3. Kết nối Drive, kiểm tra đường dẫn dữ liệu trong ô cấu hình rồi chạy từ đầu.
-
-### Cách 2: Chạy trên Máy Cá Nhân (Local)
 ```bash
-# 1. Clone repository
-git clone https://github.com/dangkhoauit184/PTDLKD.git
-cd PTDLKD
-
-# 2. Tạo môi trường ảo Python 3.8 hoặc 3.10
-conda create -n frn_env python=3.8 -y
-conda activate frn_env
-
-# 3. Cài đặt các thư viện cần thiết
-pip install -r requirements.txt
-
-# 4. Tải dữ liệu gốc từ HuggingFace sang Parquet
+pip install datasets
 python Task03_Environment_Setup/scripts/download_data.py
 ```
 
----
+Script ghi `train.parquet` và `eval.parquet` vào thư mục đang chạy lệnh. Khi dùng Google Drive/Colab, lưu hai file vào thư mục dữ liệu dùng chung của nhóm và cập nhật đường dẫn trong notebook. Dùng [biên bản Task 6](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md) để nhận diện bản dữ liệu đã được xác nhận qua SHA-256.
 
-## 🤝 6. Quy Định Đóng Góp (Git Workflow)
-Xem chi tiết tài liệu hướng dẫn cộng tác tại: [docs/Contribution_Guide.md](docs/Contribution_Guide.md).
-* **Quy tắc vàng:** Không push trực tiếp lên `main`. Tạo branch dạng `feature/task<số>-<tên>`, commit rõ ràng và mở Pull Request để nhóm cùng review trước khi merge.
+## Việc cần làm tiếp theo
+
+1. Hoàn thành Task 7 trên một tập con để kiểm tra việc nạp dữ liệu, chạy TimesNet, tạo Parquet nhu cầu và chạy SSA ở cả hai nhánh (hiện nhánh `feature/task07-smoke-test` mới có mã nguồn, trạng thái `not_run` do thiếu thư viện).
+2. Chạy Task 10 trên train đầy đủ để tạo và đối soát `demand_timesnet.parquet`.
+3. Sau khi Task 10 bàn giao file, chạy Task 11 trên cùng eval như Task 8 và so sánh chỉ số hai cấu hình SSA.
+4. Cập nhật báo cáo tổng hợp, kết luận và slide bằng kết quả thực chạy; ghi rõ các khác biệt so với bài báo.
+
+Task 11 cần đầu ra đầy đủ của Task 10. Theo dõi yêu cầu chi tiết, tham số, log và sản phẩm bàn giao trong [tài liệu phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md).
+
+## Quy ước báo cáo và tái lập
+
+- Giữ nguyên dữ liệu gốc trong các lượt tái lập chính; ghi riêng mọi thay đổi hoặc lượt thử.
+- Lưu notebook/mã nguồn và hướng dẫn trong repository; lưu dataset, checkpoint, log lớn và kết quả không được Git theo hướng dẫn của nhóm.
+- Với mỗi lượt chạy, ghi nguồn/đường dẫn dữ liệu, commit mã, phiên bản môi trường, cấu hình, seed, lệnh chạy, trạng thái và đường dẫn đầu ra trong `run_info.md`.
+- Tách kết quả `smoke` khỏi kết quả `full`. Lượt lỗi hoặc chưa chạy ghi trạng thái tương ứng, không điền số 0 thay cho kết quả thiếu.
+- Chỉ công bố số là kết quả của nhóm nếu có bằng chứng lượt chạy tương ứng; khi đối chiếu bài báo, ghi cả số tự chạy, số tham chiếu và độ lệch.
+
+## Liên kết nhanh
+
+- [Tổng quan dự án](docs/Project_Overview.md)
+- [Hướng dẫn đóng góp Git](docs/Contribution_Guide.md)
+- [Báo cáo tổng hợp](reports/Synthesis_Report.md)
+- [Notebook và báo cáo Task 8](Task08_SSA_Raw_Sales/README.md)
+- [Notebook và báo cáo Task 9](Task09_TimesNet_MNAR/README.md)
