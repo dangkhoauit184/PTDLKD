@@ -14,7 +14,7 @@
 
 ## Mã và môi trường
 
-- Repo nhóm: nhánh `feature/task09-timesnet-mnar`. Mã tác giả: `Dingdong-Inc/frn-50k-baseline` tại `8af694a09a5a427d1d50648d348c022565a781f2`, chạy `latent_demand_recovery/exp/app.py` với `pypots` đi kèm repo.
+- Repo nhóm: nhánh `feature/task09-timesnet-mnar` (từ commit nền `226253adffaa1e2bb66e3525f3900433ae90be78`). Mã tác giả: `Dingdong-Inc/frn-50k-baseline` tại `8af694a09a5a427d1d50648d348c022565a781f2`, chạy `latent_demand_recovery/exp/app.py` với `pypots` đi kèm repo.
 - Môi trường (Colab): Python 3.13.16, torch 2.14.1+cu130, NumPy 2.4.6, pandas 2.2.3, PyArrow 23.0.1, pygrinder 0.4, tsdb 0.3.1; GPU Tesla T4 (15 GB); RAM 12,7 GB.
 - Không cài torch 2.0.1/NumPy 1.23.5 theo `requirements.txt` của tác giả vì không có bản cho Python 3.13 của Colab; dùng bản có sẵn. `pygrinder`, `tsdb` cài với `--no-deps`.
 

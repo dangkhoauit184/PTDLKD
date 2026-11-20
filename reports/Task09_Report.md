@@ -9,12 +9,12 @@
 ## 2. Kết quả định lượng và đối chiếu Bảng 2
 | Mô hình | WAPE thực chạy | WPE thực chạy | WAPE bài báo | WPE bài báo | Chênh lệch WAPE | Chênh lệch WPE |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **TimesNet** | 27.81% | 2.04% | 27.62% | 1.43% | +0.19 pp | +0.61 pp |
+| **TimesNet** | 27.81% | +2.04% | 27.62% | +1.43% | +0.19 pp | +0.61 pp |
 
 ## 3. Nhận xét
 - WAPE gần khớp Bảng 2 (chênh 0,19 điểm phần trăm). WPE dương ở cả kết quả nhóm và bài báo, tức mô hình khôi phục hơi cao hơn doanh số thật trên các ngày bị che; mức chênh WPE là 0,61 điểm phần trăm.
 - Các nguồn chênh lệch có thể có: môi trường khác tác giả (Python 3.13, torch 2.14 trên GPU T4 thay vì torch 2.0.1), tính không tất định của huấn luyện trên GPU, và việc chưa xác nhận `missing_rate = 0.3` là cấu hình bài báo dùng. Phần nạp dữ liệu và tạo thiếu là tất định: số điểm che thêm giống nhau ở mọi lần chạy, và training loss từng epoch của hai lần huấn luyện độc lập (16/11, 17/11) trùng nhau.
-- Để chạy được với 12,7 GB RAM của Colab miễn phí, `load_data`/`evaluation_mnar` được viết lại (cùng công thức, cùng thứ tự số ngẫu nhiên) và `norm_val` được truyền sẵn ở dạng nhỏ. Bản viết lại được kiểm chứng trùng bản gốc trên 200 cặp (`equivalence_ok=True`). Chi tiết ở `run_info.md`.
+- Để chạy được với 12,7 GB RAM của Colab miễn phí, `load_data`/`evaluation_mnar` được viết lại (cùng công thức, cùng thứ tự số ngẫu nhiên) và `norm_val` được truyền sẵn ở dạng nhỏ. Bản viết lại được kiểm chứng trùng bản gốc trên 200 cặp (`equivalence_ok=True`). Chi tiết ở [run_info.md](../Task09_TimesNet_MNAR/run_info.md).
 
 ## 4. Bàn giao
 
