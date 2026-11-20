@@ -1,0 +1,2 @@
+model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,wpe_pct,status,log_path
+TimesNet,0.3,1024,5,128,9163425,27.8141,2.0429,ok,results/full/timesnet_mnar_predict_from_ckpt.log
