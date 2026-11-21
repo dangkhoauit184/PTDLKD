@@ -69,6 +69,8 @@ Danh mục [15 cấu hình dự báo](../Task02_Experiment_Plan/docs/15_forecast
 
 **Xong khi:** hai nhánh SSA đều chạy hết và cho chỉ số hữu hạn trên cùng tập thử. Gắn nhãn `smoke` cho tất cả các file của lượt này; không chép số thử vào Bảng 3.
 
+**Đã hoàn thành:** xem [báo cáo Task 7](../reports/Task07_Report.md) và [biên bản chạy](../Task07_Smoke_Test/run_info.md). Pipeline khép kín đạt `status=ok` cho cả hai nhánh SSA trên tập thử 100 cặp.
+
 ## TV3 — Task 8: SSA trên doanh số gốc
 
 **Thư mục:** `Task08_SSA_Raw_Sales/`. **Mã cấu hình:** `SSA_RawSales`.
@@ -138,6 +140,8 @@ model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,w
 - `full/timesnet_recovery.log` và `run_info.md`: ghi lệnh, cấu hình, link Parquet và link checkpoint nếu lượt chạy có lưu. Link Parquet cần mở được với người làm Task 11.
 
 **Xong khi:** file nhu cầu đầy đủ đã đối soát, mở được từ Drive và có log/config tương ứng. Task này dừng sau khôi phục; TV5 không phải chạy SSA để hoàn thành Task 10.
+
+**Đã hoàn thành:** xem [báo cáo Task 10](../reports/Task10_Report.md) và [biên bản chạy kèm link Drive `demand_timesnet.parquet`](../Task10_TimesNet_Recovery/run_info.md) (`4.500.000` dòng × `20` cột, SHA-256 `c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694`; Decoupling Score khớp Bảng 2: `-0.57` và `+0.07`).
 
 > **Lưu ý kỹ thuật bắt buộc cho Task 10 trên Colab miễn phí (12,7 GB RAM — rút từ Task 9):**
 > - **Môi trường Colab Python 3.12+:** Giữ nguyên PyTorch/NumPy có sẵn, dùng thư mục `pypots` đi kèm repo và cài `pip install -q --no-deps pygrinder==0.4 tsdb==0.3.1`.

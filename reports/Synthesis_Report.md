@@ -16,7 +16,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Task 1–6, Task 8 và Task 9
+## 2. Tiến độ Hoàn Thành Task 1–10
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -24,10 +24,12 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **2** | **Task 2** | **Lập kế hoạch thực nghiệm** | Thành viên nhóm | Bản đặc tả 15 cấu hình dự báo, bộ siêu tham số của 7 mô hình khôi phục. |
 | **3** | **Task 3** | **Chuẩn bị môi trường & Pipeline** | Thành viên nhóm | Thiết lập Google Colab GPU, giải quyết tương thích PyPOTS, tối ưu hóa I/O Parquet. |
 | **4** | **Task 4** | **Kiểm tra dữ liệu (Validation)** | **Đăng Khoa (Bạn)** | **Notebook đối soát 48 quy tắc trên 4.85M dòng, bảng profile 19 cột, phát hiện 34 dòng discount bất thường.** |
-| **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số. |
+| **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số, 8 biểu đồ. |
 | **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | TV1 | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
+| **7** | **Task 7** | **Chạy thử khép kín (Smoke Test)** | TV2 | [Báo cáo và kiểm chứng pipeline 100 cặp](Task07_Report.md). |
 | **8** | **Task 8** | **SSA trên doanh số gốc** | TV3 | [Báo cáo và kết quả baseline](Task08_Report.md). |
-| **9** | **Task 9** | **TimesNet với thiếu nhân tạo (MNAR)** | TV4 | [Báo cáo và kết quả đối chiếu Bảng 2](Task09_Report.md). |
+| **9** | **Task 9** | **TimesNet với thiếu nhân tạo (MNAR)** | TV4 | [Báo cáo và kết quả WAPE/WPE Bảng 2](Task09_Report.md). |
+| **10** | **Task 10** | **TimesNet khôi phục giờ hết hàng thực tế** | TV5 | [Báo cáo, Decoupling Score Bảng 2 và `demand_timesnet.parquet`](Task10_Report.md). |
 
 ---
 
@@ -66,6 +68,9 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 * Train và eval cùng 50.000 cặp, đủ 90 và 7 ngày/cặp, không trùng khóa ngày. Kiểm tra mẫu cho TimesNet và SSA đạt kích thước kỳ vọng.
 * Xem [báo cáo Task 6](Task06_Report.md) và [file kết quả](../Task06_Data_Preparation/).
 
+### Task 7 — Kiểm thử Khép kín Đường ống trên Tập con (`Smoke Test`)
+* Kiểm chứng luồng đầu–cuối (`SSA_RawSales` → `TimesNet --missing_rate 0` → `SSA_TimesNet`) trên mẫu 100 cặp (`9.000` dòng `train`, `700` dòng `eval`), đảm bảo cách nối khóa và truyền tệp riêng biệt không gây rò rỉ dữ liệu hay đọc nhầm tập đầy đủ ([báo cáo Task 7](Task07_Report.md)).
+
 ### Task 8 — Dự báo Baseline SSA trên Doanh số Gốc (`SSA_RawSales`)
 * Thực thi SSA trên toàn bộ $50.000$ chuỗi (90 ngày lịch sử `train`, dự báo 7 ngày `eval`), đánh giá trên $206.562$ dòng `eval` không hết hàng trong khung `06:00–22:00` (`stock_hour6_22_cnt == 0`).
 * Tái lập khớp hoàn toàn (`0.00 pp`) số công bố của Bảng 3 trên cả ba nhóm: `Overall` (WAPE $31.97\%$, WPE $-10.50\%$), `Low Sale` (WAPE $38.33\%$, WPE $-8.03\%$), và `High Sale` (WAPE $27.40\%$, WPE $-12.26\%$). Xác nhận rõ độ lệch âm nặng nhất nằm ở nhóm hàng bán chạy (`High Sale`).
@@ -74,6 +79,10 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 * Huấn luyện và đánh giá TimesNet (`5` epoch, `batch_size=128`, `seed=1024`) với cơ chế tạo thiếu nhân tạo `mimic_missing` (`missing_rate=0.3`, che thêm thực tế $9.163.425$ điểm giờ $= 15.88\%$ số giờ còn hàng trong khung `6..21`) trên $783.078$ ngày hợp lệ.
 * Đạt WAPE **$27.81\%$** và WPE **$+2.04\%$** (bám sát mức $27.62\%$ và $+1.43\%$ của Bảng 2 bài báo), đồng thời giải quyết bài toán giới hạn $12.7\text{ GB}$ RAM trên Colab miễn phí thông qua cấp phát `float32` và `norm_val` thu gọn đã kiểm chứng tương đương $100\%$ (`equivalence_ok=True`).
 
+### Task 10 — Khôi phục Nhu cầu Thực tế bằng TimesNet & Xuất `demand_timesnet.parquet`
+* Huấn luyện TimesNet ở chế độ `--missing_rate 0` (`5` epoch, `batch_size=128`, `seed=2024` trên GPU NVIDIA L4 trong $84.66$ phút) trên toàn bộ tập `train.parquet` chuẩn của Task 6 ($4.500.000$ dòng).
+* Tái lập chỉ số tách rời **Decoupling Score ($\rho_{DS}$)** khớp tuyệt đối Bảng 2 bài báo ở độ chính xác công bố: doanh số gốc đạt **$-0.5664$** ($-0.57$), nhu cầu khôi phục bằng TimesNet đạt **$+0.0699$** ($+0.07$). Tệp đầu ra `demand_timesnet.parquet` ($4.500.000$ dòng × $20$ cột) đạt $0$ lỗi đối soát toàn vẹn và sẵn sàng cho Task 11 ([báo cáo Task 10](Task10_Report.md)).
+
 ---
 
 ## 4. Kết quả nhóm đã tự chạy và số tham chiếu bài báo
@@ -81,6 +90,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 ### 4.1. Kết quả nhóm đã tự chạy
 - **Task 8 (`SSA_RawSales` — đối chiếu Bảng 3):** Đã chạy trên toàn bộ `train`/`eval`, đánh giá 206.562 dòng `eval` không hết hàng (`stock_hour6_22_cnt == 0`). Overall: WAPE **31,97%**, WPE **−10,50%**, MAE **0,3982**; Low Sale: WAPE **38,33%**, WPE **−8,03%**, MAE **0,2691**; High Sale: WAPE **27,40%**, WPE **−12,26%**, MAE **0,7761** (khớp Bảng 3 bài báo, chênh lệch 0,00 pp; chi tiết tại [Task08_Report.md](Task08_Report.md)).
 - **Task 9 (`TimesNet` MNAR — đối chiếu Bảng 2):** Đã chạy với `--missing_rate 0.3` (tham số mô phỏng theo README tác giả; che thêm thực tế 15,88% = 9.163.425 giờ quan sát), `seed 1024`, `5` epoch, đánh giá trên 783.078 ngày hợp lệ: WAPE **27,81%** (bài báo 27,62%, chênh **+0,19 pp**), WPE **+2,04%** (bài báo +1,43%, chênh **+0,61 pp**; chi tiết tại [Task09_Report.md](Task09_Report.md)).
+- **Task 10 (`TimesNet` Recovery — đối chiếu Bảng 2 & tạo dữ liệu cho Task 11):** Đã chạy với `--missing_rate 0`, `seed 2024`, `5` epoch trên toàn bộ 4.500.000 dòng `train`: Decoupling Score $\rho_{DS}$ của doanh số gốc đạt **−0,5664** (làm tròn **−0,57**, khớp bài báo −0,57), của TimesNet đạt **+0,0699** (làm tròn **+0,07**, khớp bài báo +0,07; chi tiết tại [Task10_Report.md](Task10_Report.md)).
 
 ### 4.2. Số tham chiếu từ Bảng 3 của bài báo
 
@@ -99,4 +109,4 @@ Các chỉ số dưới đây là số công bố trong bài báo. Kết quả n
 
 ## 5. Việc tiếp theo
 
-Nhóm đã có dữ liệu đầu vào ([Task 6](Task06_Report.md)), [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv) và [kết quả TimesNet MNAR](../Task09_TimesNet_MNAR/results/mnar_metrics.csv). Theo [phân công Task 6–10](../docs/Task06-10_Phan_cong_chi_tiet.md), các lượt tiếp theo gồm hoàn tất chạy thử TimesNet → SSA (Task 7), tạo nhu cầu khôi phục `demand_timesnet.parquet` trên train đầy đủ (Task 10) và chạy `SSA_TimesNet` (Task 11). Khi so sánh hai nhánh SSA, giữ cùng tập eval, quy tắc lọc và cách chia nhóm.
+Nhóm đã hoàn tất toàn bộ giai đoạn dữ liệu và khôi phục nhu cầu (Task 1–10), bao gồm [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv), [kết quả TimesNet MNAR](../Task09_TimesNet_MNAR/results/mnar_metrics.csv), [điểm tách rời Decoupling Score](../Task10_TimesNet_Recovery/results/decoupling_metrics.csv) và tệp nhu cầu khôi phục `demand_timesnet.parquet` ([biên bản & link Drive Task 10](../Task10_TimesNet_Recovery/run_info.md)). Bước thực nghiệm cuối cùng là chạy **Task 11 (`SSA_TimesNet`)** trên cùng tập `eval` (206.562 dòng hợp lệ), cùng quy tắc lọc và cách chia nhóm `psd` như Task 8 để hoàn tất đối chiếu Bảng 3 và tổng kết báo cáo cuối kỳ.

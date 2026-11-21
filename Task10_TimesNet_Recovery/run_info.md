@@ -2,9 +2,10 @@
 
 - **Thời điểm hoàn tất (UTC):** 2026-11-20T15:30:56.214935+00:00
 - **Người thực hiện:** TV5
-- **Môi trường chạy:** Google Colab | GPU: `NVIDIA L4` | Python `3.13.16` | PyTorch `2.14.1+cu130`
+- **Môi trường chạy:** Google Colab | GPU: `NVIDIA L4` | Python `3.13.16` | PyTorch `2.14.1+cu130` | NumPy `2.4.6` | pandas `2.2.3`
+- **Repo nhóm đối chiếu:** nhánh `feature/task10-timesnet-recovery` (từ commit nền `cedd08f` trên `main`)
 - **Mã tác giả đối chiếu (`frn-50k-baseline`):** commit `8af694a09a5a427d1d50648d348c022565a781f2`
-- **Thay đổi mã nguồn trên bản sao:** Xem `code_changes.diff` (đồng bộ đọc `train.parquet` local + sắp xếp `['store_id', 'product_id', 'dt']` cho cả `load_data` và `_demand_recovery`, đặt seed `2024`).
+- **Thay đổi mã nguồn trên bản sao:** Xem [code_changes.diff](code_changes.diff) (đồng bộ đọc `train.parquet` local + sắp xếp `['store_id', 'product_id', 'dt']` cho cả `load_data` và `_demand_recovery`, đặt seed `2024`).
 
 ## Lệnh chạy chính thức
 ```bash
@@ -22,10 +23,11 @@ FRN_LOCAL_TRAIN_PARQUET=/content/frn_cache/train.parquet python -u app.py --mode
 - **Thời gian chạy:** `84.66` phút
 
 ## Kết quả chính
-- **Decoupling score (Raw Sales — `sale_amount`):** `-0.566447`
-- **Decoupling score (TimesNet — `sale_amount_pred`):** `0.069918`
-- **Log đầy đủ:** `full/timesnet_recovery.log`
-- **Đối soát file nhu cầu:** Xem `demand_file_check.csv` (`4.500.000` dòng × `20` cột, tất cả số đếm lỗi = `0`).
+- **Decoupling score (Raw Sales — `sale_amount`):** `-0.566447` (bài báo Bảng 2: `-0.57`)
+- **Decoupling score (TimesNet — `sale_amount_pred`):** `0.069918` (bài báo Bảng 2: `0.07`)
+- **Bảng điểm tách rời:** [results/decoupling_metrics.csv](results/decoupling_metrics.csv)
+- **Log đầy đủ:** [results/full/timesnet_recovery.log](results/full/timesnet_recovery.log)
+- **Đối soát file nhu cầu:** Xem [results/demand_file_check.csv](results/demand_file_check.csv) (`4.500.000` dòng × `20` cột, tất cả số đếm lỗi = `0`) và [results/run_metadata.json](results/run_metadata.json).
 
 ## Liên kết tệp lớn trên Google Drive (mở quyền cho Task 11)
 - **File chính `demand_timesnet.parquet`** (`81,562,029` bytes | SHA-256: `c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694`):

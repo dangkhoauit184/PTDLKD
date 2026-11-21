@@ -16,11 +16,10 @@ Chi tiết tham số và điều kiện mẫu nằm trong `run_info.md`; log n�
 
 ## Tệp bàn giao
 
-- `07_smoke_test.ipynb`: notebook có output của các bước lọc, chạy TimesNet, kiểm tra Parquet và bảng metrics.
-- `smoke_pairs.csv`: 100 cặp duy nhất.
-- `demand_timesnet_smoke.parquet`: 9.000 dòng dự đoán TimesNet.
-- `smoke_metrics.csv`: WAPE/WPE theo nhánh và nhóm.
-- `smoke/ssa_raw.log`, `smoke/timesnet.log`, `smoke/ssa_timesnet.log`.
-- `run_info.md`: cấu hình của lượt smoke.
+- [07_smoke_test.ipynb](07_smoke_test.ipynb) và [patch_baseline.py](patch_baseline.py): notebook có output thực chạy của các bước lọc, chạy TimesNet, kiểm tra Parquet và bảng metrics.
+- [smoke_pairs.csv](smoke_pairs.csv): 100 cặp duy nhất (`store_id`, `product_id`).
+- [smoke_metrics.csv](smoke_metrics.csv): WAPE/WPE theo nhánh (`SSA_RawSales`, `SSA_TimesNet`) và phân nhóm.
+- [smoke/ssa_raw.log](smoke/ssa_raw.log), [smoke/timesnet.log](smoke/timesnet.log), [smoke/ssa_timesnet.log](smoke/ssa_timesnet.log): log thực chạy ba giai đoạn.
+- [run_info.md](run_info.md) và [Báo cáo Task 7](../reports/Task07_Report.md): thông tin nguồn dữ liệu, môi trường, tham số và SHA-256 của tệp `demand_timesnet_smoke.parquet` (`9.000` dòng; tệp `.parquet` không lưu trên GitHub theo [Contribution Guide](../docs/Contribution_Guide.md)).
 
-Các tệp Parquet train/eval trung gian được tạo trong baseline clone cục bộ để notebook có thể chạy lại; không đưa chúng vào thư mục bàn giao.
+Các tệp Parquet trung gian được sinh tự động khi chạy notebook và bị loại trừ khỏi Git qua `.gitignore`.

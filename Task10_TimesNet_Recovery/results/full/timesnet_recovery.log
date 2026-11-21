@@ -1,0 +1,29 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1795181991.060191    5361 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1795181993.474675    5361 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1795181993.475283    5361 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+cuda:0
+Namespace(model='TimesNet', missing_rate=0.0)
+ACTIVE_SEED = 2024
+ACTIVE_CONFIG = {'model': 'TimesNet', 'saving_path': './save', 'EPOCHS': 5, 'batch_size': 128, 'patience': 5, 'n_layers': 2, 'd_model': 64, 'd_ffn': 32, 'n_heads': 4, 'd_k': 16, 'd_v': 16, 'dropout': 0.0, 'attn_dropout': 0.0, 'lr': 0.001, 'weight_decay': 1e-05, 'OT': 1, 'missing_rate': 0.0, 'n_patches': 7, 'alpha': 0.01}
+[load_data] Reading local train parquet: /content/frn_cache/train.parquet
+[load_data] Loaded train rows: 4500000, cols: 19
+0
+2026-11-20 13:40:10 [INFO]: Using the given device: cuda:0
+2026-11-20 13:40:10 [INFO]: Model files will be saved to ./save/TimesNet/20261120_T134010
+2026-11-20 13:40:10 [INFO]: Tensorboard file will be saved to ./save/TimesNet/20261120_T134010/tensorboard
+2026-11-20 13:40:10 [INFO]: TimesNet initialized with the given hyperparameters, the number of trainable parameters: 1,354,438
+2026-11-20 13:56:32 [INFO]: Epoch 001 - training loss: 0.0628
+2026-11-20 14:12:41 [INFO]: Epoch 002 - training loss: 0.0613
+2026-11-20 14:28:48 [INFO]: Epoch 003 - training loss: 0.0606
+2026-11-20 14:44:22 [INFO]: Epoch 004 - training loss: 0.0604
+2026-11-20 14:59:44 [INFO]: Epoch 005 - training loss: 0.0602
+2026-11-20 14:59:44 [INFO]: Finished training. The best model is from epoch#5.
+2026-11-20 14:59:44 [INFO]: Saved the model to ./save/TimesNet/20261120_T134010/TimesNet.pypots
+[_demand_recovery] Reading local train parquet: /content/frn_cache/train.parquet
+[_demand_recovery] Loaded train rows: 4500000, cols: 19
+[_demand_recovery] Saved ./demand/demand.parquet (4500000 rows, 20 cols)
+             method  decoupling score
+0       sale_amount         -0.566447
+1  sale_amount_pred          0.069918

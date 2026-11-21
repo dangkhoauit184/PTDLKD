@@ -1,0 +1,68 @@
+{
+  "task": "Task 10 - TimesNet Latent Demand Recovery",
+  "completed_utc": "2026-11-20T15:30:56.214935+00:00",
+  "repo_base_commit": "cedd08f",
+  "author_repo": "https://github.com/Dingdong-Inc/frn-50k-baseline.git",
+  "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "environment": {
+    "platform": "Google Colab",
+    "gpu": "NVIDIA L4",
+    "python": "3.13.16",
+    "torch": "2.14.1+cu130",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3"
+  },
+  "params": {
+    "model": "TimesNet",
+    "missing_rate": 0.0,
+    "seed": 2024,
+    "epochs": 5,
+    "batch_size": 128,
+    "lr": 0.001,
+    "weight_decay": 1e-05,
+    "patience": 5,
+    "n_steps": 480,
+    "n_features": 6,
+    "n_layers": 2,
+    "d_model": 64,
+    "d_ffn": 32,
+    "top_k": 7,
+    "n_kernels": 5,
+    "apply_nonstationary_norm": true,
+    "OT": 1
+  },
+  "inputs": {
+    "train_parquet": {
+      "path": "/content/drive/MyDrive/PTDLKD/train.parquet",
+      "bytes": 61075680,
+      "sha256": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+      "rows": 4500000,
+      "cols": 19,
+      "matches_task6": true
+    }
+  },
+  "outputs": {
+    "demand_timesnet_parquet": {
+      "drive_path": "/content/drive/MyDrive/PTDLKD/Task10_TimesNet_Recovery/full/demand_timesnet.parquet",
+      "drive_link": "https://drive.google.com/file/d/1f9db-U9f9C9OFS-V2EcmQv4FIU3bguR3/view?usp=sharing",
+      "bytes": 81562029,
+      "sha256": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+      "rows": 4500000,
+      "cols": 20,
+      "sale_amount_mean": 0.9985913,
+      "sale_amount_pred_mean": 1.206512
+    },
+    "checkpoint_dir": {
+      "drive_path": "/content/drive/MyDrive/PTDLKD/Task10_TimesNet_Recovery/full/checkpoint_TimesNet",
+      "drive_link": "https://drive.google.com/drive/folders/18D53nPab5toFuyuAQ00rRBrG_86WKKkR?usp=drive_link"
+    }
+  },
+  "metrics": {
+    "decoupling_score_raw_sales": -0.566447,
+    "decoupling_score_timesnet": 0.069918,
+    "paper_decoupling_score_raw_sales": -0.57,
+    "paper_decoupling_score_timesnet": 0.07,
+    "elapsed_minutes": 84.66,
+    "status": "completed"
+  }
+}
