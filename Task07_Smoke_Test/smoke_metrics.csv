@@ -1,0 +1,7 @@
+config_id,group,wape_pct,wpe_pct,status
+SSA_RawSales,Overall,35.6,-6.15,ok
+SSA_RawSales,Low Sale,40.38,-10.58,ok
+SSA_RawSales,High Sale,32.22,-2.44,ok
+SSA_TimesNet,Overall,35.11,-0.63,ok
+SSA_TimesNet,Low Sale,39.53,-5.01,ok
+SSA_TimesNet,High Sale,32.029999999999994,3.04,ok
