@@ -25,11 +25,11 @@ Trạng thái dưới đây được tổng hợp từ các thư mục, notebook
 | **4** | Kiểm định chất lượng và logic dữ liệu train/eval | **Đã hoàn thành** | [Notebook kiểm định](Task04_Data_Validation/notebooks/04_data_validation_colab.ipynb), [báo cáo Task 4](reports/Task04_Report.md), thư mục `Task04_Data_Validation/results/`. Có 34 dòng train mang trạng thái `REVIEW` do `discount > 1`; lượt tái lập chính giữ nguyên dữ liệu. |
 | **5** | EDA và thống kê mô tả dữ liệu | **Đã hoàn thành** | Hai notebook trong [Task05_EDA/notebooks](Task05_EDA/notebooks/), [báo cáo Task 5](reports/Task05_Report.md). |
 | **6** | Đối chiếu CSV–Parquet và xác nhận dữ liệu sẵn sàng cho thực nghiệm | **Đã hoàn thành** | [Notebook Task 6](Task06_Data_Preparation/notebooks/06_prepare_data.ipynb), [báo cáo](reports/Task06_Report.md), [biên bản và SHA-256](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md). Đã xác nhận 4.500.000 dòng train và 350.000 dòng eval. |
-| **7** | Chạy thử khép kín TimesNet → SSA trên tập nhỏ | **Chưa thấy sản phẩm trong repo** | Cần tạo `Task07_Smoke_Test/`, thử cùng một tập nhỏ cho hai nhánh, lưu log và chỉ số thử. Đây là bước kiểm tra pipeline, không dùng số thử làm kết quả chính thức. |
+| **7** | Chạy thử khép kín TimesNet → SSA trên tập nhỏ | **Đã hoàn thành** | [Notebook](Task07_Smoke_Test/07_smoke_test.ipynb), [bảng chỉ số smoke](Task07_Smoke_Test/smoke_metrics.csv), [báo cáo](reports/Task07_Report.md), [biên bản](Task07_Smoke_Test/run_info.md). Đã kiểm chứng luồng khép kín trên 100 cặp (9.000 dòng train, 700 dòng eval); không dùng số thử làm kết quả chính thức. |
 | **8** | SSA trên doanh số gốc (`SSA_RawSales`) | **Đã hoàn thành** | [Notebook](Task08_SSA_Raw_Sales/notebooks/08_ssa_raw_sales.ipynb), [bảng kết quả](Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv), [báo cáo](reports/Task08_Report.md). WAPE/WPE của ba nhóm khớp số công bố ở độ chính xác báo cáo. |
 | **9** | Đánh giá TimesNet với các điểm thiếu nhân tạo (MNAR) | **Đã hoàn thành** | [Notebook](Task09_TimesNet_MNAR/notebooks/09_timesnet_mnar.ipynb), [bảng kết quả](Task09_TimesNet_MNAR/results/mnar_metrics.csv), [báo cáo](reports/Task09_Report.md), [biên bản](Task09_TimesNet_MNAR/run_info.md). Chạy `--missing_rate 0.3` (seed 1024, 5 epoch) để đối chiếu Bảng 2; không tạo đầu vào cho SSA. |
-| **10** | Chạy TimesNet trên giờ hết hàng thực tế để khôi phục nhu cầu | **Chưa thấy sản phẩm trong repo** | Cần tạo `Task10_TimesNet_Recovery/` và xuất `demand_timesnet.parquet` đầy đủ, kiểm tra khóa/giá trị, lưu decoupling score và log. File này là đầu vào của Task 11. |
-| **11** | Chạy SSA trên nhu cầu TimesNet và so sánh với Task 8 | **Chưa hoàn thành; phụ thuộc Task 10** | Tạo `Task11_SSA_TimesNet/`, dùng cùng eval và cách chia nhóm như Task 8; báo cáo song song `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale. |
+| **10** | Chạy TimesNet trên giờ hết hàng thực tế để khôi phục nhu cầu | **Đã hoàn thành** | [Notebook](Task10_TimesNet_Recovery/notebooks/10_timesnet_recovery.ipynb), [bảng Decoupling](Task10_TimesNet_Recovery/results/decoupling_metrics.csv), [đối soát file](Task10_TimesNet_Recovery/results/demand_file_check.csv), [báo cáo](reports/Task10_Report.md), [biên bản & link Drive](Task10_TimesNet_Recovery/run_info.md). Đã xuất `demand_timesnet.parquet` đầy đủ (4.500.000 dòng) cho Task 11. |
+| **11** | Chạy SSA trên nhu cầu TimesNet và so sánh với Task 8 | **Chưa hoàn thành; đã có đầu ra Task 10** | Tạo `Task11_SSA_TimesNet/`, dùng `demand_timesnet.parquet` từ Task 10 cùng eval và cách chia nhóm như Task 8; báo cáo song song `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale. |
 
 Chi tiết phân công Task 6–10 nằm trong [docs/Task06-10_Phan_cong_chi_tiet.md](docs/Task06-10_Phan_cong_chi_tiet.md). Báo cáo tổng hợp hiện có ở [reports/Synthesis_Report.md](reports/Synthesis_Report.md); cần cập nhật báo cáo này khi các task còn lại hoàn tất.
 
@@ -43,13 +43,15 @@ Task 8 đã chạy SSA trên dữ liệu đầy đủ. Kết quả WAPE/WPE tự
 | Low Sale | 38,33% | −8,03% | 0,2691 |
 | High Sale | 27,40% | −12,26% | 0,7761 |
 
-Đây là kết quả **SSA trên doanh số gốc**. Số SSA trên nhu cầu TimesNet vẫn là mục tiêu tham chiếu từ bài báo cho tới khi Task 10 và Task 11 chạy xong; không được trình bày các số tham chiếu ấy như kết quả của nhóm.
+Đây là kết quả **SSA trên doanh số gốc**. Số SSA trên nhu cầu TimesNet vẫn là mục tiêu tham chiếu từ bài báo cho tới khi Task 11 chạy xong; không được trình bày các số tham chiếu ấy như kết quả của nhóm.
 
-Task 9 đã chạy đánh giá TimesNet với thiếu nhân tạo (`--missing_rate 0.3` theo ví dụ README tác giả, tỷ lệ che thực tế 15,88% = 9.163.425 giờ quan sát khung 6..21; seed 1024, 5 epoch) trên 783.078 ngày hợp lệ để đối chiếu Bảng 2:
+Task 9 (thiếu nhân tạo `--missing_rate 0.3`, seed 1024, 5 epoch trên 783.078 ngày hợp lệ) và Task 10 (khôi phục thực tế `--missing_rate 0`, seed 2024, 5 epoch trên toàn bộ 4.500.000 dòng train) đã hoàn tất toàn bộ chỉ số đối chiếu **Bảng 2**:
 
-| Mô hình | Nhóm tự chạy (WAPE / WPE) | Tham chiếu bài báo (WAPE / WPE) | Chênh lệch |
+| Hạng mục (Bảng 2) | Nhóm tự chạy | Tham chiếu bài báo | Chênh lệch |
 |---|---:|---:|---:|
-| TimesNet (MNAR) | 27,81% / +2,04% | 27,62% / +1,43% | +0,19 pp / +0,61 pp |
+| TimesNet — WAPE / WPE (MNAR, Task 9) | 27,81% / +2,04% | 27,62% / +1,43% | +0,19 pp / +0,61 pp |
+| Raw Sales — Decoupling Score $\rho_{DS}$ (Task 10) | −0,5664 (−0,57) | −0,57 | 0,00 |
+| TimesNet — Decoupling Score $\rho_{DS}$ (Task 10) | +0,0699 (+0,07) | +0,07 | 0,00 |
 
 ## Dữ liệu và cách lấy hai file Parquet
 
@@ -66,12 +68,10 @@ Script ghi `train.parquet` và `eval.parquet` vào thư mục đang chạy lện
 
 ## Việc cần làm tiếp theo
 
-1. Hoàn thành Task 7 trên một tập con để kiểm tra việc nạp dữ liệu, chạy TimesNet, tạo Parquet nhu cầu và chạy SSA ở cả hai nhánh (hiện nhánh `feature/task07-smoke-test` mới có mã nguồn, trạng thái `not_run` do thiếu thư viện).
-2. Chạy Task 10 trên train đầy đủ để tạo và đối soát `demand_timesnet.parquet`.
-3. Sau khi Task 10 bàn giao file, chạy Task 11 trên cùng eval như Task 8 và so sánh chỉ số hai cấu hình SSA.
-4. Cập nhật báo cáo tổng hợp, kết luận và slide bằng kết quả thực chạy; ghi rõ các khác biệt so với bài báo.
+1. Chạy **Task 11 (`SSA_TimesNet`)** sử dụng `demand_timesnet.parquet` đã đối soát từ [Task 10](Task10_TimesNet_Recovery/run_info.md) trên cùng tập `eval` (206.562 dòng `stock_hour6_22_cnt == 0`) và cùng quy tắc phân nhóm `psd` như Task 8; đối chiếu song song hai cấu hình SSA với Bảng 3.
+2. Cập nhật báo cáo tổng hợp, kiểm định thống kê/diễn giải kinh doanh, kết luận và slide trình bày bằng toàn bộ kết quả thực chạy; ghi rõ các khác biệt và giới hạn tái lập so với bài báo.
 
-Task 11 cần đầu ra đầy đủ của Task 10. Theo dõi yêu cầu chi tiết, tham số, log và sản phẩm bàn giao trong [tài liệu phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md).
+Theo dõi yêu cầu chi tiết, tham số, log và sản phẩm bàn giao trong [tài liệu phân công Task 6–10](docs/Task06-10_Phan_cong_chi_tiet.md).
 
 ## Quy ước báo cáo và tái lập
 
@@ -86,5 +86,7 @@ Task 11 cần đầu ra đầy đủ của Task 10. Theo dõi yêu cầu chi ti�
 - [Tổng quan dự án](docs/Project_Overview.md)
 - [Hướng dẫn đóng góp Git](docs/Contribution_Guide.md)
 - [Báo cáo tổng hợp](reports/Synthesis_Report.md)
+- [Notebook và báo cáo Task 7 (Smoke Test)](Task07_Smoke_Test/README.md)
 - [Notebook và báo cáo Task 8](Task08_SSA_Raw_Sales/README.md)
 - [Notebook và báo cáo Task 9](Task09_TimesNet_MNAR/README.md)
+- [Notebook và báo cáo Task 10](Task10_TimesNet_Recovery/README.md)

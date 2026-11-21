@@ -1,0 +1,76 @@
+diff --git a/latent_demand_recovery/exp/app.py b/latent_demand_recovery/exp/app.py
+index 400e501..8e387cd 100755
+--- a/latent_demand_recovery/exp/app.py
++++ b/latent_demand_recovery/exp/app.py
+@@ -63,9 +63,15 @@ def _imputation(CONFIG):
+     return imputation
+     
+ def _demand_recovery(imputation):
+-    dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
+-    data = dataset['train'].to_pandas()
+-    data = data.sort_values(by=['store_id', 'product_id', 'dt'])
++    local_parquet = os.environ.get("FRN_LOCAL_TRAIN_PARQUET", "")
++    if local_parquet:
++        print(f"[_demand_recovery] Reading local train parquet: {local_parquet}", flush=True)
++        data = pd.read_parquet(local_parquet)
++    else:
++        dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
++        data = dataset['train'].to_pandas()
++    data = data.sort_values(by=['store_id', 'product_id', 'dt'], kind='mergesort').reset_index(drop=True)
++    print(f"[_demand_recovery] Loaded train rows: {len(data)}, cols: {len(data.columns)}", flush=True)
+     horizon=90
+     series_num = data.shape[0]//horizon
+     hours_sale = np.array(data['hours_sale'].tolist())
+@@ -75,11 +81,17 @@ def _demand_recovery(imputation):
+     data[f'sale_amount_pred'] = sale_amount_pred.reshape(-1)
+     if not os.path.exists('./demand'):
+         os.makedirs('./demand', exist_ok=True)
+-    data.to_parquet(f'./demand/demand.parquet')
++    data.to_parquet(f'./demand/demand.parquet', index=False)
++    data[['store_id', 'product_id', 'dt']].to_parquet(f'./demand/key_order.parquet', index=False)
++    print(f"[_demand_recovery] Saved ./demand/demand.parquet ({len(data)} rows, {len(data.columns)} cols)", flush=True)
+     return data
+     
+ def demand_recovery(CONFIG):
++    import gc
+     imputation = _imputation(CONFIG)
++    gc.collect()
++    if torch.cuda.is_available():
++        torch.cuda.empty_cache()
+     demand_df = None
+     if CONFIG['missing_rate'] == 0:
+         demand_df = _demand_recovery(imputation)
+@@ -165,6 +177,8 @@ if __name__ == '__main__':
+     CONFIG['model'] = args.model
+     CONFIG['missing_rate'] = args.missing_rate
+     ## set random seed
+-    set_seed(seed_value=1024)
++    print("ACTIVE_SEED =", 2024, flush=True)
++    print("ACTIVE_CONFIG =", CONFIG, flush=True)
++    set_seed(seed_value=2024)
+     ## latent demand recovery
+     demand_df = demand_recovery(CONFIG)
+diff --git a/latent_demand_recovery/exp/data/generate_data.py b/latent_demand_recovery/exp/data/generate_data.py
+index fc56086..d04a5c8 100755
+--- a/latent_demand_recovery/exp/data/generate_data.py
++++ b/latent_demand_recovery/exp/data/generate_data.py
+@@ -48,10 +48,16 @@ def mimic_missing(patch_ts, p=0.5, max_missing_patch=7, min_missing_patch=3):
+         
+         
+ def load_data(CONFIG):
+-    dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
+-    data = dataset['train'].to_pandas()
++    local_parquet = os.environ.get("FRN_LOCAL_TRAIN_PARQUET", "")
++    if local_parquet:
++        print(f"[load_data] Reading local train parquet: {local_parquet}", flush=True)
++        data = pd.read_parquet(local_parquet)
++    else:
++        dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
++        data = dataset['train'].to_pandas()
+ 
+-    data = data.sort_values(by=['store_id', 'product_id', 'dt'])
++    data = data.sort_values(by=['store_id', 'product_id', 'dt'], kind='mergesort').reset_index(drop=True)
++    print(f"[load_data] Loaded train rows: {len(data)}, cols: {len(data.columns)}", flush=True)
+     horizon=90
+     series_num = data.shape[0]//horizon
+ 

@@ -1,0 +1,6 @@
+cpu
+Namespace(model='TimesNet', missing_rate=0.0, train_path='C:\\Users\\trong\\Documents\\Codex\\2026-11-16\\files-mentioned-by-the-user-freshretailnet\\work\\PTDLKD\\frn-50k-baseline\\latent_demand_recovery\\exp\\demand\\train_smoke.parquet', output_path='C:\\Users\\trong\\Documents\\Codex\\2026-11-16\\files-mentioned-by-the-user-freshretailnet\\work\\PTDLKD\\Task07_Smoke_Test\\demand_timesnet_smoke.parquet', epochs=2)
+0
+             method  decoupling score
+0       sale_amount         -0.508354
+1  sale_amount_pred         -0.217262
