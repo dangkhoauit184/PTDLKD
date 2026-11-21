@@ -1,0 +1,6 @@
+C:\Users\trong\Documents\Codex\2026-11-16\files-mentioned-by-the-user-freshretailnet\work\PTDLKD\frn-50k-baseline\demand_forecasting\SSA\ssa_forecasting.py:19: Pandas4Warning: Series.dt.dayofweek is deprecated and will be removed in a future version. Use Series.dt.day_of_week instead.
+  all_data['dow'] = pd.to_datetime(all_data['dt']).dt.dayofweek
+    group                demand    wape     wpe     mae
+0  psd>=0  ssa_pred_sale_amount  0.3560 -0.0615  0.3879
+0   psd<1  ssa_pred_sale_amount  0.4038 -0.1058  0.2757
+0  psd>=1  ssa_pred_sale_amount  0.3222 -0.0244  0.6231

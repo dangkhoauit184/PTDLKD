@@ -1,7 +1,10 @@
-# Task 7 smoke run status
+# Task 7 smoke run
 
-Status: `not_run` — the local execution environment could not load PyTorch/NumPy native extensions installed in the writable workspace (blocked by Windows Application Control). This is not a completed smoke test.
+Completed at runtime: 2026-11-21 23:40:32.473517
 
-Prepared: notebook, pinned author baseline reference, and an idempotent patch script so `load_data`, `_demand_recovery`, and SSA raw/recovered evaluation accept the same filtered train/eval Parquets.
-
-Run settings configured in the notebook: 100 eligible pairs (seed 20261116), train/eval rows 9,000/700, TimesNet `--missing_rate 0 --epochs 1` (baseline default 5 epochs), SSA evaluation on the same 700 eval rows. No finite metrics, pair sample, or TimesNet Parquet were generated locally. The notebook writes these artifacts after successful runs. Do not use smoke metrics in Table 3.
+- Pair seed: 20261116; selected pairs: 100
+- Train rows: 9000; eval rows: 700
+- Eligibility: exactly 90 train rows and 7 eval rows per pair; >=1 train stockout; >=1 eval row with stock_hour6_22_cnt == 0.
+- TimesNet: model=TimesNet, missing_rate=0, epochs=2 (reduced from default 5), patience=1 (reduced from default 5 to satisfy patience < epochs), seed=1024 from baseline.
+- SSA raw and recovered demand: both used the same filtered train/eval files.
+- Outputs are smoke results and must not be copied into Table 3.
