@@ -1,0 +1,34 @@
+# command: /usr/bin/python3 -u /content/run_task12.py --author_exp /content/frn-50k-baseline/latent_demand_recovery/exp --data_path /content/frn_cache/train.parquet --work_dir /content/task12_work/full_mnar --model DLinear --missing_rate 0.3 --seed 1024 --batch_size 128 --epochs 5 --saving_path /content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/checkpoints/mnar
+[task12] data_path=/content/frn_cache/train.parquet
+[task12] train_rows=4500000 pairs=50000 dt_min=2024-03-28 dt_max=2024-06-25 stockout_points_6_21=14311536 ram_gb=1.6
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1795400308.522730    5654 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1795400310.894633    5654 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+cuda:0
+[task12] pypots_path=/content/frn-50k-baseline/latent_demand_recovery/pypots torch=2.14.1+cu130 cuda=True gpu=Tesla T4
+[task12] CONFIG {"model": "DLinear", "saving_path": "/content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/checkpoints/mnar", "EPOCHS": 5, "batch_size": 128, "patience": 5, "n_layers": 2, "d_model": 64, "d_ffn": 32, "n_heads": 4, "d_k": 16, "d_v": 16, "dropout": 0.0, "attn_dropout": 0.0, "lr": 0.001, "weight_decay": 1e-05, "OT": 1, "missing_rate": 0.3, "n_patches": 7, "alpha": 0.01}
+[task12] seed=1024
+9163425
+[task12] n_samples=150000 n_points_6_21=72000000 stockout_points=14311536 (khớp dữ liệu: True) artificially_masked=9163425 actual_mask_ratio=0.158843 ram_gb=5.2
+2026-11-23 02:18:37 [INFO]: Using the given device: cuda:0
+2026-11-23 02:18:37 [INFO]: Model files will be saved to /content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/checkpoints/mnar/DLinear/20261123_T021837
+2026-11-23 02:18:37 [INFO]: Tensorboard file will be saved to /content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/checkpoints/mnar/DLinear/20261123_T021837/tensorboard
+2026-11-23 02:18:37 [INFO]: DLinear initialized with the given hyperparameters, the number of trainable parameters: 464,204
+[task12] fit_start ram_gb=5.3
+2026-11-23 02:19:25 [INFO]: Epoch 001 - training loss: 0.1112
+2026-11-23 02:20:13 [INFO]: Epoch 002 - training loss: 0.0810
+2026-11-23 02:21:01 [INFO]: Epoch 003 - training loss: 0.0795
+2026-11-23 02:21:48 [INFO]: Epoch 004 - training loss: 0.0788
+2026-11-23 02:22:36 [INFO]: Epoch 005 - training loss: 0.0782
+2026-11-23 02:22:36 [INFO]: Finished training. The best model is from epoch#5.
+2026-11-23 02:22:36 [INFO]: Saved the model to /content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/checkpoints/mnar/DLinear/20261123_T021837/DLinear.pypots
+[task12] fit_end ram_gb=5.7
+[task12] predict_start ram_gb=5.7
+[task12] predict_end shape=(150000, 480, 6) ram_gb=7.3
+wape 0.3032116168146763
+wpe -0.14381890941283576
+[task12] eval_days=783078 ram_gb=8.4
+[task12] finished elapsed_sec=276 ram_gb=5.1
+# exit_code: 0

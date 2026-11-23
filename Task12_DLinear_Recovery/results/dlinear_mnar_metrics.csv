@@ -1,0 +1,2 @@
+model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,wpe_pct,status,log_path
+DLinear,0.3,1024,5,128,9163425,30.3212,-14.3819,ok,results/full/dlinear_mnar.log
