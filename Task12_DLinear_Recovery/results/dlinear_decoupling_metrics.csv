@@ -1,0 +1,3 @@
+method,decoupling_score,log_path
+Raw Sales,-0.566447,results/full/dlinear_recovery.log
+DLinear,-0.151151,results/full/dlinear_recovery.log

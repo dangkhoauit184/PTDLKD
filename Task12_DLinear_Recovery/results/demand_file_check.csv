@@ -1,0 +1,2 @@
+file_path,n_rows,n_cols,n_duplicate_keys,n_missing_keys_vs_train,n_extra_keys_vs_train,n_pred_missing,n_pred_non_finite,n_pred_negative
+/content/drive/MyDrive/PTDLKD/Task12_DLinear_Recovery/full/demand_dlinear.parquet,4500000,20,0,0,0,0,0,0
