@@ -10,13 +10,13 @@ Danh mục [15 cấu hình dự báo](../Task02_Experiment_Plan/docs/15_forecast
 
 | Người | Task | Việc chính | Đầu ra cần có |
 |---|---|---|---|
-| TV1 | **6 — Chốt đầu vào thực nghiệm** | Kiểm tra và dùng lại Parquet do Task 3 tạo; chỉ chuyển lại nếu chưa có bản phù hợp | Notebook, thông tin nguồn và bảng đối soát hai tập |
-| TV2 | **7 — Chạy thử TimesNet → SSA** | Chạy cả hai nhánh SSA trên cùng tập thử 100 cặp | Danh sách cặp, Parquet nhu cầu mẫu, log và chỉ số thử |
-| TV3 | **8 — SSA trên doanh số gốc** | Chạy `SSA_RawSales` trên dữ liệu đầy đủ | Bảng chỉ số ba nhóm và log |
-| TV4 | **9 — TimesNet với thiếu nhân tạo** | Chạy TimesNet MNAR trên train đầy đủ | WAPE/WPE và cấu hình tạo thiếu |
-| TV5 | **10 — TimesNet trên giờ hết hàng thực tế** | Khôi phục nhu cầu trên train đầy đủ và tính decoupling score | `demand_timesnet.parquet`, bảng điểm và log |
+| **Phạm Đăng Khoa** | **6 — Chốt đầu vào thực nghiệm** | Kiểm tra và dùng lại Parquet do Task 3 tạo; chỉ chuyển lại nếu chưa có bản phù hợp | Notebook, thông tin nguồn và bảng đối soát hai tập |
+| **Dương Trọng Toàn** | **7 — Chạy thử TimesNet → SSA** | Chạy cả hai nhánh SSA trên cùng tập thử 100 cặp | Danh sách cặp, Parquet nhu cầu mẫu, log và chỉ số thử |
+| **Sinhvienvuitinh** | **8 — SSA trên doanh số gốc** | Chạy `SSA_RawSales` trên dữ liệu đầy đủ | Bảng chỉ số ba nhóm và log |
+| **Khanh** | **9 — TimesNet với thiếu nhân tạo** | Chạy TimesNet MNAR trên train đầy đủ | WAPE/WPE và cấu hình tạo thiếu |
+| **Minh Nguyễn** | **10 — TimesNet trên giờ hết hàng thực tế** | Khôi phục nhu cầu trên train đầy đủ và tính decoupling score | `demand_timesnet.parquet`, bảng điểm và log |
 
-**Làm độc lập:** Mỗi người có một notebook, một thư mục kết quả và một nhánh riêng. TV2–TV5 có thể dùng bản dữ liệu đã đối soát ở Task 3–4 hoặc tự nạp từ CSV gốc. Không ai phải chờ đầu ra của một task khác trong 6–10. Task 7 và Task 10 huấn luyện độc lập ở hai quy mô; Task 9 và Task 10 là hai chế độ khác nhau.
+**Làm độc lập:** Mỗi người có một notebook, một thư mục kết quả và một nhánh riêng. Các thành viên làm Task 7–10 có thể dùng bản dữ liệu đã đối soát ở Task 3–6 hoặc tự nạp từ CSV gốc. Không ai phải chờ đầu ra của một task khác trong 6–10. Task 7 và Task 10 huấn luyện độc lập ở hai quy mô; Task 9 và Task 10 là hai chế độ khác nhau.
 
 ## Quy ước dùng chung
 
@@ -32,7 +32,7 @@ Danh mục [15 cấu hình dự báo](../Task02_Experiment_Plan/docs/15_forecast
 
 **Mỗi task nộp `run_info.md`** ghi tên dữ liệu, số dòng/cặp, commit repo nhóm và commit mã tác giả, phiên bản môi trường, lệnh chạy, tham số thực tế, seed nếu có, thay đổi so với mã tác giả, và đường dẫn đầu ra trên Drive. Làm việc trên nhánh `feature/task<số>-<tên>` theo [Contribution Guide](Contribution_Guide.md). Notebook, mã và báo cáo lưu trong thư mục task trên GitHub; dữ liệu, checkpoint, log và CSV kết quả lưu Drive theo `.gitignore`.
 
-## TV1 — Task 6: Chốt dữ liệu đầu vào thực nghiệm
+## Phạm Đăng Khoa — Task 6: Chốt dữ liệu đầu vào thực nghiệm
 
 **Thư mục:** `Task06_Data_Preparation/`. **Mục tiêu:** xác nhận một cặp file đầu vào có thể dùng lại, không làm lại toàn bộ Task 4 hoặc EDA.
 
@@ -50,7 +50,7 @@ Danh mục [15 cấu hình dự báo](../Task02_Experiment_Plan/docs/15_forecast
 
 **Đã hoàn thành:** xem [báo cáo và kết quả Task 6](../reports/Task06_Report.md). Hai Parquet hiện có được xác nhận khớp toàn bộ CSV đã kiểm tra ở Task 4.
 
-## TV2 — Task 7: Chạy thử TimesNet → SSA
+## Dương Trọng Toàn — Task 7: Chạy thử TimesNet → SSA
 
 **Thư mục:** `Task07_Smoke_Test/`. **Mục tiêu:** kiểm tra một lượt chạy khép kín trên tập nhỏ.
 
@@ -71,7 +71,7 @@ Danh mục [15 cấu hình dự báo](../Task02_Experiment_Plan/docs/15_forecast
 
 **Đã hoàn thành:** xem [báo cáo Task 7](../reports/Task07_Report.md) và [biên bản chạy](../Task07_Smoke_Test/run_info.md). Pipeline khép kín đạt `status=ok` cho cả hai nhánh SSA trên tập thử 100 cặp.
 
-## TV3 — Task 8: SSA trên doanh số gốc
+## Sinhvienvuitinh — Task 8: SSA trên doanh số gốc
 
 **Thư mục:** `Task08_SSA_Raw_Sales/`. **Mã cấu hình:** `SSA_RawSales`.
 
@@ -96,7 +96,7 @@ config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,
 
 **Đã hoàn thành:** xem [báo cáo và kết quả Task 8](../reports/Task08_Report.md). Kết quả tự chạy của cả ba nhóm khớp Bảng 3 ở độ chính xác công bố (chênh lệch 0,00 điểm phần trăm).
 
-## TV4 — Task 9: Đánh giá TimesNet khi tạo thiếu nhân tạo
+## Khanh — Task 9: Đánh giá TimesNet khi tạo thiếu nhân tạo
 
 **Thư mục:** `Task09_TimesNet_MNAR/`. **Mục tiêu:** lấy WAPE/WPE của TimesNet cho phần tham chiếu Bảng 2. Task 9 không xuất nhu cầu làm đầu vào dự báo.
 
@@ -121,7 +121,7 @@ model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,w
 
 **Đã hoàn thành:** xem [báo cáo Task 9](../reports/Task09_Report.md) và [biên bản chạy](../Task09_TimesNet_MNAR/run_info.md). Kết quả tự chạy đạt WAPE 27,81%, WPE +2,04% (so với Bảng 2: 27,62% và +1,43%).
 
-## TV5 — Task 10: Khôi phục nhu cầu bằng TimesNet tại giờ hết hàng thực tế
+## Minh Nguyễn — Task 10: Khôi phục nhu cầu bằng TimesNet tại giờ hết hàng thực tế
 
 **Thư mục:** `Task10_TimesNet_Recovery/`. **Mục tiêu:** tạo đầu vào TimesNet trên toàn bộ train cho `SSA_TimesNet` ở Task 11.
 
@@ -139,7 +139,7 @@ model,missing_rate,seed,epochs,batch_size,n_artificially_masked_hours,wape_pct,w
 - `decoupling_metrics.csv`: đúng **2 dòng**, `Raw Sales` và `TimesNet`, với các cột `method,decoupling_score,log_path`. Điểm ghi đúng như log, không đổi sang phần trăm.
 - `full/timesnet_recovery.log` và `run_info.md`: ghi lệnh, cấu hình, link Parquet và link checkpoint nếu lượt chạy có lưu. Link Parquet cần mở được với người làm Task 11.
 
-**Xong khi:** file nhu cầu đầy đủ đã đối soát, mở được từ Drive và có log/config tương ứng. Task này dừng sau khôi phục; TV5 không phải chạy SSA để hoàn thành Task 10.
+**Xong khi:** file nhu cầu đầy đủ đã đối soát, mở được từ Drive và có log/config tương ứng. Task này dừng sau khôi phục; Minh Nguyễn không phải chạy SSA để hoàn thành Task 10.
 
 **Đã hoàn thành:** xem [báo cáo Task 10](../reports/Task10_Report.md) và [biên bản chạy kèm link Drive `demand_timesnet.parquet`](../Task10_TimesNet_Recovery/run_info.md) (`4.500.000` dòng × `20` cột, SHA-256 `c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694`; Decoupling Score khớp Bảng 2: `-0.57` và `+0.07`).
 
@@ -162,6 +162,12 @@ Kết quả chính / trạng thái:
 Thiết lập khác với kế hoạch hoặc lượt chưa xong (nếu có):
 ```
 
-## Sau Task 6–10
+## Sau Task 6–10 (Mở rộng sang Task 11–15)
 
-**Task 11 — SSA trên nhu cầu TimesNet:** dùng `demand_timesnet.parquet` từ Task 10 làm lịch sử `sale_amount_pred`; đánh giá trên cùng eval (`eval.parquet` SHA-256 `61cfd3cb...` của Task 6, lọc đúng **206.562 dòng** `stock_hour6_22_cnt == 0`), cùng cách chia nhóm và cách tính chỉ số như Task 8. Giữ `sale_amount` gốc để tính `psd` cho cả hai cấu hình để danh sách cặp thuộc `Low Sale` (`psd < 1`) và `High Sale` (`psd >= 1`) trùng khớp 100% với Task 8. Đặt cạnh nhau `SSA_RawSales` và `SSA_TimesNet` cho Overall, Low Sale, High Sale; ghi riêng **số nhóm chạy, số bài báo, chênh lệch**. Đây là bước kế tiếp, chưa giao cho ai trong bảng 6–10.
+Toàn bộ Task 6–10 đã hoàn thành và merge vào `main` (`bfff86f`). Kế hoạch phân công giai đoạn tiếp theo (**Task 11–15**) cho 5 thành viên được quy định chi tiết tại [Task11-15_Phan_cong_chi_tiet.md](Task11-15_Phan_cong_chi_tiet.md):
+
+- **Task 11 (`Task11_SSA_TimesNet/` — Sinhvienvuitinh):** Chạy `SSA_TimesNet` từ `demand_timesnet.parquet` của Task 10 và đối chiếu trực tiếp với `SSA_RawSales` (Task 8) trên đúng 206.562 dòng `eval` hợp lệ.
+- **Task 12 (`Task12_DLinear_Recovery/` — Khanh):** Chạy mô hình khôi phục `DLinear` ở cả chế độ MNAR (`--missing_rate 0.3`) và thực tế (`--missing_rate 0`), tính Decoupling Score đối chiếu Bảng 2 và xuất `demand_dlinear.parquet`.
+- **Task 13 (`Task13_SSA_DLinear/` — Phạm Đăng Khoa):** Chạy `SSA_DLinear` trên `demand_dlinear.parquet` từ Task 12 và lập bảng tổng hợp đủ 3 cấu hình cột SSA của Bảng 3.
+- **Task 14 (`Task14_DLinear_Forecasting/` — Dương Trọng Toàn):** Dự báo 7 ngày bằng mạng học sâu `DLinear` cho 3 cấu hình cột DLinear Bảng 3 (`DLinear_RawSales`, `DLinear_TimesNet`, `DLinear_DLinear`).
+- **Task 15 (`Task15_TFT_Forecasting/` — Minh Nguyễn):** Dự báo 7 ngày bằng mô hình SOTA `TFT` cho 2 cấu hình cột TFT Bảng 3 (`TFT_RawSales`, `TFT_TimesNet`) trên Colab GPU L4 High-RAM.

@@ -1,0 +1,4 @@
+config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,delta_wpe_pp,status
+SSA_DLinear,Overall,30.12,-0.58,0.3749,30.0,-1.49,0.12,0.91,completed
+SSA_DLinear,Low Sale,38.0,3.69,0.2664,,,,,completed
+SSA_DLinear,High Sale,24.46,-3.64,0.6925,,,,,completed
