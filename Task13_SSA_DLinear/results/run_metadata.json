@@ -1,0 +1,43 @@
+{
+  "task_id": "Task13",
+  "config_id": "SSA_DLinear",
+  "assignee": "Phạm Đăng Khoa",
+  "model": "SSA",
+  "imputation_source": "DLinear (Task 12)",
+  "run_utc": "2026-11-23T07:17:35.674213+00:00",
+  "runtime": "Windows CPU",
+  "python": "3.12.10",
+  "numpy": "2.2.5",
+  "pandas": "2.2.3",
+  "pyarrow": "26.0.0",
+  "repo_base_commit": "0e3806e",
+  "ssa_reference_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "inputs": {
+    "demand_dlinear": {
+      "filename": "demand_dlinear.parquet",
+      "sha256": "2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b",
+      "bytes": 81531473,
+      "rows": 4500000
+    },
+    "eval": {
+      "filename": "eval.parquet",
+      "sha256": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+      "bytes": 5451872,
+      "rows": 350000
+    }
+  },
+  "target_column_used": "sale_amount_pred",
+  "psd_source_column": "sale_amount (raw train)",
+  "eval_ground_truth_column": "sale_amount (raw eval)",
+  "eligible_eval_rows": 206562,
+  "low_sale_eval_rows": 153208,
+  "high_sale_eval_rows": 53354,
+  "metrics_rows": 3,
+  "summary_rows": 9,
+  "paper_reference_note": "Paper Table 3 prints SSA_DLinear only for Overall (30.00% / -1.49%); Low Sale and High Sale paper_* and delta_* cells are intentionally left blank.",
+  "metric_units": {
+    "wape_pct": "percent",
+    "wpe_pct": "percent",
+    "mae": "normalized sales"
+  }
+}
