@@ -1,0 +1,4 @@
+config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,delta_wpe_pp,status
+SSA_TimesNet,Overall,29.79,1.4,0.3709,29.79,1.39,0.0,0.01,completed
+SSA_TimesNet,Low Sale,37.87,4.96,0.2656,37.87,4.89,0.0,0.07,completed
+SSA_TimesNet,High Sale,23.98,-1.15,0.679,23.98,-1.12,0.0,-0.03,completed

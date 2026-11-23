@@ -1,0 +1,13 @@
+{
+  "task_id": "Task11",
+  "config_id": "SSA_TimesNet",
+  "model": "SSA",
+  "imputation_source": "TimesNet (Task 10)",
+  "demand_timesnet_sha256": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+  "eval_parquet_sha256": "678caca15afed20239f2ea79208856fe18dad17fd444472c7d7e930edfa685bd",
+  "target_column_used": "sale_amount_pred",
+  "eligible_eval_rows": 206562,
+  "low_sale_eval_rows": 153208,
+  "high_sale_eval_rows": 53354,
+  "execution_timestamp_utc": "2026-11-23T03:49:18.369290+00:00"
+}
