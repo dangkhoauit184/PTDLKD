@@ -1,0 +1,40 @@
+{
+  "task_id": "Task11",
+  "config_id": "SSA_TimesNet",
+  "model": "SSA",
+  "imputation_source": "TimesNet (Task 10)",
+  "run_utc": "2026-11-23T06:51:45.914940+00:00",
+  "runtime": "Windows CPU",
+  "python": "3.12.10",
+  "numpy": "2.2.5",
+  "pandas": "2.2.3",
+  "pyarrow": "26.0.0",
+  "repo_base_commit": "bfff86f",
+  "ssa_reference_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "inputs": {
+    "demand_timesnet": {
+      "filename": "demand_timesnet.parquet",
+      "sha256": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+      "bytes": 81562029,
+      "rows": 4500000
+    },
+    "eval": {
+      "filename": "eval.parquet",
+      "sha256": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+      "bytes": 5451872,
+      "rows": 350000
+    }
+  },
+  "target_column_used": "sale_amount_pred",
+  "psd_source_column": "sale_amount (raw train)",
+  "eval_ground_truth_column": "sale_amount (raw eval)",
+  "eligible_eval_rows": 206562,
+  "low_sale_eval_rows": 153208,
+  "high_sale_eval_rows": 53354,
+  "metrics_rows": 3,
+  "metric_units": {
+    "wape_pct": "percent",
+    "wpe_pct": "percent",
+    "mae": "normalized sales"
+  }
+}

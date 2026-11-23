@@ -1,0 +1,4 @@
+group	demand	wape	wpe	mae
+psd>=0	ssa_pred_sale_amount_pred	0.2979	0.014	0.3709
+psd<1	ssa_pred_sale_amount_pred	0.3787	0.0496	0.2656
+psd>=1	ssa_pred_sale_amount_pred	0.2398	-0.0115	0.679
