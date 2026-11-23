@@ -1,6 +1,7 @@
 {
   "task": "Task 12 - DLinear latent demand recovery",
   "run_utc": "2026-11-23T02:48:40.468540+00:00",
+  "repo_base_commit": "bfff86f",
   "author_repo": "https://github.com/Dingdong-Inc/frn-50k-baseline.git",
   "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
   "data": {
@@ -135,6 +136,12 @@
       "sha256": "2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b",
       "share_link": "https://drive.google.com/file/d/1MDcD7cOyzcnoBu48I6eGUkSfwx8b3hkh/view?usp=drive_link",
       "checkpoint_link": "https://drive.google.com/drive/folders/18MjIAn0RF705AxhluhvgomYmNepY5kTo?usp=sharing"
-    }
+    },
+    "status": "ok"
+  },
+  "logs": {
+    "smoke": "results/smoke/dlinear_smoke.log",
+    "mnar": "results/full/dlinear_mnar.log",
+    "recovery": "results/full/dlinear_recovery.log"
   }
 }

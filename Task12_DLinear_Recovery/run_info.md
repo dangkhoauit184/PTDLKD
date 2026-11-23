@@ -1,16 +1,16 @@
 # Thông tin chạy Task 12 — DLinear: khôi phục nhu cầu tiềm ẩn
 
-**Cách tái lập:** mở `notebooks/12_dlinear_recovery.ipynb` trên Colab (GPU T4), sửa `DRIVE_TRAIN`, `OUT_DIR` ở mục 0 nếu cần, chạy lần lượt các ô.
+**Cách tái lập:** mở [notebooks/12_dlinear_recovery.ipynb](notebooks/12_dlinear_recovery.ipynb) trên Colab (GPU T4), sửa `DRIVE_TRAIN`, `OUT_DIR` ở mục 0 nếu cần, chạy lần lượt các ô.
 
 ## Đầu vào
 | Mục | Giá trị |
 |---|---|
-| File train | `train.parquet` Task 6 — SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96` (khớp Task 6: True) |
+| File train | `train.parquet` ([Task 6](../Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md)) — SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96` (khớp Task 6: True) |
 | Quy mô | 4.500.000 dòng × 19 cột, 50.000 cặp × 90 ngày → 150.000 mẫu × 480 bước × 6 kênh |
 | Eval | Không dùng |
 
 ## Mã và môi trường
-- Repo nhóm: nhánh `feature/task12-dlinear-recovery`. Mã tác giả `Dingdong-Inc/frn-50k-baseline` @ `8af694a09a5a427d1d50648d348c022565a781f2`, chạy `latent_demand_recovery/exp/app.py` với `pypots` đi kèm repo; **không sửa file nào của tác giả** (các thay thế nằm trong runner `run_task12.py` ghi ở mục 3 của notebook).
+- Repo nhóm: nhánh `feature/task12-dlinear-recovery` (tách từ commit nền `bfff86f` trên `main`). Mã tác giả `Dingdong-Inc/frn-50k-baseline` @ `8af694a09a5a427d1d50648d348c022565a781f2`, chạy `latent_demand_recovery/exp/app.py` với `pypots` đi kèm repo; **không sửa file nào của tác giả** (các thay thế nằm trong runner [run_task12.py](run_task12.py) ghi ở mục 3 của notebook).
 - Python 3.13.16, torch 2.14.1+cu130, NumPy 2.4.6, pandas 2.2.3, pyarrow 23.0.1, pygrinder 0.4, tsdb 0.3.1; GPU: Tesla T4, 15360 MiB; RAM 12.7 GB.
 
 ## Siêu tham số DLinear (theo `models.py`, giữ nguyên)
