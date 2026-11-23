@@ -16,20 +16,23 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Hoàn Thành Task 1–10
+## 2. Tiến độ Hoàn Thành Task 1–13
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
 | **1** | **Task 1** | **Đọc bài báo và chốt phạm vi** | Thành viên nhóm | Tài liệu phân tích bài toán MNAR, đối chiếu Bảng 2 & Bảng 3 bài báo. |
 | **2** | **Task 2** | **Lập kế hoạch thực nghiệm** | Thành viên nhóm | Bản đặc tả 15 cấu hình dự báo, bộ siêu tham số của 7 mô hình khôi phục. |
 | **3** | **Task 3** | **Chuẩn bị môi trường & Pipeline** | Thành viên nhóm | Thiết lập Google Colab GPU, giải quyết tương thích PyPOTS, tối ưu hóa I/O Parquet. |
-| **4** | **Task 4** | **Kiểm tra dữ liệu (Validation)** | **Đăng Khoa (Bạn)** | **Notebook đối soát 48 quy tắc trên 4.85M dòng, bảng profile 19 cột, phát hiện 34 dòng discount bất thường.** |
+| **4** | **Task 4** | **Kiểm tra dữ liệu (Validation)** | **Phạm Đăng Khoa** | **Notebook đối soát 48 quy tắc trên 4.85M dòng, bảng profile 19 cột, phát hiện 34 dòng discount bất thường.** |
 | **5** | **Task 5** | **Khám phá dữ liệu (EDA)** | Thành viên nhóm | 2 Notebook thống kê phân phối lệch phải, phân tích đường chữ U của hết hàng, 20% SKU chiếm 87% doanh số, 8 biểu đồ. |
-| **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | TV1 | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
-| **7** | **Task 7** | **Chạy thử khép kín (Smoke Test)** | TV2 | [Báo cáo và kiểm chứng pipeline 100 cặp](Task07_Report.md). |
-| **8** | **Task 8** | **SSA trên doanh số gốc** | TV3 | [Báo cáo và kết quả baseline](Task08_Report.md). |
-| **9** | **Task 9** | **TimesNet với thiếu nhân tạo (MNAR)** | TV4 | [Báo cáo và kết quả WAPE/WPE Bảng 2](Task09_Report.md). |
-| **10** | **Task 10** | **TimesNet khôi phục giờ hết hàng thực tế** | TV5 | [Báo cáo, Decoupling Score Bảng 2 và `demand_timesnet.parquet`](Task10_Report.md). |
+| **6** | **Task 6** | **Xác nhận dữ liệu đầu vào** | **Phạm Đăng Khoa** | [Notebook và biên bản đối chiếu CSV–Parquet](../Task06_Data_Preparation/). |
+| **7** | **Task 7** | **Chạy thử khép kín (Smoke Test)** | **Dương Trọng Toàn** | [Báo cáo và kiểm chứng pipeline 100 cặp](Task07_Report.md). |
+| **8** | **Task 8** | **SSA trên doanh số gốc** | **Sinhvienvuitinh** | [Báo cáo và kết quả baseline](Task08_Report.md). |
+| **9** | **Task 9** | **TimesNet với thiếu nhân tạo (MNAR)** | **Khanh** | [Báo cáo và kết quả WAPE/WPE Bảng 2](Task09_Report.md). |
+| **10** | **Task 10** | **TimesNet khôi phục giờ hết hàng thực tế** | **Minh Nguyễn** | [Báo cáo, Decoupling Score Bảng 2 và `demand_timesnet.parquet`](Task10_Report.md). |
+| **11** | **Task 11** | **SSA trên nhu cầu TimesNet** | **Sinhvienvuitinh** | [Báo cáo `SSA_TimesNet` và đối chiếu trực tiếp với Task 8](Task11_Report.md). |
+| **12** | **Task 12** | **DLinear khôi phục nhu cầu (Bảng 2)** | **Khanh** | [Báo cáo MNAR & Decoupling của DLinear, xuất `demand_dlinear.parquet`](Task12_Report.md). |
+| **13** | **Task 13** | **SSA trên nhu cầu DLinear & Tổng hợp SSA** | **Phạm Đăng Khoa** | [Báo cáo `SSA_DLinear` và bảng tổng hợp 3 cấu hình cột SSA](Task13_Report.md). |
 
 ---
 
@@ -81,32 +84,50 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ### Task 10 — Khôi phục Nhu cầu Thực tế bằng TimesNet & Xuất `demand_timesnet.parquet`
 * Huấn luyện TimesNet ở chế độ `--missing_rate 0` (`5` epoch, `batch_size=128`, `seed=2024` trên GPU NVIDIA L4 trong $84.66$ phút) trên toàn bộ tập `train.parquet` chuẩn của Task 6 ($4.500.000$ dòng).
-* Tái lập chỉ số tách rời **Decoupling Score ($\rho_{DS}$)** khớp tuyệt đối Bảng 2 bài báo ở độ chính xác công bố: doanh số gốc đạt **$-0.5664$** ($-0.57$), nhu cầu khôi phục bằng TimesNet đạt **$+0.0699$** ($+0.07$). Tệp đầu ra `demand_timesnet.parquet` ($4.500.000$ dòng × $20$ cột) đạt $0$ lỗi đối soát toàn vẹn và sẵn sàng cho Task 11 ([báo cáo Task 10](Task10_Report.md)).
+* Tái lập chỉ số tách rời **Decoupling Score ($\rho_{DS}$)** khớp tuyệt đối Bảng 2 bài báo ở độ chính xác công bố: doanh số gốc đạt **$-0.5664$** ($-0.57$), nhu cầu khôi phục bằng TimesNet đạt **$+0.0699$** ($+0.07$). Tệp đầu ra `demand_timesnet.parquet` ($4.500.000$ dòng × $20$ cột) đạt $0$ lỗi đối soát toàn vẹn ([báo cáo Task 10](Task10_Report.md)).
+
+### Task 11 — Dự báo `SSA_TimesNet` và Đối chiếu Trực tiếp với Task 8
+* Thực thi SSA trên lịch sử nhu cầu khôi phục `sale_amount_pred` từ `demand_timesnet.parquet`, phân nhóm theo `psd` gốc và đánh giá trên cùng $206.562$ dòng `eval` hợp lệ (`Low Sale = 153.208`, `High Sale = 53.354`).
+* Tái lập khớp tuyệt đối `0.00 pp` WAPE của Bảng 3 trên cả ba nhóm: `Overall` (**$29.79\%$** / **$+1.40\%$**), `Low Sale` (**$37.87\%$** / **$+4.96\%$**) và `High Sale` (**$23.98\%$** / **$-1.15\%$**), giảm $3.42\text{ pp}$ WAPE ở mặt hàng bán chạy và triệt tiêu thiên lệch dự báo thiếu ([báo cáo Task 11](Task11_Report.md)).
+
+### Task 12 — Khôi phục Nhu cầu bằng `DLinear` (Bảng 2) & Xuất `demand_dlinear.parquet`
+* Thực thi mô hình khôi phục tuyến tính `DLinear` ở cả hai chế độ trên Colab GPU T4: lượt MNAR (`missing_rate=0.3`, `seed=1024`) đạt WAPE **$30.32\%$** (bài báo $29.99\%$), WPE **$-14.38\%$** trên đúng $783.078$ ngày như Task 9; lượt khôi phục thực tế (`missing_rate=0`, `seed=2024`) đạt Decoupling Score **$-0.1512$** ($-0.15$, bài báo $-0.16$) và xuất `demand_dlinear.parquet` đạt $0$ lỗi đối soát ([báo cáo Task 12](Task12_Report.md)).
+
+### Task 13 — Dự báo `SSA_DLinear` & Hoàn thiện Cột SSA Bảng 3
+* Thực thi SSA trên `demand_dlinear.parquet` của Task 12, đạt WAPE **$30.12\%$**, WPE **$-0.58\%$**, MAE **$0.3749$** trên `Overall` (khớp sát Bảng 3 bài báo $30.00\%$ / $-1.49\%$, chênh $+0.12\text{ pp}$ WAPE).
+* Tổng hợp 9 dòng cho cả 3 cấu hình cột SSA (`SSA_RawSales` → `SSA_DLinear` → `SSA_TimesNet`), xác nhận quy luật cải thiện đơn điệu trên mọi phân nhóm (`Overall`: $31.97\% \to 30.12\% \to 29.79\%$; `High Sale`: $27.40\% \to 24.46\% \to 23.98\%$; xem [báo cáo Task 13](Task13_Report.md)).
 
 ---
 
 ## 4. Kết quả nhóm đã tự chạy và số tham chiếu bài báo
 
-### 4.1. Kết quả nhóm đã tự chạy
-- **Task 8 (`SSA_RawSales` — đối chiếu Bảng 3):** Đã chạy trên toàn bộ `train`/`eval`, đánh giá 206.562 dòng `eval` không hết hàng (`stock_hour6_22_cnt == 0`). Overall: WAPE **31,97%**, WPE **−10,50%**, MAE **0,3982**; Low Sale: WAPE **38,33%**, WPE **−8,03%**, MAE **0,2691**; High Sale: WAPE **27,40%**, WPE **−12,26%**, MAE **0,7761** (khớp Bảng 3 bài báo, chênh lệch 0,00 pp; chi tiết tại [Task08_Report.md](Task08_Report.md)).
-- **Task 9 (`TimesNet` MNAR — đối chiếu Bảng 2):** Đã chạy với `--missing_rate 0.3` (tham số mô phỏng theo README tác giả; che thêm thực tế 15,88% = 9.163.425 giờ quan sát), `seed 1024`, `5` epoch, đánh giá trên 783.078 ngày hợp lệ: WAPE **27,81%** (bài báo 27,62%, chênh **+0,19 pp**), WPE **+2,04%** (bài báo +1,43%, chênh **+0,61 pp**; chi tiết tại [Task09_Report.md](Task09_Report.md)).
-- **Task 10 (`TimesNet` Recovery — đối chiếu Bảng 2 & tạo dữ liệu cho Task 11):** Đã chạy với `--missing_rate 0`, `seed 2024`, `5` epoch trên toàn bộ 4.500.000 dòng `train`: Decoupling Score $\rho_{DS}$ của doanh số gốc đạt **−0,5664** (làm tròn **−0,57**, khớp bài báo −0,57), của TimesNet đạt **+0,0699** (làm tròn **+0,07**, khớp bài báo +0,07; chi tiết tại [Task10_Report.md](Task10_Report.md)).
+### 4.1. Kết quả nhóm đã tự chạy (Task 8–13)
+- **Bảng 2 — Khôi phục nhu cầu tiềm ẩn:**
+  - `TimesNet` ([Task 9](Task09_Report.md) & [Task 10](Task10_Report.md)): WAPE MNAR **27,81%** (bài báo 27,62%), WPE MNAR **+2,04%** (bài báo +1,43%); Decoupling Score **+0,0699** (+0,07, bài báo +0,07; Raw Sales **−0,5664** ≈ −0,57).
+  - `DLinear` ([Task 12](Task12_Report.md)): WAPE MNAR **30,32%** (bài báo 29,99%), WPE MNAR **−14,38%** (bài báo −1,28%); Decoupling Score **−0,1512** (−0,15, bài báo −0,16).
+- **Bảng 3 — Dự báo 7 ngày trên trọn bộ cột SSA (`206.562` dòng `eval` không hết hàng):**
+  - `SSA_RawSales` ([Task 8](Task08_Report.md)): Overall **31,97% / −10,50%** (MAE 0,3982); Low Sale **38,33% / −8,03%** (MAE 0,2691); High Sale **27,40% / −12,26%** (MAE 0,7761).
+  - `SSA_DLinear` ([Task 13](Task13_Report.md)): Overall **30,12% / −0,58%** (MAE 0,3749; bài báo 30,00% / −1,49%); Low Sale **38,00% / +3,69%** (MAE 0,2664); High Sale **24,46% / −3,64%** (MAE 0,6925).
+  - `SSA_TimesNet` ([Task 11](Task11_Report.md)): Overall **29,79% / +1,40%** (MAE 0,3709; bài báo 29,79% / +1,39%); Low Sale **37,87% / +4,96%** (MAE 0,2656); High Sale **23,98% / −1,15%** (MAE 0,6790).
 
-### 4.2. Số tham chiếu từ Bảng 3 của bài báo
-
-Các chỉ số dưới đây là số công bố trong bài báo. Kết quả nhóm tự chạy ở [Task 8](Task08_Report.md) khớp phần SSA trên doanh số gốc; phần SSA trên nhu cầu TimesNet sẽ lấy từ Task 11.
-| Nhóm Sản Phẩm | Pipeline Dự Báo | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
-| :--- | :--- | :---: | :---: | :--- |
-| **Overall (Toàn bộ)** | **SSA trên Doanh số gốc (Task 8)** | **$31.97\%$** | **$-10.50\%$** | Bị thiên lệch dự báo thiếu nặng nề |
-| | **SSA trên Nhu cầu TimesNet (Task 11)** | **$29.79\%$** | **$+1.39\%$** | **WAPE giảm 2,18 điểm phần trăm; WPE chuyển dương** |
-| | *TFT trên Nhu cầu TimesNet (SOTA)* | *$29.02\%$* | *$+2.58\%$* | Mức cải thiện cao nhất của bài báo |
-| **High Sale (Bán chạy)** | SSA trên Doanh số gốc | $27.40\%$ | $-12.26\%$ | Dự báo thiếu hơn $12\%$ nhu cầu thực |
-| | **SSA trên Nhu cầu TimesNet** | **$23.98\%$** | **$-1.12\%$** | **WAPE giảm 3,42 điểm phần trăm; WPE còn −1,12%** |
-| **Low Sale (Bán chậm)** | SSA trên Doanh số gốc | $38.33\%$ | $-8.03\%$ | Sai số cao do dữ liệu thưa |
-| | SSA trên Nhu cầu TimesNet | $37.87\%$ | $+4.89\%$ | Chuyển sang thiên lệch dương nhẹ |
+### 4.2. Tổng hợp Cột SSA tự chạy và Mục tiêu Tham chiếu cho Task 14–15
+| Nhóm Sản Phẩm | Cấu hình Dự Báo | Nguồn số liệu | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **Overall** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | **$31.97\%$** | **$-10.50\%$** | Thiên lệch dự báo thiếu nặng nề |
+| | `SSA_DLinear` (Task 13) | Nhóm tự chạy | **$30.12\%$** | **$-0.58\%$** | Giảm 1,85 pp WAPE bằng khôi phục tuyến tính |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$29.79\%$** | **$+1.40\%$** | **Giảm 2,18 pp WAPE; triệt tiêu lệch âm** |
+| | *`TFT_TimesNet` (Task 15)* | *Tham chiếu bài báo* | *$29.02\%$* | *$+2.58\%$* | *Mục tiêu SOTA đang triển khai* |
+| **High Sale** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | $27.40\%$ | $-12.26\%$ | Dự báo thiếu hơn $12\%$ nhu cầu thực |
+| | `SSA_DLinear` (Task 13) | Nhóm tự chạy | $24.46\%$ | $-3.64\%$ | Còn lệch âm nhẹ do giới hạn tách rời DLinear |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$23.98\%$** | **$-1.15\%$** | **Giảm 3,42 pp WAPE; WPE về sát 0** |
+| **Low Sale** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | $38.33\%$ | $-8.03\%$ | Sai số cao do chuỗi giờ thưa |
+| | `SSA_DLinear` (Task 13) | Nhóm tự chạy | $38.00\%$ | $+3.69\%$ | Cải thiện nhẹ WAPE |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$37.87\%$** | **$+4.96\%$** | Cải thiện tốt nhất trên cột SSA |
 
 ---
 
-## 5. Việc tiếp theo
+## 5. Việc tiếp theo (Task 14 & Task 15)
 
-Nhóm đã hoàn tất toàn bộ giai đoạn dữ liệu và khôi phục nhu cầu (Task 1–10), bao gồm [kết quả SSA trên doanh số gốc](../Task08_SSA_Raw_Sales/results/ssa_raw_sales_metrics.csv), [kết quả TimesNet MNAR](../Task09_TimesNet_MNAR/results/mnar_metrics.csv), [điểm tách rời Decoupling Score](../Task10_TimesNet_Recovery/results/decoupling_metrics.csv) và tệp nhu cầu khôi phục `demand_timesnet.parquet` ([biên bản & link Drive Task 10](../Task10_TimesNet_Recovery/run_info.md)). Bước thực nghiệm cuối cùng là chạy **Task 11 (`SSA_TimesNet`)** trên cùng tập `eval` (206.562 dòng hợp lệ), cùng quy tắc lọc và cách chia nhóm `psd` như Task 8 để hoàn tất đối chiếu Bảng 3 và tổng kết báo cáo cuối kỳ.
+Nhóm đã hoàn tất toàn bộ **Task 1–13**, bao gồm cả hai mô hình khôi phục ở Bảng 2 (`TimesNet`, `DLinear`) và trọn bộ [3 cấu hình cột SSA ở Bảng 3](../Task13_SSA_DLinear/results/ssa_all_3configs_summary.csv). Hai hạng mục thực nghiệm mở rộng cuối cùng đang được triển khai theo [docs/Task11-15_Phan_cong_chi_tiet.md](../docs/Task11-15_Phan_cong_chi_tiet.md):
+1. **Task 14 (`DLinear` Forecasting — Dương Trọng Toàn):** Chạy 3 cấu hình dự báo học sâu `DLinear_RawSales`, `DLinear_TimesNet` và `DLinear_DLinear` trên GPU T4.
+2. **Task 15 (`TFT` Forecasting — Minh Nguyễn):** Chạy 2 cấu hình SOTA `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM.
