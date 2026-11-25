@@ -16,7 +16,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Hoàn Thành Task 1–13
+## 2. Tiến độ Hoàn Thành Task 1–14
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -33,6 +33,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **11** | **Task 11** | **SSA trên nhu cầu TimesNet** | **Sinhvienvuitinh** | [Báo cáo `SSA_TimesNet` và đối chiếu trực tiếp với Task 8](Task11_Report.md). |
 | **12** | **Task 12** | **DLinear khôi phục nhu cầu (Bảng 2)** | **Khanh** | [Báo cáo MNAR & Decoupling của DLinear, xuất `demand_dlinear.parquet`](Task12_Report.md). |
 | **13** | **Task 13** | **SSA trên nhu cầu DLinear & Tổng hợp SSA** | **Phạm Đăng Khoa** | [Báo cáo `SSA_DLinear` và bảng tổng hợp 3 cấu hình cột SSA](Task13_Report.md). |
+| **14** | **Task 14** | **Dự báo 7 ngày bằng DLinear (Bảng 3)** | **Dương Trọng Toàn** | [Báo cáo 3 cấu hình cột `DLinear` (`RawSales`, `TimesNet`, `DLinear`)](Task14_Report.md). |
 
 ---
 
@@ -97,11 +98,15 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 * Thực thi SSA trên `demand_dlinear.parquet` của Task 12, đạt WAPE **$30.12\%$**, WPE **$-0.58\%$**, MAE **$0.3749$** trên `Overall` (khớp sát Bảng 3 bài báo $30.00\%$ / $-1.49\%$, chênh $+0.12\text{ pp}$ WAPE).
 * Tổng hợp 9 dòng cho cả 3 cấu hình cột SSA (`SSA_RawSales` → `SSA_DLinear` → `SSA_TimesNet`), xác nhận quy luật cải thiện đơn điệu trên mọi phân nhóm (`Overall`: $31.97\% \to 30.12\% \to 29.79\%$; `High Sale`: $27.40\% \to 24.46\% \to 23.98\%$; xem [báo cáo Task 13](Task13_Report.md)).
 
+### Task 14 — Dự báo 7 ngày bằng Mạng Học Sâu `DLinear` & Đối chứng với SSA
+* Huấn luyện mô hình phân rã chuỗi tuyến tính `DLinear` (`seq_len=30`, `pred_len=7`, `revin=True`, `6` epoch × `1.100.000` cửa sổ trượt, `seed=2025`, chặn dưới dự báo âm về $0$) trên cả 3 nguồn lịch sử (`RawSales`, `DLinear`, `TimesNet`) và đánh giá trên cùng $206.562$ dòng `eval` hợp lệ.
+* Khớp sát toàn bộ 7 ô có công bố của Bảng 3 bài báo (lệch WAPE chỉ từ $-0.28\text{ pp}$ đến $+0.16\text{ pp}$): `Overall` cải thiện từ **$31.54\%$** (`DLinear_RawSales`) xuống **$30.76\%$** (`DLinear_DLinear`) và **$30.55\%$** (`DLinear_TimesNet`). Đặc biệt ở mặt hàng bán chạy (`High Sale`), mạng học sâu `DLinear` vượt trội thuật toán thống kê `SSA` trên cả 3 nguồn dữ liệu (`25.70%` vs `27.40%`; `23.63%` vs `24.46%`; **`23.46%`** vs `23.98%`), trong khi ở nhóm `Low Sale` thưa nhiễu, `DLinear` + `RevIN` sinh thiên lệch dự báo thừa dương (`WPE +11.61%`, bài báo `+12.37%`; xem [báo cáo Task 14](Task14_Report.md)).
+
 ---
 
 ## 4. Kết quả nhóm đã tự chạy và số tham chiếu bài báo
 
-### 4.1. Kết quả nhóm đã tự chạy (Task 8–13)
+### 4.1. Kết quả nhóm đã tự chạy (Task 8–14)
 - **Bảng 2 — Khôi phục nhu cầu tiềm ẩn:**
   - `TimesNet` ([Task 9](Task09_Report.md) & [Task 10](Task10_Report.md)): WAPE MNAR **27,81%** (bài báo 27,62%), WPE MNAR **+2,04%** (bài báo +1,43%); Decoupling Score **+0,0699** (+0,07, bài báo +0,07; Raw Sales **−0,5664** ≈ −0,57).
   - `DLinear` ([Task 12](Task12_Report.md)): WAPE MNAR **30,32%** (bài báo 29,99%), WPE MNAR **−14,38%** (bài báo −1,28%); Decoupling Score **−0,1512** (−0,15, bài báo −0,16).
@@ -109,20 +114,33 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
   - `SSA_RawSales` ([Task 8](Task08_Report.md)): Overall **31,97% / −10,50%** (MAE 0,3982); Low Sale **38,33% / −8,03%** (MAE 0,2691); High Sale **27,40% / −12,26%** (MAE 0,7761).
   - `SSA_DLinear` ([Task 13](Task13_Report.md)): Overall **30,12% / −0,58%** (MAE 0,3749; bài báo 30,00% / −1,49%); Low Sale **38,00% / +3,69%** (MAE 0,2664); High Sale **24,46% / −3,64%** (MAE 0,6925).
   - `SSA_TimesNet` ([Task 11](Task11_Report.md)): Overall **29,79% / +1,40%** (MAE 0,3709; bài báo 29,79% / +1,39%); Low Sale **37,87% / +4,96%** (MAE 0,2656); High Sale **23,98% / −1,15%** (MAE 0,6790).
+- **Bảng 3 — Dự báo 7 ngày trên trọn bộ cột DLinear ([Task 14](Task14_Report.md), `206.562` dòng `eval` không hết hàng):**
+  - `DLinear_RawSales`: Overall **31,54% / −5,21%** (MAE 0,3932; bài báo 31,56% / −4,89%); Low Sale **39,71% / −1,31%** (MAE 0,2781; bài báo 39,78% / −1,03%); High Sale **25,70% / −7,97%** (MAE 0,7310; bài báo 25,68% / −7,63%).
+  - `DLinear_DLinear`: Overall **30,76% / +4,63%** (MAE 0,3824; bài báo 30,60% / +4,02%); Low Sale **40,73% / +10,75%** (MAE 0,2843); High Sale **23,63% / +0,26%** (MAE 0,6700).
+  - `DLinear_TimesNet`: Overall **30,55% / +6,21%** (MAE 0,3797; bài báo 30,73% / +6,88%); Low Sale **40,45% / +11,61%** (MAE 0,2824; bài báo 40,73% / +12,37%); High Sale **23,46% / +2,37%** (MAE 0,6649; bài báo 23,58% / +2,98%).
 
-### 4.2. Tổng hợp Cột SSA tự chạy và Mục tiêu Tham chiếu cho Task 14–15
+### 4.2. Tổng hợp 6 cấu hình Bảng 3 tự chạy (SSA & DLinear) và Mục tiêu Tham chiếu Task 15
 | Nhóm Sản Phẩm | Cấu hình Dự Báo | Nguồn số liệu | WAPE (%) | WPE (%) | Ý Nghĩa Kết Quả |
 | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Overall** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | **$31.97\%$** | **$-10.50\%$** | Thiên lệch dự báo thiếu nặng nề |
-| | `SSA_DLinear` (Task 13) | Nhóm tự chạy | **$30.12\%$** | **$-0.58\%$** | Giảm 1,85 pp WAPE bằng khôi phục tuyến tính |
-| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$29.79\%$** | **$+1.40\%$** | **Giảm 2,18 pp WAPE; triệt tiêu lệch âm** |
+| **Overall** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | $31.97\%$ | $-10.50\%$ | Thiên lệch dự báo thiếu nặng nề |
+| | `DLinear_RawSales` (Task 14) | Nhóm tự chạy | $31.54\%$ | $-5.21\%$ | Giảm sai số baseline nhờ học sâu phân rã chuỗi |
+| | `DLinear_DLinear` (Task 14) | Nhóm tự chạy | $30.76\%$ | $+4.63\%$ | Giảm $0.78\text{ pp}$ WAPE so với `DLinear_RawSales` |
+| | `DLinear_TimesNet` (Task 14) | Nhóm tự chạy | $30.55\%$ | $+6.21\%$ | Tốt nhất trên cột `DLinear` |
+| | `SSA_DLinear` (Task 13) | Nhóm tự chạy | $30.12\%$ | $-0.58\%$ | Giảm $1.85\text{ pp}$ WAPE bằng khôi phục tuyến tính |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$29.79\%$** | **$+1.40\%$** | **Tốt nhất trong 6 cấu hình đã chạy; triệt tiêu lệch âm** |
 | | *`TFT_TimesNet` (Task 15)* | *Tham chiếu bài báo* | *$29.02\%$* | *$+2.58\%$* | *Mục tiêu SOTA đang triển khai* |
 | **High Sale** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | $27.40\%$ | $-12.26\%$ | Dự báo thiếu hơn $12\%$ nhu cầu thực |
+| | `DLinear_RawSales` (Task 14) | Nhóm tự chạy | $25.70\%$ | $-7.97\%$ | Học sâu vượt SSA ngay từ dữ liệu thô ($-1.70\text{ pp}$) |
 | | `SSA_DLinear` (Task 13) | Nhóm tự chạy | $24.46\%$ | $-3.64\%$ | Còn lệch âm nhẹ do giới hạn tách rời DLinear |
-| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$23.98\%$** | **$-1.15\%$** | **Giảm 3,42 pp WAPE; WPE về sát 0** |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | $23.98\%$ | $-1.15\%$ | Giảm $3.42\text{ pp}$ WAPE trên cột SSA |
+| | `DLinear_DLinear` (Task 14) | Nhóm tự chạy | $23.63\%$ | $+0.26\%$ | Vượt cả `SSA_TimesNet` ở mặt hàng bán chạy |
+| | `DLinear_TimesNet` (Task 14) | Nhóm tự chạy | **$23.46\%$** | **$+2.37\%$** | **Tốt nhất hiện tại ở nhóm High Sale ($-3.94\text{ pp}$ so với `SSA_RawSales`)** |
 | **Low Sale** | `SSA_RawSales` (Task 8) | Nhóm tự chạy | $38.33\%$ | $-8.03\%$ | Sai số cao do chuỗi giờ thưa |
 | | `SSA_DLinear` (Task 13) | Nhóm tự chạy | $38.00\%$ | $+3.69\%$ | Cải thiện nhẹ WAPE |
-| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$37.87\%$** | **$+4.96\%$** | Cải thiện tốt nhất trên cột SSA |
+| | `SSA_TimesNet` (Task 11) | Nhóm tự chạy | **$37.87\%$** | **$+4.96\%$** | **Tốt nhất ở nhóm hàng bán chậm** |
+| | `DLinear_RawSales` (Task 14) | Nhóm tự chạy | $39.71\%$ | $-1.31\%$ | Học sâu nhạy nhiễu trên chuỗi nhiều số $0$ |
+| | `DLinear_TimesNet` (Task 14) | Nhóm tự chạy | $40.45\%$ | $+11.61\%$ | Lệch dương do `RevIN` khuếch đại chuỗi khôi phục thưa |
+| | `DLinear_DLinear` (Task 14) | Nhóm tự chạy | $40.73\%$ | $+10.75\%$ | Cùng hiện tượng dự báo thừa trên nhóm `psd < 1` |
 
 ---
 

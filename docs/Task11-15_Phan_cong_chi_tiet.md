@@ -13,8 +13,8 @@ Khi hoàn tất 5 task dưới đây, nhóm tự chạy thực nghiệm được
 | **Sinhvienvuitinh** | Task 8 (`SSA_RawSales`) | **Task 11** — `Task11_SSA_TimesNet/` | Dự báo **`SSA_TimesNet`** từ `demand_timesnet.parquet` (Task 10) và đối chiếu trực tiếp với Task 8 | **Đã hoàn thành** ([Báo cáo Task 11](../reports/Task11_Report.md)) |
 | **Khanh** | Task 9 (`TimesNet` MNAR) | **Task 12** — `Task12_DLinear_Recovery/` | Khôi phục nhu cầu bằng **`DLinear`** cho cả chế độ MNAR (`0.3`) lẫn thực tế (`0.0`), xuất `demand_dlinear.parquet` | **Đã hoàn thành** ([Báo cáo Task 12](../reports/Task12_Report.md)) |
 | **Phạm Đăng Khoa** | Task 4 & Task 6 | **Task 13** — `Task13_SSA_DLinear/` | Dự báo **`SSA_DLinear`** từ `demand_dlinear.parquet` (Task 12) và tổng hợp trọn bộ 3 cấu hình cột SSA | **Đã hoàn thành** ([Báo cáo Task 13](../reports/Task13_Report.md)) |
-| **Dương Trọng Toàn** | Task 7 (`Smoke Test`) | **Task 14** — `Task14_DLinear_Forecasting/` | Dự báo 7 ngày bằng mạng học sâu **`DLinear`**: `DLinear_RawSales`, `DLinear_TimesNet`, `DLinear_DLinear` | **Đang triển khai** (đã đủ cả 3 tệp Parquet trên Drive) |
-| **Minh Nguyễn** | Task 10 (`TimesNet` Recovery) | **Task 15** — `Task15_TFT_Forecasting/` | Dự báo 7 ngày bằng mô hình SOTA **`TFT`**: `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM | **Đang triển khai** (đã đủ các tệp Parquet trên Drive) |
+| **Dương Trọng Toàn** | Task 7 (`Smoke Test`) | **Task 14** — `Task14_DLinear_Forecasting/` | Dự báo 7 ngày bằng mạng học sâu **`DLinear`**: `DLinear_RawSales`, `DLinear_TimesNet`, `DLinear_DLinear` | **Đã hoàn thành** ([Báo cáo Task 14](../reports/Task14_Report.md)) |
+| **Minh Nguyễn** | Task 10 (`TimesNet` Recovery) | **Task 15** — `Task15_TFT_Forecasting/` | Dự báo 7 ngày bằng mô hình SOTA **`TFT`**: `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM | **Đang triển khai** (đã đủ các tệp Parquet trong repo & trên Drive) |
 
 ---
 

@@ -28,12 +28,12 @@ Khi một mặt hàng hết hàng, doanh số ghi nhận có thể bằng 0 dù 
 | **11** | **Sinhvienvuitinh** | Chạy SSA trên nhu cầu TimesNet (`SSA_TimesNet`) và so sánh với Task 8 | **Đã hoàn thành** | [Notebook](Task11_SSA_TimesNet/notebooks/11_ssa_timesnet.ipynb), [chỉ số `SSA_TimesNet`](Task11_SSA_TimesNet/results/ssa_timesnet_metrics.csv), [bảng đối chiếu](Task11_SSA_TimesNet/results/ssa_raw_vs_timesnet_comparison.csv), [báo cáo](reports/Task11_Report.md). WAPE khớp Bảng 3 `0,00 pp` trên cả 3 nhóm. |
 | **12** | **Khanh** | Khôi phục nhu cầu bằng `DLinear` (MNAR & thực tế) và xuất Parquet | **Đã hoàn thành** | [Notebook](Task12_DLinear_Recovery/notebooks/12_dlinear_recovery.ipynb), [MNAR CSV](Task12_DLinear_Recovery/results/dlinear_mnar_metrics.csv), [Decoupling CSV](Task12_DLinear_Recovery/results/dlinear_decoupling_metrics.csv), [báo cáo](reports/Task12_Report.md), [biên bản & link Drive](Task12_DLinear_Recovery/run_info.md). Xuất `demand_dlinear.parquet`. |
 | **13** | **Phạm Đăng Khoa** | Chạy SSA trên nhu cầu DLinear (`SSA_DLinear`) và tổng hợp cột SSA | **Đã hoàn thành** | [Notebook](Task13_SSA_DLinear/notebooks/13_ssa_dlinear.ipynb), [chỉ số `SSA_DLinear`](Task13_SSA_DLinear/results/ssa_dlinear_metrics.csv), [tổng hợp 3 cấu hình SSA](Task13_SSA_DLinear/results/ssa_all_3configs_summary.csv), [báo cáo](reports/Task13_Report.md), [biên bản](Task13_SSA_DLinear/run_info.md). |
-| **14** | **Dương Trọng Toàn** | Dự báo 7 ngày bằng mạng học sâu `DLinear` (3 cấu hình Bảng 3) | **Đã hoàn thành** | [Notebook](Task14_DLinear_Forecasting/notebooks/14_dlinear_forecasting.ipynb), [chỉ số DLinear](Task14_DLinear_Forecasting/results/dlinear_forecasting_metrics.csv) 9 dòng, [code_changes.diff](Task14_DLinear_Forecasting/code_changes.diff), [log đầy đủ](Task14_DLinear_Forecasting/results/full/) và [báo cáo](reports/Task14_Report.md). Cả 3 cấu hình đều `exit_code=0`, với `206.562` dòng `psd>=0`. |
+| **14** | **Dương Trọng Toàn** | Dự báo 7 ngày bằng mạng học sâu `DLinear` (3 cấu hình Bảng 3) | **Đã hoàn thành** | [Notebook](Task14_DLinear_Forecasting/notebooks/14_dlinear_forecasting.ipynb), [chỉ số `DLinear` (9 dòng)](Task14_DLinear_Forecasting/results/dlinear_forecasting_metrics.csv), [`code_changes.diff`](Task14_DLinear_Forecasting/code_changes.diff), [biên bản](Task14_DLinear_Forecasting/run_info.md) và [báo cáo](reports/Task14_Report.md). Khớp sát cột DLinear Bảng 3 trên `206.562` dòng hợp lệ. |
 | **15** | **Minh Nguyễn** | Dự báo 7 ngày bằng mô hình SOTA `TFT` (2 cấu hình Bảng 3) | **Đang triển khai (đã đủ các tệp Parquet)** | Tạo `Task15_TFT_Forecasting/`, chạy `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM; bàn giao `tft_forecasting_metrics.csv` (6 dòng), `code_changes.diff`, log và `reports/Task15_Report.md`. |
 
 Chi tiết phân công và lưu ý kỹ thuật nằm tại [docs/Task11-15_Phan_cong_chi_tiet.md](docs/Task11-15_Phan_cong_chi_tiet.md) và [docs/Task06-10_Phan_cong_chi_tiet.md](docs/Task06-10_Phan_cong_chi_tiet.md). Báo cáo tổng hợp tại [reports/Synthesis_Report.md](reports/Synthesis_Report.md).
 
-## Kết quả nhóm đã tự chạy (Task 1–13)
+## Kết quả nhóm đã tự chạy (Task 1–14)
 
 ### 1. Khôi phục nhu cầu tiềm ẩn — Đối chiếu Bảng 2 (Task 9, Task 10, Task 12)
 
@@ -61,7 +61,23 @@ Chi tiết phân công và lưu ý kỹ thuật nằm tại [docs/Task11-15_Phan
 | **High Sale** | `SSA_DLinear` (Task 13) | 24,46% | −3,64% | 0,6925 | – | – | – |
 | **High Sale** | `SSA_TimesNet` (Task 11) | **23,98%** | **−1,15%** | **0,6790** | 23,98% | −1,12% | 0,00 / −0,03 pp |
 
-Các cấu hình dự báo học sâu còn lại thuộc **Task 14 (`DLinear_*`)** và **Task 15 (`TFT_*`)** vẫn là mục tiêu tham chiếu từ bài báo cho tới khi hai lượt chạy hoàn tất.
+### 3. Dự báo 7 ngày — Trọn bộ 3 cấu hình cột DLinear Bảng 3 (Task 14)
+
+Huấn luyện mạng học sâu `DLinear` (`seq_len=30`, `pred_len=7`, `revin=True`, `6` epoch × `1.100.000` cửa sổ, `seed=2025`, chặn dưới dự báo âm về `0`) và đánh giá trên cùng **206.562** dòng `eval` hợp lệ:
+
+| Phân nhóm | Cấu hình | WAPE tự chạy | WPE tự chạy | MAE | WAPE bài báo | WPE bài báo | Lệch WAPE / WPE |
+|---|---|---:|---:|---:|---:|---:|---:|
+| **Overall** | `DLinear_RawSales` (Task 14) | 31,54% | −5,21% | 0,3932 | 31,56% | −4,89% | −0,02 / −0,32 pp |
+| **Overall** | `DLinear_DLinear` (Task 14) | 30,76% | +4,63% | 0,3824 | 30,60% | +4,02% | +0,16 / +0,61 pp |
+| **Overall** | `DLinear_TimesNet` (Task 14) | **30,55%** | **+6,21%** | **0,3797** | 30,73% | +6,88% | −0,18 / −0,67 pp |
+| **Low Sale** | `DLinear_RawSales` (Task 14) | **39,71%** | **−1,31%** | **0,2781** | 39,78% | −1,03% | −0,07 / −0,28 pp |
+| **Low Sale** | `DLinear_DLinear` (Task 14) | 40,73% | +10,75% | 0,2843 | – | – | – |
+| **Low Sale** | `DLinear_TimesNet` (Task 14) | 40,45% | +11,61% | 0,2824 | 40,73% | +12,37% | −0,28 / −0,76 pp |
+| **High Sale** | `DLinear_RawSales` (Task 14) | 25,70% | −7,97% | 0,7310 | 25,68% | −7,63% | +0,02 / −0,34 pp |
+| **High Sale** | `DLinear_DLinear` (Task 14) | 23,63% | +0,26% | 0,6700 | – | – | – |
+| **High Sale** | `DLinear_TimesNet` (Task 14) | **23,46%** | **+2,37%** | **0,6649** | 23,58% | +2,98% | −0,12 / −0,61 pp |
+
+Hai cấu hình SOTA còn lại thuộc **Task 15 (`TFT_RawSales` và `TFT_TimesNet`)** vẫn là mục tiêu tham chiếu từ bài báo cho tới khi lượt chạy hoàn tất.
 
 ## Dữ liệu và cách lấy các file Parquet chuẩn
 
@@ -81,14 +97,13 @@ python Task03_Environment_Setup/scripts/download_data.py
 
 ## Việc cần làm tiếp theo
 
-1. **Dương Trọng Toàn (Task 14 — `Task14_DLinear_Forecasting/`):** Chạy đủ 3 cấu hình `DLinear_RawSales`, `DLinear_TimesNet` và `DLinear_DLinear` trên GPU T4 theo hướng dẫn tại [docs/Task11-15_Phan_cong_chi_tiet.md](docs/Task11-15_Phan_cong_chi_tiet.md).
-2. **Minh Nguyễn (Task 15 — `Task15_TFT_Forecasting/`):** Chạy 2 cấu hình SOTA `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM.
-3. **Tổng kết đồ án:** Hợp nhất đủ 8 cấu hình Bảng 3 vào [reports/Synthesis_Report.md](reports/Synthesis_Report.md) và hoàn thiện slide trình bày cuối kỳ.
+1. **Minh Nguyễn (Task 15 — `Task15_TFT_Forecasting/`):** Chạy 2 cấu hình SOTA `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM theo hướng dẫn tại [docs/Task11-15_Phan_cong_chi_tiet.md](docs/Task11-15_Phan_cong_chi_tiet.md).
+2. **Tổng kết đồ án:** Hợp nhất đủ 8 cấu hình Bảng 3 vào [reports/Synthesis_Report.md](reports/Synthesis_Report.md) và hoàn thiện slide trình bày cuối kỳ.
 
 ## Quy ước báo cáo và tái lập
 
 - Giữ nguyên dữ liệu gốc trong các lượt tái lập chính; ghi riêng mọi thay đổi hoặc lượt thử.
-- Không đẩy các tệp nhị phân lớn (`.parquet`, `.npy`, `.ckpt`, `.pth`, `.pypots`) lên GitHub; lưu trên Google Drive và dẫn link kèm SHA-256 trong `run_info.md`.
+- Không đẩy các tệp nhị phân sinh ra lớn (`.parquet` khôi phục, `.npy`, `.ckpt`, `.pth`, `.pypots`) lên GitHub (trừ hai tệp gốc dùng chung trong `Task06_Data_Preparation/`); lưu trên Google Drive và dẫn link kèm SHA-256 trong `run_info.md`.
 - Với mọi lượt dự báo Bảng 3, biến phân nhóm `psd` bắt buộc tính từ `sale_amount` gốc trong `train` (`dt <= '2024-06-25'`) và chỉ đánh giá trên đúng `206.562` dòng `eval` có `stock_hour6_22_cnt == 0`.
 - Tách kết quả `smoke` khỏi kết quả `full`. Lượt lỗi, chưa chạy hoặc ô bài báo không công bố số tham chiếu thì để trống tương ứng, tuyệt đối không điền số `0` thay cho giá trị thiếu.
 
@@ -106,3 +121,4 @@ python Task03_Environment_Setup/scripts/download_data.py
 - [Task 11 — `SSA_TimesNet`](Task11_SSA_TimesNet/README.md)
 - [Task 12 — `DLinear` Recovery](Task12_DLinear_Recovery/README.md)
 - [Task 13 — `SSA_DLinear` & Tổng hợp SSA](Task13_SSA_DLinear/README.md)
+- [Task 14 — `DLinear` Forecasting](Task14_DLinear_Forecasting/README.md)

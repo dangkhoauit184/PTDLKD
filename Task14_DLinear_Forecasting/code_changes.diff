@@ -1,4 +1,4 @@
-﻿diff --git a/demand_forecasting/DLinear/exp/exp_main.py b/demand_forecasting/DLinear/exp/exp_main.py
+diff --git a/demand_forecasting/DLinear/exp/exp_main.py b/demand_forecasting/DLinear/exp/exp_main.py
 index fc7269a..6f26824 100644
 --- a/demand_forecasting/DLinear/exp/exp_main.py
 +++ b/demand_forecasting/DLinear/exp/exp_main.py
