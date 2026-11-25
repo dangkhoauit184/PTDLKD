@@ -1,0 +1,156 @@
+{
+  "task": "Task 15 - TFT Forecasting (TFT_RawSales & TFT_TimesNet)",
+  "author": "Minh Nguyễn",
+  "branch": "feature/task15-tft-forecasting",
+  "timestamp_utc": "2026-11-25T11:40:57.778312+00:00",
+  "baseline_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "hardware": {
+    "gpu": "NVIDIA L4",
+    "colab_high_ram": true
+  },
+  "environment": {
+    "python": "3.10.22",
+    "torch": "2.0.1+cu118",
+    "pytorch_lightning": "1.9.4",
+    "pytorch_forecasting": "1.0.0",
+    "numpy": "1.26.4",
+    "pandas": "1.5.3",
+    "pyarrow": "25.0.1"
+  },
+  "hyperparameters": {
+    "seed": 2025,
+    "date": "2024-06-26",
+    "max_encoder_length": 70,
+    "max_prediction_length": 7,
+    "batch_size": 1024,
+    "hidden_size": 128,
+    "attention_head_size": 8,
+    "lstm_layers": 2,
+    "dropout": 0.1,
+    "learning_rate": 0.01,
+    "optimizer": "adamw",
+    "weight_decay": 0.0001,
+    "quantiles_ratio": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "max_epochs": 5,
+    "num_workers": 4
+  },
+  "inputs_sha256": {
+    "train.parquet": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+    "eval.parquet": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+    "demand_timesnet.parquet": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694"
+  },
+  "eval_valid_sample_counts": {
+    "TFT_RawSales": {
+      "Overall": 206562,
+      "Low Sale": 153208,
+      "High Sale": 53354
+    },
+    "TFT_TimesNet": {
+      "Overall": 206562,
+      "Low Sale": 153208,
+      "High Sale": 53354
+    }
+  },
+  "runtime_minutes": {
+    "smoke_200_pairs": 0.56,
+    "full_tft_raw_sales": 49.12,
+    "full_tft_timesnet": 49.27
+  },
+  "checkpoints_saved": {
+    "censored": [
+      "epoch=0-step=683.ckpt",
+      "epoch=1-step=1366.ckpt",
+      "epoch=2-step=2049.ckpt",
+      "epoch=3-step=2732.ckpt",
+      "epoch=4-step=3415.ckpt"
+    ],
+    "recovered": [
+      "epoch=0-step=683.ckpt",
+      "epoch=1-step=1366.ckpt",
+      "epoch=2-step=2049.ckpt",
+      "epoch=3-step=2732.ckpt",
+      "epoch=4-step=3415.ckpt"
+    ],
+    "drive_link": "https://drive.google.com/drive/folders/1gPexk9JqLJFH-MUPFE-7d69g9pQa7xD2"
+  },
+  "metrics": [
+    {
+      "config_id": "TFT_RawSales",
+      "group": "Overall",
+      "wape_pct": 31.96,
+      "wpe_pct": -9.85,
+      "mae": 0.399,
+      "paper_wape_pct": 31.75,
+      "paper_wpe_pct": -7.37,
+      "delta_wape_pp": 0.21,
+      "delta_wpe_pp": -2.48,
+      "status": "completed"
+    },
+    {
+      "config_id": "TFT_RawSales",
+      "group": "Low Sale",
+      "wape_pct": 36.89,
+      "wpe_pct": -5.59,
+      "mae": 0.2588,
+      "paper_wape_pct": 37.04,
+      "paper_wpe_pct": -1.72,
+      "delta_wape_pp": -0.15,
+      "delta_wpe_pp": -3.87,
+      "status": "completed"
+    },
+    {
+      "config_id": "TFT_RawSales",
+      "group": "High Sale",
+      "wape_pct": 28.41,
+      "wpe_pct": -12.9,
+      "mae": 0.812,
+      "paper_wape_pct": 27.95,
+      "paper_wpe_pct": -11.46,
+      "delta_wape_pp": 0.46,
+      "delta_wpe_pp": -1.44,
+      "status": "completed"
+    },
+    {
+      "config_id": "TFT_TimesNet",
+      "group": "Overall",
+      "wape_pct": 28.93,
+      "wpe_pct": 0.78,
+      "mae": 0.3595,
+      "paper_wape_pct": 29.02,
+      "paper_wpe_pct": 2.58,
+      "delta_wape_pp": -0.09,
+      "delta_wpe_pp": -1.8,
+      "status": "completed"
+    },
+    {
+      "config_id": "TFT_TimesNet",
+      "group": "Low Sale",
+      "wape_pct": 37.06,
+      "wpe_pct": 6.84,
+      "mae": 0.2599,
+      "paper_wape_pct": 37.33,
+      "paper_wpe_pct": 7.78,
+      "delta_wape_pp": -0.27,
+      "delta_wpe_pp": -0.94,
+      "status": "completed"
+    },
+    {
+      "config_id": "TFT_TimesNet",
+      "group": "High Sale",
+      "wape_pct": 23.07,
+      "wpe_pct": -3.57,
+      "mae": 0.6506,
+      "paper_wape_pct": 23.03,
+      "paper_wpe_pct": 0.87,
+      "delta_wape_pp": 0.04,
+      "delta_wpe_pp": -4.44,
+      "status": "completed"
+    }
+  ]
+}

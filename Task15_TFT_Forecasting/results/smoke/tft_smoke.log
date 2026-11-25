@@ -1,0 +1,78 @@
+=== SMOKE_200_PAIRS_RAW | data_type=censored | max_epochs=2 | smoke_n_pairs=200 | num_workers=4 ===
+
+>>> CMD: /content/micromamba/envs/tft_py310/bin/python -u trainTFT.py
+/content/frn-50k-baseline/demand_forecasting/TFT
+[trainTFT] Reading local train parquet: /content/frn_cache/train.parquet
+[trainTFT][SMOKE] Filtered to 200 pairs -> 18000 rows
+18000
+load data cost 7.324872255325317s
+dataset generation cost 0.30098533630371094
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+model init cost 0.12400102615356445
+Missing logger folder: /content/tft_smoke_logs/lightning_logs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+
+   | Name                               | Type                            | Params
+----------------------------------------------------------------------------------------
+0  | loss                               | QuantileLoss                    | 0     
+1  | logging_metrics                    | ModuleList                      | 0     
+2  | input_embeddings                   | MultiEmbedding                  | 6.5 K 
+3  | prescalers                         | ModuleDict                      | 288   
+4  | static_variable_selection          | VariableSelectionNetwork        | 9.2 K 
+5  | encoder_variable_selection         | VariableSelectionNetwork        | 49.1 K
+6  | decoder_variable_selection         | VariableSelectionNetwork        | 43.0 K
+7  | static_context_variable_selection  | GatedResidualNetwork            | 66.3 K
+8  | static_context_initial_hidden_lstm | GatedResidualNetwork            | 66.3 K
+9  | static_context_initial_cell_lstm   | GatedResidualNetwork            | 66.3 K
+10 | static_context_enrichment          | GatedResidualNetwork            | 66.3 K
+11 | lstm_encoder                       | LSTM                            | 264 K 
+12 | lstm_decoder                       | LSTM                            | 264 K 
+13 | post_lstm_gate_encoder             | GatedLinearUnit                 | 33.0 K
+14 | post_lstm_add_norm_encoder         | AddNorm                         | 256   
+15 | static_enrichment                  | GatedResidualNetwork            | 82.7 K
+16 | multihead_attn                     | InterpretableMultiHeadAttention | 37.1 K
+17 | post_attn_gate_norm                | GateAddNorm                     | 33.3 K
+18 | pos_wise_ff                        | GatedResidualNetwork            | 66.3 K
+19 | pre_output_gate_norm               | GateAddNorm                     | 33.3 K
+20 | output_layer                       | Linear                          | 645   
+----------------------------------------------------------------------------------------
+1.2 M     Trainable params
+0         Non-trainable params
+1.2 M     Total params
+4.751     Total estimated model params size (MB)
+
+Training: 0it [00:00, ?it/s]
+Training:   0%|          | 0/2 [00:00<?, ?it/s]
+Epoch 0:   0%|          | 0/2 [00:00<?, ?it/s] 
+Epoch 0: 100%|██████████| 2/2 [00:02<00:00,  1.28s/it]
+Epoch 0: 100%|██████████| 2/2 [00:02<00:00,  1.28s/it, loss=1.14, v_num=0, train_loss_step=0.846]
+Epoch 0: 100%|██████████| 2/2 [00:02<00:00,  1.28s/it, loss=1.14, v_num=0, train_loss_step=0.846, train_loss_epoch=1.140]
+Epoch 0:   0%|          | 0/2 [00:00<?, ?it/s, loss=1.14, v_num=0, train_loss_step=0.846, train_loss_epoch=1.140]        
+Epoch 1:   0%|          | 0/2 [00:00<?, ?it/s, loss=1.14, v_num=0, train_loss_step=0.846, train_loss_epoch=1.140]
+Epoch 1: 100%|██████████| 2/2 [00:02<00:00,  1.19s/it, loss=1.14, v_num=0, train_loss_step=0.846, train_loss_epoch=1.140]
+Epoch 1: 100%|██████████| 2/2 [00:02<00:00,  1.19s/it, loss=1.04, v_num=0, train_loss_step=0.682, train_loss_epoch=1.140]
+Epoch 1: 100%|██████████| 2/2 [00:02<00:00,  1.20s/it, loss=1.04, v_num=0, train_loss_step=0.682, train_loss_epoch=0.930]`Trainer.fit` stopped: `max_epochs=2` reached.
+
+Epoch 1: 100%|██████████| 2/2 [00:02<00:00,  1.27s/it, loss=1.04, v_num=0, train_loss_step=0.682, train_loss_epoch=0.930]
+model save success, model path /content/tft_smoke_logs/censored/checkpoints/epoch=1-step=4.ckpt
+train cost 6.181199073791504
+
+>>> CMD: /content/micromamba/envs/tft_py310/bin/python -u predictTFT.py
+[predictTFT] Reading local train: /content/frn_cache/train.parquet
+[predictTFT] Reading local eval : /content/frn_cache/eval.parquet
+[predictTFT][SMOKE] Filtered to 200 pairs -> train=18000, eval=1400
+dataset generation cost 5.958569049835205
+censored_epoch1
+predict cost 0.4801197052001953
+1400 200.0
+[predictTFT] Saved detailed results to: /content/tft_smoke_out/censored_res_last_epoch.parquet
+                            sample_cnt  preds_sum  ...       mae      bias
+group_type data_type                               ...                    
+psd<1      censored_epoch1   74.428571        0.0  ...  0.731876 -0.731876
+psd>=0     censored_epoch1  107.285714        0.0  ...  1.509032 -1.509032
+psd>=1     censored_epoch1   32.857143        0.0  ...  3.367783 -3.367783
+
+[3 rows x 10 columns]
