@@ -1,0 +1,66 @@
+Args in experiment:
+Namespace(batch_size=1024, checkpoints='./checkpoints/', data='censored_dataset', data_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\data\\smoke_train.parquet', des='raw_smoke', devices='0,1,2,3', do_predict=True, dropout=0.05, enc_in=7, eval_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\data\\smoke_eval.parquet', features='MS', gpu=0, individual=False, is_training=1, itr=1, learning_rate=0.001, loss='mae', lradj='type1', model='DLinear', moving_avg=28, num_workers=0, patience=5, pred_len=7, revin=True, scale=True, seq_len=62, target='sale_amount', test_flop=False, total_seq_len=90, train_epochs=6, train_only=True, train_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\data\\smoke_train.parquet', use_amp=False, use_gpu=True, use_multi_gpu=False)
+Use GPU: cuda:0
+>>>>>>>start training : DLinear_censored_dataset_ftMS_sl62_ma28_pl7_raw_smoke_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 4400
+python.exe : 
+At line:2 char:221
++ ... ython.exe'; & $python -u main.py --is_training 1 --train_only True -- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Epoch 1, Start:
+Epoch: 1, cost time: 0.8702826499938965
+Epoch: 1, Steps: 4 | Train Loss: 0.3841574
+Validation loss decreased (inf --> 0.384157).  Saving model ...
+Updating learning rate to 0.001
+Training:   0%|          | 0/6 [00:00<?, ?epoch/s]
+
+Epoch 2, Start:
+Epoch: 2, cost time: 0.07409858703613281
+Epoch: 2, Steps: 4 | Train Loss: 0.3751303
+Validation loss decreased (0.384157 --> 0.375130).  Saving model ...
+Updating learning rate to 0.0005
+
+Epoch 3, Start:
+Epoch: 3, cost time: 0.07798886299133301
+Epoch: 3, Steps: 4 | Train Loss: 0.3690549
+Validation loss decreased (0.375130 --> 0.369055).  Saving model ...
+Updating learning rate to 0.00025
+Training:  17%|#6        | 1/6 [00:00<00:04,  1.14epoch/s]
+
+Epoch 4, Start:
+Epoch: 4, cost time: 0.0821371078491211
+Epoch: 4, Steps: 4 | Train Loss: 0.3637090
+Validation loss decreased (0.369055 --> 0.363709).  Saving model ...
+Updating learning rate to 0.000125
+Training:  50%|#####     | 3/6 [00:01<00:00,  3.50epoch/s]
+
+Epoch 5, Start:
+Epoch: 5, cost time: 0.06310749053955078
+Epoch: 5, Steps: 4 | Train Loss: 0.3617424
+Validation loss decreased (0.363709 --> 0.361742).  Saving model ...
+Updating learning rate to 6.25e-05
+Training:  67%|######6   | 4/6 [00:01<00:00,  4.04epoch/s]
+
+Epoch 6, Start:
+Epoch: 6, cost time: 0.06203651428222656
+Epoch: 6, Steps: 4 | Train Loss: 0.3618212
+EarlyStopping counter: 1 out of 5
+Updating learning rate to 3.125e-05
+Training:  83%|########3 | 5/6 [00:01<00:00,  4.97epoch/s]
+Training: 100%|##########| 6/6 [00:01<00:00,  4.35epoch/s]
+>>>>>>>predicting : DLinear_censored_dataset_ftMS_sl62_ma28_pl7_raw_smoke_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+pred 200
+
+Predicting:   0%|          | 0/1 [00:00<?, ?it/s]
+Predicting: 100%|##########| 1/1 [00:00<00:00, 270.50it/s]
+            sample_cnt   preds_sum  actuals_sum  ...       wpe       mae      bias
+group_type                                       ...                              
+psd<1        75.142857   48.576786    53.548571  ... -0.069078  0.351049 -0.068494
+psd>=0      108.571429  138.763336   162.540000  ... -0.138710  0.606417 -0.239194
+psd>=1       33.428571   90.186562   108.991429  ... -0.168851  1.235514 -0.689424
+
+[3 rows x 10 columns]

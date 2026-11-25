@@ -1,0 +1,151 @@
+{
+  "task": "Task 14 - DLinear 7-day Demand Forecasting",
+  "assignee": "Dương Trọng Toàn (UTAKaoru)",
+  "repo_base_commit": "84520f9",
+  "author_repo": "https://github.com/Dingdong-Inc/frn-50k-baseline.git",
+  "author_commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "seed": 2025,
+  "environment": {
+    "os": "Windows (CUDA GPU)",
+    "python": "3.8.20",
+    "torch": "2.0.1+cu118",
+    "conda_env": "frn50k",
+    "gpu_cuda_available": true
+  },
+  "hyperparameters": {
+    "model": "DLinear",
+    "features": "MS",
+    "scale": true,
+    "loss": "mae",
+    "revin_cli_flag": "False",
+    "revin_effective_bool": true,
+    "train_only": true,
+    "total_seq_len": 90,
+    "seq_len": 62,
+    "moving_avg": 28,
+    "pred_len": 7,
+    "enc_in": 7,
+    "batch_size": 1024,
+    "train_epochs": 6,
+    "learning_rate": 0.001,
+    "num_workers_windows": 0,
+    "train_windows": 1100000,
+    "pred_series": 50000
+  },
+  "evaluation_counts": {
+    "eligible_eval_rows_psd_gte_0": 206562,
+    "low_sale_eval_rows_psd_lt_1": 153208,
+    "high_sale_eval_rows_psd_gte_1": 53354,
+    "psd_source_column": "sale_amount (raw train.parquet)"
+  },
+  "parquet_sha256": {
+    "train.parquet": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+    "eval.parquet": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+    "demand_timesnet.parquet": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+    "demand_dlinear.parquet": "2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b"
+  },
+  "configs": [
+    {
+      "config_id": "DLinear_RawSales",
+      "data": "censored_dataset",
+      "des": "raw_l1",
+      "target": "sale_amount",
+      "final_train_loss": 0.2624925,
+      "exit_code": 0,
+      "status": "completed",
+      "log": "results/full/dlinear_raw_sales.log"
+    },
+    {
+      "config_id": "DLinear_TimesNet",
+      "data": "recovered_dataset",
+      "des": "timesnet_l1",
+      "target": "sale_amount_pred",
+      "final_train_loss": 0.2181068,
+      "exit_code": 0,
+      "status": "completed",
+      "log": "results/full/dlinear_timesnet.log"
+    },
+    {
+      "config_id": "DLinear_DLinear",
+      "data": "recovered_dataset",
+      "des": "dlinear_l1",
+      "target": "sale_amount_pred",
+      "final_train_loss": 0.2416589,
+      "exit_code": 0,
+      "status": "completed",
+      "log": "results/full/dlinear_dlinear.log"
+    }
+  ],
+  "smoke": {
+    "pairs": 200,
+    "train_windows": 4400,
+    "des": "raw_smoke",
+    "exit_code": 0,
+    "log": "results/smoke/dlinear_smoke.log"
+  },
+  "raw_metrics_4dp": [
+    {
+      "config_id": "DLinear_RawSales",
+      "group": "Overall",
+      "wape_pct_4dp": 31.5419,
+      "wpe_pct_4dp": -5.2075,
+      "mae_4dp": 0.3932
+    },
+    {
+      "config_id": "DLinear_RawSales",
+      "group": "Low Sale",
+      "wape_pct_4dp": 39.7087,
+      "wpe_pct_4dp": -1.3138,
+      "mae_4dp": 0.2781
+    },
+    {
+      "config_id": "DLinear_RawSales",
+      "group": "High Sale",
+      "wape_pct_4dp": 25.6966,
+      "wpe_pct_4dp": -7.9745,
+      "mae_4dp": 0.731
+    },
+    {
+      "config_id": "DLinear_TimesNet",
+      "group": "Overall",
+      "wape_pct_4dp": 30.545,
+      "wpe_pct_4dp": 6.213,
+      "mae_4dp": 0.3797
+    },
+    {
+      "config_id": "DLinear_TimesNet",
+      "group": "Low Sale",
+      "wape_pct_4dp": 40.4473,
+      "wpe_pct_4dp": 11.6062,
+      "mae_4dp": 0.2824
+    },
+    {
+      "config_id": "DLinear_TimesNet",
+      "group": "High Sale",
+      "wape_pct_4dp": 23.4568,
+      "wpe_pct_4dp": 2.37,
+      "mae_4dp": 0.6649
+    },
+    {
+      "config_id": "DLinear_DLinear",
+      "group": "Overall",
+      "wape_pct_4dp": 30.7643,
+      "wpe_pct_4dp": 4.6253,
+      "mae_4dp": 0.3824
+    },
+    {
+      "config_id": "DLinear_DLinear",
+      "group": "Low Sale",
+      "wape_pct_4dp": 40.7291,
+      "wpe_pct_4dp": 10.7514,
+      "mae_4dp": 0.2843
+    },
+    {
+      "config_id": "DLinear_DLinear",
+      "group": "High Sale",
+      "wape_pct_4dp": 23.6319,
+      "wpe_pct_4dp": 0.2577,
+      "mae_4dp": 0.67
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+Args in experiment:
+Namespace(batch_size=1024, checkpoints='./checkpoints/', data='censored_dataset', data_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\train.parquet', des='raw_l1', devices='0,1,2,3', do_predict=True, dropout=0.05, enc_in=7, eval_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\eval.parquet', features='MS', gpu=0, individual=False, is_training=1, itr=1, learning_rate=0.001, loss='mae', lradj='type1', model='DLinear', moving_avg=28, num_workers=0, patience=5, pred_len=7, revin=True, scale=True, seq_len=62, target='sale_amount', test_flop=False, total_seq_len=90, train_epochs=6, train_only=True, train_path='C:\\Users\\trong\\OneDrive\\Documents\\PTDLKD-main\\PTDLKD-main\\Task14_DLinear_Forecasting\\train.parquet', use_amp=False, use_gpu=True, use_multi_gpu=False)
+Use GPU: cuda:0
+>>>>>>>start training : DLinear_censored_dataset_ftMS_sl62_ma28_pl7_raw_l1_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 1100000
+python.exe : 
+At line:2 char:221
++ ... ython.exe'; & $python -u main.py --is_training 1 --train_only True -- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Epoch 1, Start:
+	iters:   200, epoch: 1 | loss: 0.2571228	speed: 0.0303s/iter; left time: 189.3155s
+	iters:   400, epoch: 1 | loss: 0.2742796	speed: 0.0268s/iter; left time: 162.2607s
+	iters:   600, epoch: 1 | loss: 0.2661526	speed: 0.0273s/iter; left time: 159.3913s
+	iters:   800, epoch: 1 | loss: 0.2610233	speed: 0.0271s/iter; left time: 153.0581s
+	iters:  1000, epoch: 1 | loss: 0.2701561	speed: 0.0270s/iter; left time: 147.1365s
+Epoch: 1, cost time: 29.591971158981323
+Epoch: 1, Steps: 1074 | Train Loss: 0.2660257
+Validation loss decreased (inf --> 0.266026).  Saving model ...
+Updating learning rate to 0.001
+Training:   0%|          | 0/6 [00:00<?, ?epoch/s]
+
+Epoch 2, Start:
+	iters:   200, epoch: 2 | loss: 0.2613882	speed: 0.0367s/iter; left time: 189.6545s
+	iters:   400, epoch: 2 | loss: 0.2626978	speed: 0.0238s/iter; left time: 118.4788s
+	iters:   600, epoch: 2 | loss: 0.2785532	speed: 0.0215s/iter; left time: 102.3675s
+	iters:   800, epoch: 2 | loss: 0.2477641	speed: 0.0218s/iter; left time: 99.5957s
+	iters:  1000, epoch: 2 | loss: 0.2588056	speed: 0.0239s/iter; left time: 104.5068s
+Epoch: 2, cost time: 25.301712036132812
+Epoch: 2, Steps: 1074 | Train Loss: 0.2628228
+Validation loss decreased (0.266026 --> 0.262823).  Saving model ...
+Updating learning rate to 0.0005
+Training:  17%|#6        | 1/6 [00:29<02:28, 29.61s/epoch]
+
+Epoch 3, Start:
+	iters:   200, epoch: 3 | loss: 0.2727799	speed: 0.0338s/iter; left time: 138.3503s
+	iters:   400, epoch: 3 | loss: 0.2576615	speed: 0.0234s/iter; left time: 91.3433s
+	iters:   600, epoch: 3 | loss: 0.2579893	speed: 0.0229s/iter; left time: 84.5893s
+	iters:   800, epoch: 3 | loss: 0.2616240	speed: 0.0276s/iter; left time: 96.5802s
+	iters:  1000, epoch: 3 | loss: 0.2527657	speed: 0.0356s/iter; left time: 117.2178s
+Epoch: 3, cost time: 29.5467586517334
+Epoch: 3, Steps: 1074 | Train Loss: 0.2626529
+Validation loss decreased (0.262823 --> 0.262653).  Saving model ...
+Updating learning rate to 0.00025
+Training:  33%|###3      | 2/6 [00:54<01:48, 27.08s/epoch]
+
+Epoch 4, Start:
+	iters:   200, epoch: 4 | loss: 0.2505466	speed: 0.0466s/iter; left time: 140.8732s
+	iters:   400, epoch: 4 | loss: 0.2571350	speed: 0.0312s/iter; left time: 88.0526s
+	iters:   600, epoch: 4 | loss: 0.2433112	speed: 0.0305s/iter; left time: 80.0986s
+	iters:   800, epoch: 4 | loss: 0.2563036	speed: 0.0328s/iter; left time: 79.4175s
+	iters:  1000, epoch: 4 | loss: 0.2571114	speed: 0.0312s/iter; left time: 69.2622s
+Epoch: 4, cost time: 34.17921566963196
+Epoch: 4, Steps: 1074 | Train Loss: 0.2625715
+Validation loss decreased (0.262653 --> 0.262572).  Saving model ...
+Updating learning rate to 0.000125
+Training:  50%|#####     | 3/6 [01:24<01:24, 28.21s/epoch]
+
+Epoch 5, Start:
+	iters:   200, epoch: 5 | loss: 0.2606339	speed: 0.0465s/iter; left time: 90.6446s
+	iters:   400, epoch: 5 | loss: 0.2723398	speed: 0.0324s/iter; left time: 56.6192s
+	iters:   600, epoch: 5 | loss: 0.2642170	speed: 0.0342s/iter; left time: 52.9634s
+	iters:   800, epoch: 5 | loss: 0.2516452	speed: 0.0341s/iter; left time: 45.9452s
+	iters:  1000, epoch: 5 | loss: 0.2534673	speed: 0.0339s/iter; left time: 38.9394s
+Epoch: 5, cost time: 36.3062424659729
+Epoch: 5, Steps: 1074 | Train Loss: 0.2625187
+Validation loss decreased (0.262572 --> 0.262519).  Saving model ...
+Updating learning rate to 6.25e-05
+Training:  67%|######6   | 4/6 [01:58<01:01, 30.57s/epoch]
+
+Epoch 6, Start:
+	iters:   200, epoch: 6 | loss: 0.2613834	speed: 0.0479s/iter; left time: 41.9539s
+	iters:   400, epoch: 6 | loss: 0.2704301	speed: 0.0365s/iter; left time: 24.6322s
+	iters:   600, epoch: 6 | loss: 0.2574334	speed: 0.0355s/iter; left time: 16.8790s
+	iters:   800, epoch: 6 | loss: 0.2665720	speed: 0.0366s/iter; left time: 10.0599s
+	iters:  1000, epoch: 6 | loss: 0.2679747	speed: 0.0345s/iter; left time: 2.5906s
+Epoch: 6, cost time: 38.433987617492676
+Epoch: 6, Steps: 1074 | Train Loss: 0.2624925
+Validation loss decreased (0.262519 --> 0.262493).  Saving model ...
+Updating learning rate to 3.125e-05
+Training:  83%|########3 | 5/6 [02:34<00:32, 32.64s/epoch]
+Training: 100%|##########| 6/6 [03:13<00:00, 34.61s/epoch]
+Training: 100%|##########| 6/6 [03:13<00:00, 32.24s/epoch]
+>>>>>>>predicting : DLinear_censored_dataset_ftMS_sl62_ma28_pl7_raw_l1_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+pred 50000
+
+Predicting:   0%|          | 0/49 [00:00<?, ?it/s]
+Predicting:   8%|8         | 4/49 [00:00<00:01, 38.80it/s]
+Predicting:  18%|#8        | 9/49 [00:00<00:00, 40.71it/s]
+Predicting:  29%|##8       | 14/49 [00:00<00:00, 40.82it/s]
+Predicting:  39%|###8      | 19/49 [00:00<00:00, 40.77it/s]
+Predicting:  49%|####8     | 24/49 [00:00<00:00, 40.54it/s]
+Predicting:  59%|#####9    | 29/49 [00:00<00:00, 41.02it/s]
+Predicting:  69%|######9   | 34/49 [00:00<00:00, 40.90it/s]
+Predicting:  80%|#######9  | 39/49 [00:00<00:00, 40.83it/s]
+Predicting:  90%|########9 | 44/49 [00:01<00:00, 40.44it/s]
+Predicting: 100%|##########| 49/49 [00:01<00:00, 41.32it/s]
+Predicting: 100%|##########| 49/49 [00:01<00:00, 40.89it/s]
+              sample_cnt     preds_sum  ...       mae      bias
+group_type                              ...                    
+psd<1       21886.857143  15057.725586  ...  0.278070 -0.014365
+psd>=0      29508.857143  34497.562500  ...  0.393152 -0.071764
+psd>=1       7622.000000  19439.833984  ...  0.731034 -0.244319
+
+[3 rows x 10 columns]
