@@ -65,12 +65,12 @@ Các cấu hình dự báo học sâu còn lại thuộc **Task 14 (`DLinear_*`)
 
 ## Dữ liệu và cách lấy các file Parquet chuẩn
 
-Các tệp Parquet lớn không đẩy lên GitHub mà đối soát bằng mã SHA-256:
+Hai tệp gốc đã được đưa trực tiếp vào thư mục `Task06_Data_Preparation/` trong repo (chỉ cần `git pull` là có sẵn trên máy); riêng các tệp nhu cầu khôi phục đầu ra lưu trên Google Drive và đối soát bằng mã SHA-256:
 
-- `train.parquet` (`4.500.000` dòng × `19` cột): SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96` ([biên bản Task 6](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md)).
-- `eval.parquet` (`350.000` dòng × `19` cột): SHA-256 `61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872` ([biên bản Task 6](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md)).
-- `demand_timesnet.parquet` (`4.500.000` dòng × `20` cột): SHA-256 `c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694` ([biên bản & link Google Drive Task 10](Task10_TimesNet_Recovery/run_info.md)).
-- `demand_dlinear.parquet` (`4.500.000` dòng × `20` cột): SHA-256 `2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b` ([biên bản & link Google Drive Task 12](Task12_DLinear_Recovery/run_info.md)).
+- `Task06_Data_Preparation/train.parquet` (`4.500.000` dòng × `19` cột, có sẵn trong repo): SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96` ([biên bản Task 6](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md)).
+- `Task06_Data_Preparation/eval.parquet` (`350.000` dòng × `19` cột, có sẵn trong repo): SHA-256 `61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872` ([biên bản Task 6](Task06_Data_Preparation/results/20261113T082302850933Z/run_info.md)).
+- `demand_timesnet.parquet` (`4.500.000` dòng × `20` cột, tải qua Google Drive): SHA-256 `c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694` ([biên bản & link Google Drive Task 10](Task10_TimesNet_Recovery/run_info.md)).
+- `demand_dlinear.parquet` (`4.500.000` dòng × `20` cột, tải qua Google Drive): SHA-256 `2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b` ([biên bản & link Google Drive Task 12](Task12_DLinear_Recovery/run_info.md)).
 
 Để tạo lại hai tệp gốc từ nguồn Hugging Face:
 

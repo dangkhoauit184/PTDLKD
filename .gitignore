@@ -13,6 +13,10 @@ __pycache__/
 *.zip
 *.7z
 
+# Whitelist canonical Task 6 input Parquets (train.parquet ~58 MB, eval.parquet ~5.2 MB)
+!Task06_Data_Preparation/train.parquet
+!Task06_Data_Preparation/eval.parquet
+
 # Whitelist small result CSVs in Task folders
 !Task04_Data_Validation/results/*.csv
 !Task05_EDA/results/*.csv

@@ -11,9 +11,10 @@ Hai tập có cùng danh sách cặp, không trùng khóa ngày. Giữ nguyên 3
 
 ## Bàn giao
 
+- **`train.parquet`** (`61.075.680` bytes, SHA-256 `b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96`) và **`eval.parquet`** (`5.451.872` bytes, SHA-256 `61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872`) nằm trực tiếp ngay trong thư mục `Task06_Data_Preparation/` để toàn bộ thành viên dùng chung (chỉ cần `git pull` là có sẵn trên máy, không cần tải từ Google Drive).
 - [Notebook đã chạy và có output](notebooks/06_prepare_data.ipynb).
 - [Biên bản đối soát và SHA-256 của bốn file nguồn](results/20261113T082302850933Z/run_info.md).
-- [Bảng đối soát input_check.csv](results/20261113T082302850933Z/input_check.csv) có một dòng `PASS` cho mỗi tập. File dữ liệu đầy đủ lưu riêng; dùng mã SHA-256 trong biên bản để nhận diện đúng bản.
+- [Bảng đối soát input_check.csv](results/20261113T082302850933Z/input_check.csv) có một dòng `PASS` cho mỗi tập.
 
 ## Chạy lại trên Colab
 
