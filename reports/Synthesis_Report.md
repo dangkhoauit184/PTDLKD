@@ -126,8 +126,9 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 5. Việc tiếp theo (Task 14 & Task 15)
+## 5. Việc tiếp theo (Task 15)
 
-Nhóm đã hoàn tất toàn bộ **Task 1–13**, bao gồm cả hai mô hình khôi phục ở Bảng 2 (`TimesNet`, `DLinear`) và trọn bộ [3 cấu hình cột SSA ở Bảng 3](../Task13_SSA_DLinear/results/ssa_all_3configs_summary.csv). Hai hạng mục thực nghiệm mở rộng cuối cùng đang được triển khai theo [docs/Task11-15_Phan_cong_chi_tiet.md](../docs/Task11-15_Phan_cong_chi_tiet.md):
-1. **Task 14 (`DLinear` Forecasting — Dương Trọng Toàn):** Chạy 3 cấu hình dự báo học sâu `DLinear_RawSales`, `DLinear_TimesNet` và `DLinear_DLinear` trên GPU T4.
-2. **Task 15 (`TFT` Forecasting — Minh Nguyễn):** Chạy 2 cấu hình SOTA `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM.
+Nhóm đã hoàn tất **Task 1–14**, bao gồm cả hai mô hình khôi phục ở Bảng 2 (`TimesNet`, `DLinear`) và trọn bộ [3 cấu hình cột SSA ở Bảng 3](../Task13_SSA_DLinear/results/ssa_all_3configs_summary.csv). Kết quả cột DLinear gồm 3 cấu hình được tổng hợp tại [dlinear_forecasting_metrics.csv](../Task14_DLinear_Forecasting/results/dlinear_forecasting_metrics.csv), với đủ 9 dòng và `206.562` mẫu đánh giá hợp lệ.
+
+Hạng mục còn lại đang được triển khai theo [docs/Task11-15_Phan_cong_chi_tiet.md](../docs/Task11-15_Phan_cong_chi_tiet.md):
+1. **Task 15 (`TFT` Forecasting — Minh Nguyễn):** Chạy 2 cấu hình SOTA `TFT_RawSales` và `TFT_TimesNet` trên GPU L4 High-RAM.

@@ -1,0 +1,41 @@
+﻿diff --git a/demand_forecasting/DLinear/exp/exp_main.py b/demand_forecasting/DLinear/exp/exp_main.py
+index fc7269a..6f26824 100644
+--- a/demand_forecasting/DLinear/exp/exp_main.py
++++ b/demand_forecasting/DLinear/exp/exp_main.py
+@@ -7,7 +7,6 @@ import numpy as np
+ import torch
+ import torch.nn as nn
+ import pandas as pd
+-from datasets import load_dataset
+ from torch import optim
+ from tqdm import tqdm
+ import os
+@@ -343,10 +342,11 @@ class Exp_Main(Exp_Basic):
+ 
+     def data_organization(self, pred_data_path, target_dates):
+         group_ids = ['store_id', 'product_id']
+-        # load data
+-        dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
+-        df_train = dataset['train'].to_pandas()
+-        df_eval = dataset['eval'].to_pandas()
++        if not self.args.train_path or not self.args.eval_path:
++            raise FileNotFoundError(
++                '--train_path and --eval_path are required for local metric evaluation')
++        df_train = pd.read_parquet(self.args.train_path)
++        df_eval = pd.read_parquet(self.args.eval_path)
+         np_pred = np.load(pred_data_path)
+         df_train_psd = df_train.groupby(
+             group_ids)['sale_amount'].mean().to_frame('psd')
+diff --git a/demand_forecasting/DLinear/main.py b/demand_forecasting/DLinear/main.py
+index fb27289..c4c605b 100644
+--- a/demand_forecasting/DLinear/main.py
++++ b/demand_forecasting/DLinear/main.py
+@@ -23,6 +23,8 @@ parser.add_argument('--model', type=str, required=True, default='DLinear',
+ parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
+ parser.add_argument('--scale', type=bool, default=True, help='Whether to scale data')
+ parser.add_argument('--data_path', type=str, default=None, help='data file')
++parser.add_argument('--train_path', type=str, default=None, help='local train parquet file')
++parser.add_argument('--eval_path', type=str, default=None, help='local eval parquet file')
+ parser.add_argument('--features', type=str, default='MS',
+                     help='forecasting task, options:[M, S, MS]; M:multivariate predict multivariate, S:univariate predict univariate, MS:multivariate predict univariate')
+ parser.add_argument('--target', type=str, default='sale_amount', help='target feature in S or MS task')

@@ -1,0 +1,36 @@
+{
+  "task": "Task14_DLinear_Forecasting",
+  "commit": "8af694a09a5a427d1d50648d348c022565a781f2",
+  "seed": 2025,
+  "gpu_cuda_available": true,
+  "eligible_eval_rows_psd_gte_0": 206562,
+  "configs": [
+    {
+      "config_id": "DLinear_RawSales",
+      "des": "raw_l1",
+      "target": "sale_amount",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "config_id": "DLinear_TimesNet",
+      "des": "timesnet_l1",
+      "target": "sale_amount_pred",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "config_id": "DLinear_DLinear",
+      "des": "dlinear_l1",
+      "target": "sale_amount_pred",
+      "exit_code": 0,
+      "status": "completed"
+    }
+  ],
+  "parquet_sha256": {
+    "train.parquet": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+    "eval.parquet": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+    "demand_timesnet.parquet": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+    "demand_dlinear.parquet": "2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b"
+  }
+}

@@ -1,0 +1,10 @@
+config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,delta_wpe_pp,status
+DLinear_RawSales,Overall,31.5419,-5.2075,0.3932,31.56,-4.89,-0.0181,-0.3175,completed
+DLinear_RawSales,Low Sale,39.7087,-1.3138,0.2781,,,,,completed
+DLinear_RawSales,High Sale,25.6966,-7.9745,0.731,,,,,completed
+DLinear_TimesNet,Overall,30.545,6.213,0.3797,30.73,6.88,-0.185,-0.667,completed
+DLinear_TimesNet,Low Sale,40.4473,11.6062,0.2824,,,,,completed
+DLinear_TimesNet,High Sale,23.4568,2.37,0.6649,,,,,completed
+DLinear_DLinear,Overall,30.7643,4.6253,0.3824,30.6,4.02,0.1643,0.6053,completed
+DLinear_DLinear,Low Sale,40.7291,10.7514,0.2843,,,,,completed
+DLinear_DLinear,High Sale,23.6319,0.2577,0.67,,,,,completed
