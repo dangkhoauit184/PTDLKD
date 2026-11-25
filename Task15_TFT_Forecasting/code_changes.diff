@@ -1,0 +1,141 @@
+diff --git a/demand_forecasting/TFT/predictTFT.py b/demand_forecasting/TFT/predictTFT.py
+index 23e9788..62366a3 100644
+--- a/demand_forecasting/TFT/predictTFT.py
++++ b/demand_forecasting/TFT/predictTFT.py
+@@ -14,7 +14,7 @@ import argparse
+ config.date = '2024-06-26'
+ config.quantiles = 7
+ config.use_gpu = True
+-config.num_workers = 32
++config.num_workers = int(os.environ.get("TFT_NUM_WORKERS", "4"))
+ config.dataset_config["max_prediction_length"] = 7
+ config.dataset_config["max_encoder_length"] = 70
+ target_dates = pd.date_range(start = config.date, periods = config.dataset_config["max_prediction_length"])
+@@ -22,9 +22,17 @@ target_dates = [date.strftime("%Y-%m-%d") for date in target_dates]
+ 
+ def loadDataset(data_type='censored', data_path=None):
+     t0 = time.time()
+-    dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
+-    df_train = dataset['train'].to_pandas()
+-    df_eval = dataset['eval'].to_pandas()
++    local_train = os.environ.get("FRN_LOCAL_TRAIN_PARQUET", "")
++    local_eval = os.environ.get("FRN_LOCAL_EVAL_PARQUET", "")
++    if local_train and local_eval:
++        print(f"[predictTFT] Reading local train: {local_train}", flush=True)
++        print(f"[predictTFT] Reading local eval : {local_eval}", flush=True)
++        df_train = pd.read_parquet(local_train)
++        df_eval = pd.read_parquet(local_eval)
++    else:
++        dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
++        df_train = dataset['train'].to_pandas()
++        df_eval = dataset['eval'].to_pandas()
+     df_train_psd = df_train.groupby(config.dataset_config['group_ids'])['sale_amount'].mean().to_frame('psd') # average daily sales amount
+     df_eval = pd.merge(df_eval, df_train_psd, on = config.dataset_config['group_ids'])
+ 
+@@ -32,8 +40,19 @@ def loadDataset(data_type='censored', data_path=None):
+         df_train = pd.read_parquet(data_path)
+         df_train['sale_amount'] = df_train['sale_amount_pred']
+ 
++    smoke_n = int(os.environ.get("TFT_SMOKE_N_PAIRS", "0"))
++    if smoke_n > 0:
++        smoke_pairs = (
++            df_train[['store_id', 'product_id']].drop_duplicates()
++            .sort_values(['store_id', 'product_id'])
++            .head(smoke_n)
++        )
++        df_train = df_train.merge(smoke_pairs, on=['store_id', 'product_id'], how='inner')
++        df_eval = df_eval.merge(smoke_pairs, on=['store_id', 'product_id'], how='inner')
++        print(f"[predictTFT][SMOKE] Filtered to {smoke_n} pairs -> train={len(df_train)}, eval={len(df_eval)}", flush=True)
++
+     df = pd.concat([df_train, df_eval], ignore_index=True)
+-    df['day_of_week'] = df['dt'].apply(lambda x : datetime.strptime(x, '%Y-%m-%d').weekday())
++    df['day_of_week'] = pd.to_datetime(df['dt']).dt.weekday
+     df.loc[df.dt >= config.date, 'sale_amount'] = np.nan
+     dataset = Dataset(df, config)
+     t1 = time.time()
+@@ -109,7 +128,8 @@ def get_sorted_files(directory='.'):
+     return sorted_files
+ 
+ def get_pred(dataset, df_eval, data_type, start_epoch=0, verbose=False):
+-    model_dir = f"./lightning_logs/{data_type}/checkpoints"
++    log_root = os.environ.get("TFT_LIGHTNING_LOGS_DIR", "./lightning_logs")
++    model_dir = os.path.join(log_root, data_type, "checkpoints")
+     files = get_sorted_files(model_dir)
+     df_pred = []
+     for idx, file in enumerate(files):
+@@ -156,6 +176,10 @@ if __name__ == '__main__':
+     dataset, df_train, df_eval = loadDataset(data_type, args.demand_path)
+     df_pred = get_pred(dataset, df_eval, data_type, start_epoch=-1, verbose=True)
+     df_res = get_metrics(df_pred, ["psd>=0", "psd>=1", "psd<1"])
+-    df_res.to_parquet(f"./{data_type}_res_last_epoch.parquet")
++    out_dir = os.environ.get("TFT_OUT_DIR", ".")
++    os.makedirs(out_dir, exist_ok=True)
++    res_out_path = os.path.join(out_dir, f"{data_type}_res_last_epoch.parquet")
++    df_res.to_parquet(res_out_path)
++    print(f"[predictTFT] Saved detailed results to: {res_out_path}", flush=True)
+ 
+     print(df_res.groupby(['group_type', 'data_type']).mean(numeric_only=True))
+\ No newline at end of file
+diff --git a/demand_forecasting/TFT/trainTFT.py b/demand_forecasting/TFT/trainTFT.py
+index 14e2838..f9eca05 100644
+--- a/demand_forecasting/TFT/trainTFT.py
++++ b/demand_forecasting/TFT/trainTFT.py
+@@ -22,8 +22,9 @@ print(root_path)
+ 
+ # For multiple training, a new checkpoint callback must be set each time
+ def get_checkpoint_callback(data_type='censored'):
++    log_root = os.environ.get("TFT_LIGHTNING_LOGS_DIR", "./lightning_logs")
+     return ModelCheckpoint(
+-        dirpath=f"./lightning_logs/{data_type}/checkpoints",
++        dirpath=os.path.join(log_root, data_type, "checkpoints"),
+         filename="{epoch}-{step}",  # Filename format
+         save_top_k=-1,  # Save all checkpoints (do not delete old files)
+         every_n_epochs=1,  # Save once every epoch (optional, default is 1)
+@@ -50,7 +51,7 @@ config.quantiles = 7
+ config.batch_size = 1024
+ config.valid = False
+ config.use_gpu = True
+-config.num_workers = 32
++config.num_workers = int(os.environ.get("TFT_NUM_WORKERS", "4"))
+ 
+ config.dataset_config["min_prediction_length"] = 7
+ config.dataset_config["max_prediction_length"] = 7
+@@ -66,8 +67,8 @@ config.model_config['lstm_layers'] = 2
+ config.model_config['optimizer'] = 'adamw'  # ranger
+ config.model_config['weight_decay'] = 1e-4
+ 
+-config.trainer_config["max_epochs"] = 5
+-config.trainer_config["default_root_dir"] = root_path
++config.trainer_config["max_epochs"] = int(os.environ.get("TFT_MAX_EPOCHS", "5"))
++config.trainer_config["default_root_dir"] = os.environ.get("TFT_LIGHTNING_LOGS_DIR", root_path)
+ 
+ 
+ if __name__ == '__main__':
+@@ -91,10 +92,24 @@ if __name__ == '__main__':
+         df['sale_amount'] = df['sale_amount_pred']
+     else:
+         config.trainer_config['callbacks'] = get_checkpoint_callback('censored')
+-        dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
+-        df = dataset['train'].to_pandas()
++        local_train = os.environ.get("FRN_LOCAL_TRAIN_PARQUET", "")
++        if local_train:
++            print(f"[trainTFT] Reading local train parquet: {local_train}", flush=True)
++            df = pd.read_parquet(local_train)
++        else:
++            dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K")
++            df = dataset['train'].to_pandas()
+     df = df.sort_values(['city_id', 'store_id', 'management_group_id', 'first_category_id', 'second_category_id', 'third_category_id', 'product_id', 'dt'])
+-    df['day_of_week'] = df['dt'].apply(lambda x : datetime.strptime(x, '%Y-%m-%d').weekday())
++    smoke_n = int(os.environ.get("TFT_SMOKE_N_PAIRS", "0"))
++    if smoke_n > 0:
++        smoke_pairs = (
++            df[['store_id', 'product_id']].drop_duplicates()
++            .sort_values(['store_id', 'product_id'])
++            .head(smoke_n)
++        )
++        df = df.merge(smoke_pairs, on=['store_id', 'product_id'], how='inner')
++        print(f"[trainTFT][SMOKE] Filtered to {smoke_n} pairs -> {len(df)} rows", flush=True)
++    df['day_of_week'] = pd.to_datetime(df['dt']).dt.weekday
+     print(len(df))
+     t2 = time.time()
+     print(f"load data cost {t2 - t1}s")
