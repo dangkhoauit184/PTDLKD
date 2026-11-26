@@ -1,0 +1,25 @@
+config_id,group,wape_pct,wpe_pct,mae,paper_wape_pct,paper_wpe_pct,delta_wape_pp,delta_wpe_pp,status
+SSA_RawSales,Overall,31.97,-10.5,0.3982,31.97,-10.50,0.00,0.00,completed
+SSA_DLinear,Overall,30.12,-0.58,0.3749,30.00,-1.49,0.12,0.91,completed
+SSA_TimesNet,Overall,29.79,1.4,0.3709,29.79,1.39,0.00,0.01,completed
+DLinear_RawSales,Overall,31.54,-5.21,0.3932,31.56,-4.89,-0.02,-0.32,completed
+DLinear_DLinear,Overall,30.76,4.63,0.3824,30.60,4.02,0.16,0.61,completed
+DLinear_TimesNet,Overall,30.55,6.21,0.3797,30.73,6.88,-0.18,-0.67,completed
+TFT_RawSales,Overall,31.96,-9.85,0.399,31.75,-7.37,0.21,-2.48,completed
+TFT_TimesNet,Overall,28.93,0.78,0.3595,29.02,2.58,-0.09,-1.80,completed
+SSA_RawSales,Low Sale,38.33,-8.03,0.2691,38.33,-8.03,0.00,0.00,completed
+SSA_DLinear,Low Sale,38.0,3.69,0.2664,,,,,completed
+SSA_TimesNet,Low Sale,37.87,4.96,0.2656,37.87,4.89,0.00,0.07,completed
+DLinear_RawSales,Low Sale,39.71,-1.31,0.2781,39.78,-1.03,-0.07,-0.28,completed
+DLinear_DLinear,Low Sale,40.73,10.75,0.2843,,,,,completed
+DLinear_TimesNet,Low Sale,40.45,11.61,0.2824,40.73,12.37,-0.28,-0.76,completed
+TFT_RawSales,Low Sale,36.89,-5.59,0.2588,37.04,-1.72,-0.15,-3.87,completed
+TFT_TimesNet,Low Sale,37.06,6.84,0.2599,37.33,7.78,-0.27,-0.94,completed
+SSA_RawSales,High Sale,27.4,-12.26,0.7761,27.40,-12.26,0.00,0.00,completed
+SSA_DLinear,High Sale,24.46,-3.64,0.6925,,,,,completed
+SSA_TimesNet,High Sale,23.98,-1.15,0.679,23.98,-1.12,0.00,-0.03,completed
+DLinear_RawSales,High Sale,25.7,-7.97,0.731,25.68,-7.63,0.02,-0.34,completed
+DLinear_DLinear,High Sale,23.63,0.26,0.67,,,,,completed
+DLinear_TimesNet,High Sale,23.46,2.37,0.6649,23.58,2.98,-0.12,-0.61,completed
+TFT_RawSales,High Sale,28.41,-12.9,0.812,27.95,-11.46,0.46,-1.44,completed
+TFT_TimesNet,High Sale,23.07,-3.57,0.6506,23.03,0.87,0.04,-4.44,completed

@@ -31,6 +31,7 @@ __pycache__/
 !Task13_SSA_DLinear/results/*.csv
 !Task14_DLinear_Forecasting/results/*.csv
 !Task15_TFT_Forecasting/results/*.csv
+!Task16_Final_Synthesis/results/*.csv
 
 # Model Checkpoints & Logs
 checkpoints/
@@ -64,6 +65,7 @@ runs/
 !Task14_DLinear_Forecasting/results/smoke/*.log
 !Task15_TFT_Forecasting/results/full/*.log
 !Task15_TFT_Forecasting/results/smoke/*.log
+!Task16_Final_Synthesis/results/full/*.log
 
 # Environments & Virtual Envs
 .env
