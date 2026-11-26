@@ -1,0 +1,67 @@
+=== TASK 16: KIỂM ĐỊNH THỐNG KÊ (IS403), PHÂN TÍCH NGHIỆP VỤ & TỔNG HỢP CUỐI KỲ ===
+Timestamp UTC : 2026-11-26T12:45:42.062995+00:00
+Base Commit   : 2861fbf
+Environment   : Python 3.12.10 | NumPy 2.2.5 | Pandas 2.2.3 | SciPy 1.15.2
+[SHA-256 OK] train.parquet             |  58.25 MiB | b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96
+[SHA-256 OK] eval.parquet              |   5.20 MiB | 61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872
+[SHA-256 OK] demand_timesnet.parquet   |  77.78 MiB | c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694
+[SHA-256 OK] demand_dlinear.parquet    |  77.75 MiB | 2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b
+
+--- Phân tích Cơ chế Giai đoạn 1 (4.500.000 dòng train: Raw Sales vs DLinear vs TimesNet) ---
+    group  n_series stockout_day_rate_pct stockout_hour_rate_pct zero_raw_sale_day_pct raw_daily_mean dlinear_rec_daily_mean timesnet_rec_daily_mean dlinear_uplift_pct timesnet_uplift_pct seq62_std_raw seq62_std_dlinear seq62_std_timesnet series_std_lt_0_30_pct
+  Overall     50000                 44.27                  19.88                  4.46         0.9986                 1.1438                  1.2065              14.54               20.82        0.5060            0.5065             0.5032                  36.90
+ Low Sale     36449                 42.81                  19.73                  5.05         0.5979                 0.6966                  0.7197              16.51               20.38        0.3398            0.3555             0.3554                  50.43
+High Sale     13551                 48.19                  20.28                  2.89         2.0763                 2.3465                  2.5158              13.01               21.17        0.9531            0.9127             0.9007                   0.48
+
+--- Tính toán ma trận dự báo SSA trên 3 nguồn lịch sử (50.000 chuỗi × 7 ngày) ---
+[Verify SSA] SSA_RawSales  | Overall   -> WAPE=31.97%, WPE=-10.50%, MAE=0.3982
+[Verify SSA] SSA_RawSales  | Low Sale  -> WAPE=38.33%, WPE=-8.03%, MAE=0.2691
+[Verify SSA] SSA_RawSales  | High Sale -> WAPE=27.40%, WPE=-12.26%, MAE=0.7761
+[Verify SSA] SSA_DLinear   | Overall   -> WAPE=30.12%, WPE=-0.58%, MAE=0.3749
+[Verify SSA] SSA_DLinear   | Low Sale  -> WAPE=38.00%, WPE=+3.69%, MAE=0.2664
+[Verify SSA] SSA_DLinear   | High Sale -> WAPE=24.46%, WPE=-3.64%, MAE=0.6925
+[Verify SSA] SSA_TimesNet  | Overall   -> WAPE=29.79%, WPE=+1.40%, MAE=0.3709
+[Verify SSA] SSA_TimesNet  | Low Sale  -> WAPE=37.87%, WPE=+4.96%, MAE=0.2656
+[Verify SSA] SSA_TimesNet  | High Sale -> WAPE=23.98%, WPE=-1.15%, MAE=0.6790
+
+--- Thực thi Bộ Kiểm định Giả thuyết Thống kê Chương 2 IS403 ---
+Independent SKU-store pairs with >=1 stockout-free eval day: M = 50,000 (Low=36,448, High=13,552)
+
+[Statistical Tests Summary]
+  PAIRED_SKU_OVERALL_ae_raw_vs_ae_tn       | -0.035668                        | t = -31.5897           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_OVERALL_ae_raw_vs_ae_dl       | -0.030732                        | t = -36.9431           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_OVERALL_ae_dl_vs_ae_tn        | -0.004936                        | t = -10.8639           | p=1.839e-27 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_OVERALL_se_raw_vs_se_tn       | +0.167226                        | t = 131.2263           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_LOW_SALE_ae_raw_vs_ae_tn      | -0.010244                        | t = -15.7351           | p=1.326e-55 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_LOW_SALE_ae_raw_vs_ae_dl      | -0.008339                        | t = -16.8719           | p=1.264e-63 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_LOW_SALE_ae_dl_vs_ae_tn       | -0.001905                        | t = -7.0925            | p=1.341e-12 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_LOW_SALE_se_raw_vs_se_tn      | +0.106093                        | t = 152.1674           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_HIGH_SALE_ae_raw_vs_ae_tn     | -0.104046                        | t = -27.9922           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_HIGH_SALE_ae_raw_vs_ae_dl     | -0.090957                        | t = -33.6969           | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_HIGH_SALE_ae_dl_vs_ae_tn      | -0.013089                        | t = -8.6646            | p=5.040e-18 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_SKU_HIGH_SALE_se_raw_vs_se_tn     | +0.331644                        | t = 83.2926            | p=< 1e-100 | Bác bỏ H0 (Khác biệt có ý nghĩa thống kê)
+  PAIRED_7DAYS_SSA_OVERALL                 | -2.18 pp                         | t(6) = -6.5691         | p=0.000597 | Bác bỏ H0 (Giảm WAPE đồng nhất cả 7/7 ngày)
+  PAIRED_7DAYS_SSA_LOW_SALE                | -0.45 pp                         | t(6) = -1.2984         | p=0.241819 | Chưa bác bỏ H0
+  PAIRED_7DAYS_SSA_HIGH_SALE               | -3.42 pp                         | t(6) = -7.6974         | p=0.000252 | Bác bỏ H0 (Giảm WAPE đồng nhất cả 7/7 ngày)
+  ANOVA_ONEWAY_SKU_OVERALL                 | Means=(0.4040, 0.3732, 0.3683)   | F(2,149997) = 107.6301 | p=1.951e-47 | Bác bỏ H0 (3 nguồn nhu cầu khác biệt có ý nghĩa)
+  ANOVA_TUKEY_7DAYS_OVERALL                | Delta(2-0)=-2.18 pp              | F(2,18) = 11.6578      | p=0.000565 | Bác bỏ H0
+  ANOVA_ONEWAY_SKU_LOW_SALE                | Means=(0.2766, 0.2682, 0.2663)   | F(2,109341) = 27.7694  | p=8.769e-13 | Bác bỏ H0 (3 nguồn nhu cầu khác biệt có ý nghĩa)
+  ANOVA_TUKEY_7DAYS_LOW_SALE               | Delta(2-0)=-0.45 pp              | F(2,18) = 0.1270       | p=0.881476 | Phương sai giữa các ngày lớn hơn chênh lệch nhỏ ở Low Sale
+  ANOVA_ONEWAY_SKU_HIGH_SALE               | Means=(0.7466, 0.6556, 0.6425)   | F(2,40653) = 105.9326  | p=1.299e-46 | Bác bỏ H0 (3 nguồn nhu cầu khác biệt có ý nghĩa)
+  ANOVA_TUKEY_7DAYS_HIGH_SALE              | Delta(2-0)=-3.42 pp              | F(2,18) = 13.9042      | p=0.000223 | Bác bỏ H0
+  TWOWAY_ANOVA_2X3_OVERALL                 | Share: Source=83.1%, Forecaster=4.5%, Interaction=12.4% | F_Source(2,2)=6.70; F_Model(1,2)=0.73 | p=p_src=0.1299; p_mod=0.4827 | Nguồn khôi phục nhu cầu chi phối biến thiên chính
+  TWOWAY_ANOVA_2X3_HIGH_SALE               | Share: Source=83.3%, Forecaster=13.5%, Interaction=3.2% | F_Source(2,2)=25.63; F_Model(1,2)=8.29 | p=p_src=0.0375; p_mod=0.1025 | Nguồn khôi phục nhu cầu chi phối biến thiên chính
+  TWOWAY_ANOVA_2X3_LOW_SALE                | Share: Source=1.5%, Forecaster=91.8%, Interaction=6.7% | F_Source(2,2)=0.22; F_Model(1,2)=27.25 | p=p_src=0.8197; p_mod=0.0348 | Kiến trúc mô hình dự báo chi phối biến thiên chính
+  PAIRED_3ARCHITECTURES_OVERALL            | -2.07 pp WAPE                    | t(2) = -3.4932         | p=0.073079 | Xu hướng giảm đồng nhất 3/3 họ mô hình (n=3)
+  PAIRED_3ARCHITECTURES_HIGH_SALE          | -3.67 pp WAPE                    | t(2) = -4.0590         | p=0.055677 | Xu hướng giảm đồng nhất 3/3 họ mô hình (n=3)
+  REPLICATION_FIDELITY_TABLE3_20CELLS      | Mean Delta = -0.008 pp (|Delta| = 0.109 pp) | t(19) = -0.2275        | p=0.822430 | Không bác bỏ H0 (p > 0.05 — Khớp bài báo về mặt thống kê!)
+
+--- Xuất bộ 6 biểu đồ tổng hợp cuối kỳ (300 DPI) ---
+  [Figure OK] 01_stage1_recovery_table2_comparison.png (293.2 KiB)
+  [Figure OK] 02_table3_wape_matrix_all8_configs.png (333.8 KiB)
+  [Figure OK] 03_wape_vs_wpe_pareto_tradeoff.png (512.5 KiB)
+  [Figure OK] 04_is403_anova_and_interaction_plots.png (480.3 KiB)
+  [Figure OK] 05_paper_replication_fidelity_parity.png (413.4 KiB)
+  [Figure OK] 06_fresh_retail_inventory_strategy_matrix.png (429.7 KiB)
+
+Completed Task 16 quantitative & visual synthesis in 16.29s.

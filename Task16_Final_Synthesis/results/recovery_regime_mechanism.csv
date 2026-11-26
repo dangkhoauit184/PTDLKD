@@ -1,0 +1,4 @@
+group,n_series,stockout_day_rate_pct,stockout_hour_rate_pct,zero_raw_sale_day_pct,raw_daily_mean,dlinear_rec_daily_mean,timesnet_rec_daily_mean,dlinear_uplift_pct,timesnet_uplift_pct,seq62_std_raw,seq62_std_dlinear,seq62_std_timesnet,series_std_lt_0_30_pct
+Overall,50000,44.27,19.88,4.46,0.9986,1.1438,1.2065,14.54,20.82,0.5060,0.5065,0.5032,36.90
+Low Sale,36449,42.81,19.73,5.05,0.5979,0.6966,0.7197,16.51,20.38,0.3398,0.3555,0.3554,50.43
+High Sale,13551,48.19,20.28,2.89,2.0763,2.3465,2.5158,13.01,21.17,0.9531,0.9127,0.9007,0.48

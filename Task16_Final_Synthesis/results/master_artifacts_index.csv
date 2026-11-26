@@ -1,0 +1,8 @@
+artifact_name,stage,source_task,size_mib,sha256,location_or_url,verified_status
+train.parquet,Canonical Parquet Data,Task 6 (Có sẵn trong GitHub repo),58.25,b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96,Task06_Data_Preparation/train.parquet,sha256_verified
+eval.parquet,Canonical Parquet Data,Task 6 (Có sẵn trong GitHub repo),5.20,61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872,Task06_Data_Preparation/eval.parquet,sha256_verified
+demand_timesnet.parquet,Canonical Parquet Data,Task 10 — Minh Nguyễn (Google Drive),77.78,c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694,https://drive.google.com/file/d/1f9db-U9f9C9OFS-V2EcmQv4FIU3bguR3/view?usp=sharing,sha256_verified
+demand_dlinear.parquet,Canonical Parquet Data,Task 12 — Khanh (Google Drive),77.75,2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b,https://drive.google.com/file/d/1MDcD7cOyzcnoBu48I6eGUkSfwx8b3hkh/view?usp=drive_link,sha256_verified
+TimesNet_Recovery_Drive_Folder,Stage 1 Checkpoints & Logs,Task 10 — Minh Nguyễn,,,https://drive.google.com/drive/folders/18D53nPab5toFuyuAQ00rRBrG_86WKKkR?usp=drive_link,documented_public_link
+DLinear_Recovery_Drive_Folder,Stage 1 Checkpoints (.pypots),Task 12 — Khanh,,,https://drive.google.com/drive/folders/18MjIAn0RF705AxhluhvgomYmNepY5kTo?usp=sharing,documented_public_link
+TFT_Checkpoints_lightning_logs,Stage 2 TFT Checkpoints (.ckpt),Task 15 — Minh Nguyễn,,,https://drive.google.com/drive/folders/1gPexk9JqLJFH-MUPFE-7d69g9pQa7xD2,documented_public_link

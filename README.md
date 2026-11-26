@@ -11,7 +11,7 @@ Khi một mặt hàng hết hàng, doanh số ghi nhận có thể bằng 0 dù 
 3. **Đối chứng thực nghiệm (8 cấu hình Bảng 3):** So sánh trực tiếp dự báo từ doanh số gốc (*Raw Sales*) với dự báo từ nhu cầu đã khôi phục (*TimesNet*, *DLinear*) trên cùng tập đánh giá **206.562** dòng không hết hàng (`stock_hour6_22_cnt == 0`) cho ba nhóm `Overall`, `Low Sale` và `High Sale`.
 4. **Minh bạch học thuật:** Các số trong bài báo chỉ là số tham chiếu; một chỉ số chỉ được ghi nhận là kết quả của nhóm khi có lượt chạy thực tế, tệp log và bảng kết quả tương ứng.
 
-## Tiến độ và phân công thực hiện (Task 1–15)
+## Tiến độ và phân công thực hiện (Task 1–16)
 
 | Task | Phụ trách | Nội dung | Trạng thái | Sản phẩm / ghi chú |
 |---|---|---|---|---|
@@ -30,10 +30,11 @@ Khi một mặt hàng hết hàng, doanh số ghi nhận có thể bằng 0 dù 
 | **13** | **Phạm Đăng Khoa** | Chạy SSA trên nhu cầu DLinear (`SSA_DLinear`) và tổng hợp cột SSA | **Đã hoàn thành** | [Notebook](Task13_SSA_DLinear/notebooks/13_ssa_dlinear.ipynb), [chỉ số `SSA_DLinear`](Task13_SSA_DLinear/results/ssa_dlinear_metrics.csv), [tổng hợp 3 cấu hình SSA](Task13_SSA_DLinear/results/ssa_all_3configs_summary.csv), [báo cáo](reports/Task13_Report.md), [biên bản](Task13_SSA_DLinear/run_info.md). |
 | **14** | **Dương Trọng Toàn** | Dự báo 7 ngày bằng mạng học sâu `DLinear` (3 cấu hình Bảng 3) | **Đã hoàn thành** | [Notebook](Task14_DLinear_Forecasting/notebooks/14_dlinear_forecasting.ipynb), [chỉ số `DLinear` (9 dòng)](Task14_DLinear_Forecasting/results/dlinear_forecasting_metrics.csv), [`code_changes.diff`](Task14_DLinear_Forecasting/code_changes.diff), [biên bản](Task14_DLinear_Forecasting/run_info.md) và [báo cáo](reports/Task14_Report.md). Khớp sát cột DLinear Bảng 3 trên `206.562` dòng hợp lệ. |
 | **15** | **Minh Nguyễn** | Dự báo 7 ngày bằng mô hình SOTA `TFT` (2 cấu hình Bảng 3) | **Đã hoàn thành** | [Notebook](Task15_TFT_Forecasting/notebooks/15_tft_forecasting.ipynb), [chỉ số `TFT` (6 dòng)](Task15_TFT_Forecasting/results/tft_forecasting_metrics.csv), [tổng hợp 8 cấu hình Bảng 3](Task15_TFT_Forecasting/results/table3_all_8configs_summary.csv), [`code_changes.diff`](Task15_TFT_Forecasting/code_changes.diff), [biên bản & checkpoint](Task15_TFT_Forecasting/run_info.md) và [báo cáo](reports/Task15_Report.md). Đạt SOTA `28,93%` WAPE Overall. |
+| **16** | **Nhóm chung** | Kiểm định thống kê Chương 2 IS403, giải mã cơ chế nghiệp vụ, xuất bộ biểu đồ, Báo cáo Word & Slide | **Đã hoàn thành** | [Notebook](Task16_Final_Synthesis/notebooks/16_final_synthesis.ipynb), [kiểm định IS403 (`21` phép test)](Task16_Final_Synthesis/results/statistical_tests_is403.csv), [6 biểu đồ `300 DPI`](Task16_Final_Synthesis/results/figures/), [Báo cáo Word `.docx`](Task16_Final_Synthesis/deliverables/Bao_Cao_Cuoi_Ky_IS403_FreshRetailNet50K.docx), [Slide `.md`](Task16_Final_Synthesis/deliverables/Slide_Thuyet_Trinh_IS403_FreshRetailNet50K.md) / [`.html`](Task16_Final_Synthesis/deliverables/Slide_Thuyet_Trinh_IS403_FreshRetailNet50K.html) và [báo cáo Task 16](reports/Task16_Report.md). |
 
 Chi tiết phân công và lưu ý kỹ thuật nằm tại [docs/Task11-15_Phan_cong_chi_tiet.md](docs/Task11-15_Phan_cong_chi_tiet.md) và [docs/Task06-10_Phan_cong_chi_tiet.md](docs/Task06-10_Phan_cong_chi_tiet.md). Báo cáo tổng hợp tại [reports/Synthesis_Report.md](reports/Synthesis_Report.md).
 
-## Kết quả nhóm đã tự chạy (Trọn bộ Task 1–15)
+## Kết quả nhóm đã tự chạy (Trọn bộ Task 1–16)
 
 ### 1. Khôi phục nhu cầu tiềm ẩn — Đối chiếu Bảng 2 (Task 9, Task 10, Task 12)
 
@@ -90,7 +91,13 @@ Huấn luyện mô hình đa biến `Temporal Fusion Transformer` (`max_encoder_
 | **High Sale** | `TFT_RawSales` (Task 15) | 28,41% | −12,90% | 0,8120 | 27,95% | −11,46% | +0,46 / −1,44 pp |
 | **High Sale** | **`TFT_TimesNet` (Task 15 — SOTA)** | **23,07%** | **−3,57%** | **0,6506** | 23,03% | +0,87% | +0,04 / −4,44 pp |
 
-Bảng tổng hợp đối chiếu trọn vẹn **8 cấu hình dự báo Bảng 3** (`24` dòng = `8` cấu hình × `3` phân nhóm) được lưu tại [table3_all_8configs_summary.csv](Task15_TFT_Forecasting/results/table3_all_8configs_summary.csv), khẳng định **`TFT_TimesNet` đạt độ chính xác #1 toàn đồ án trên cả 3 nhóm** (`Overall`: **28,93%** < `SSA_TimesNet` 29,79% < `DLinear_TimesNet` 30,55%; `High Sale`: **23,07%** < `DLinear_TimesNet` 23,46% < `SSA_TimesNet` 23,98%; `Low Sale`: **37,06%** < `SSA_TimesNet` 37,87% < `DLinear_TimesNet` 40,45%).
+Bảng tổng hợp đối chiếu trọn vẹn **8 cấu hình dự báo Bảng 3** (`24` dòng = `8` cấu hình × `3` phân nhóm) được lưu tại [table3_all_8configs_summary.csv](Task16_Final_Synthesis/results/table3_all_8configs_summary.csv), khẳng định **`TFT_TimesNet` đạt độ chính xác #1 toàn đồ án trên cả 3 nhóm** (`Overall`: **28,93%** < `SSA_TimesNet` 29,79% < `DLinear_TimesNet` 30,55%; `High Sale`: **23,07%** < `DLinear_TimesNet` 23,46% < `SSA_TimesNet` 23,98%; `Low Sale`: **37,06%** < `SSA_TimesNet` 37,87% < `DLinear_TimesNet` 40,45%).
+
+### 5. Kiểm định Giả thuyết Thống kê Chương 2 IS403 & Đóng gói Cuối kỳ (Task 16)
+
+- **Kiểm định cặp (*Paired $t$-test* & *Wilcoxon*) trên `50.000` cặp SKU–cửa hàng độc lập:** `SSA_TimesNet` giảm MAE có ý nghĩa thống kê rất cao so với `SSA_RawSales` ($t = -31,59, p < 10^{-100}$ trên `Overall`; $t = -27,99, p < 10^{-100}$ trên `High Sale`) và vượt cả `SSA_DLinear` ($t = -10,86, p = 1,84 \times 10^{-27}$); giảm WAPE đồng nhất trọn vẹn `7/7` ngày đánh giá ($p = 0,00025$ ở `High Sale`).
+- **Phân tích phương sai 1 & 2 yếu tố (*One-Way & Two-Way ANOVA*, *Tukey HSD*, *Friedman*):** Ở phân khúc bán chạy (`High Sale`), **nguồn khôi phục nhu cầu giải thích `83,3%` tổng biến thiên sai số** ($F(2,2) = 25,63, p = 0,0375$); ngược lại ở phân khúc bán chậm (`Low Sale`, nơi **`50,43%`** chuỗi có $\sigma < 0,30$), **kiến trúc mô hình dự báo giải thích `91,8%` biến thiên** ($F(1,2) = 27,25, p = 0,0348$) do `DLinear + RevIN` khuếch đại xung nhu cầu khôi phục lên `+11,61%` WPE.
+- **Độ trung thực tái lập so với bài báo gốc (`20` ô có công bố ở Bảng 3):** Sai lệch tuyệt đối trung bình `|ΔWAPE| = 0,11 pp` (`R² = 0,9988`, kiểm định $t$ cặp $p = 0,8224 > 0,05$ — không có sai khác có ý nghĩa thống kê). Chi tiết xem tại [statistical_tests_is403.csv](Task16_Final_Synthesis/results/statistical_tests_is403.csv) và [reports/Task16_Report.md](reports/Task16_Report.md).
 
 ## Dữ liệu và cách lấy các file Parquet chuẩn
 
@@ -110,7 +117,7 @@ python Task03_Environment_Setup/scripts/download_data.py
 
 ## Trạng thái hoàn thành đồ án
 
-Nhóm đã hoàn tất và kiểm chứng độc lập **15/15 Task** của đồ án (bao gồm **2/7 mô hình khôi phục nhu cầu tiềm ẩn ở Bảng 2** và **8/15 cấu hình dự báo ở Bảng 3** trải đủ cả 3 họ mô hình `SSA`, `DLinear`, `TFT`), sẵn sàng phục vụ báo cáo tổng kết [reports/Synthesis_Report.md](reports/Synthesis_Report.md) và bảo vệ cuối kỳ.
+Nhóm đã hoàn tất và kiểm chứng độc lập trọn bộ **16/16 Task** của đồ án (bao gồm **2/7 mô hình khôi phục nhu cầu tiềm ẩn ở Bảng 2**, **8/15 cấu hình dự báo ở Bảng 3** trải đủ cả 3 họ mô hình `SSA`, `DLinear`, `TFT`, cùng hệ thống kiểm định thống kê Chương 2 IS403, [Báo cáo tổng kết Word `.docx`](Task16_Final_Synthesis/deliverables/Bao_Cao_Cuoi_Ky_IS403_FreshRetailNet50K.docx) và [Slide thuyết trình cuối kỳ](Task16_Final_Synthesis/deliverables/Slide_Thuyet_Trinh_IS403_FreshRetailNet50K.html)).
 
 ## Quy ước báo cáo và tái lập
 
@@ -135,3 +142,4 @@ Nhóm đã hoàn tất và kiểm chứng độc lập **15/15 Task** của đ�
 - [Task 13 — `SSA_DLinear` & Tổng hợp SSA](Task13_SSA_DLinear/README.md)
 - [Task 14 — `DLinear` Forecasting](Task14_DLinear_Forecasting/README.md)
 - [Task 15 — `TFT` Forecasting (SOTA)](Task15_TFT_Forecasting/README.md)
+- [Task 16 — Kiểm định Thống kê IS403, Báo cáo Word & Slide](Task16_Final_Synthesis/README.md)

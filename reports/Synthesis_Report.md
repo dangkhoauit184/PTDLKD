@@ -16,7 +16,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ---
 
-## 2. Tiến độ Hoàn Thành Trọn Bộ Task 1–15
+## 2. Tiến độ Hoàn Thành Trọn Bộ Task 1–16
 
 | STT | Mã Task | Tên Nhiệm Vụ | Người Thực Hiện | Trọng Tâm Bàn Giao |
 | :---: | :---: | :--- | :---: | :--- |
@@ -35,6 +35,7 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 | **13** | **Task 13** | **SSA trên nhu cầu DLinear & Tổng hợp SSA** | **Phạm Đăng Khoa** | [Báo cáo `SSA_DLinear` và bảng tổng hợp 3 cấu hình cột SSA](Task13_Report.md). |
 | **14** | **Task 14** | **Dự báo 7 ngày bằng DLinear (Bảng 3)** | **Dương Trọng Toàn** | [Báo cáo 3 cấu hình cột `DLinear` (`RawSales`, `TimesNet`, `DLinear`)](Task14_Report.md). |
 | **15** | **Task 15** | **Dự báo 7 ngày SOTA bằng TFT (Bảng 3)** | **Minh Nguyễn** | [Báo cáo `TFT_RawSales` & `TFT_TimesNet`, tổng hợp 8 cấu hình Bảng 3](Task15_Report.md). |
+| **16** | **Task 16** | **Kiểm định thống kê IS403, Biểu đồ & Đóng gói cuối kỳ** | **Thành viên nhóm** | [Báo cáo kiểm định Chương 2 IS403, 6 biểu đồ `300 DPI`, Word `.docx` & Slide](Task16_Report.md). |
 
 ---
 
@@ -107,9 +108,15 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 * Huấn luyện mô hình học sâu đa biến SOTA `TFT` (`max_encoder_length=70`, `max_prediction_length=7`, `hidden_size=128`, `attention_head_size=8`, `lstm_layers=2`, `QuantileLoss`, `5` epoch × `683` batch trên GPU `NVIDIA L4` High-RAM với môi trường `Python 3.10.22` + `pytorch-lightning==1.9.4` độc lập, `seed=2025`) cho hai cấu hình `TFT_RawSales` và `TFT_TimesNet`.
 * Khi chuyển từ doanh số bị che khuất (`TFT_RawSales`) sang nhu cầu tiềm ẩn khôi phục bởi `TimesNet` (`TFT_TimesNet`), WAPE `Overall` giảm mạnh **$3.03\text{ pp}$** (từ **$31.96\%$** xuống **$28.93\%$**, vượt nhẹ mức công bố $29.02\%$ của bài báo; WPE từ $-9.85\%$ về **$+0.78\%$**), và nhóm hàng bán chạy `High Sale` giảm tới **$5.34\text{ pp}$** WAPE (từ **$28.41\%$** xuống **$23.07\%$**, khớp sát mức $23.03\%$ của bài báo). `TFT_TimesNet` vươn lên đứng **#1 tốt nhất toàn đồ án trên cả 3 phân nhóm** ([báo cáo Task 15](Task15_Report.md)).
 
+### Task 16 — Kiểm định Giả thuyết Thống kê Chương 2 IS403, Giải mã Cơ chế `RevIN` & Đóng gói Cuối kỳ
+* Vận dụng bộ kiểm định thống kê suy diễn chuẩn Chương 2 môn IS403 (`21` phép kiểm định tại [statistical_tests_is403.csv](../Task16_Final_Synthesis/results/statistical_tests_is403.csv)): **Paired $t$-test & Wilcoxon** trên `50.000` cặp SKU–cửa hàng độc lập xác nhận `SSA_TimesNet` giảm MAE có ý nghĩa thống kê rất cao so với `SSA_RawSales` ($t = -31.59, p < 10^{-100}$ trên `Overall`; $t = -27.99, p < 10^{-100}$ trên `High Sale`) và vượt `SSA_DLinear` ($t = -10.86, p = 1.84 \times 10^{-27}$); **Two-Way ANOVA (`Forecaster × Demand Source`)** chứng minh ở `High Sale`, nguồn khôi phục nhu cầu giải thích **$83.3\%$** tổng phương sai ($p = 0.0375$), trong khi ở `Low Sale` (`50.43%` chuỗi có $\sigma < 0.30$), kiến trúc mô hình dự báo giải thích **$91.8\%$** phương sai ($p = 0.0348$). Kiểm định tương đương trên `20` ô số công bố của Bảng 3 đạt $|\Delta \text{WAPE}| = 0.11\text{ pp}$, $R^2 = 0.9988$, $p = 0.8224 > 0.05$.
+* Xuất bộ [6 biểu đồ tổng hợp `300 DPI`](../Task16_Final_Synthesis/results/figures/), quyển [Báo cáo tổng kết Word `.docx`](../Task16_Final_Synthesis/deliverables/Bao_Cao_Cuoi_Ky_IS403_FreshRetailNet50K.docx) và [Slide thuyết trình cuối kỳ](../Task16_Final_Synthesis/deliverables/Slide_Thuyet_Trinh_IS403_FreshRetailNet50K.html) (xem [báo cáo Task 16](Task16_Report.md)).
+
+![So sánh WAPE 8 cấu hình Bảng 3](../Task16_Final_Synthesis/results/figures/02_table3_wape_matrix_all8_configs.png)
+
 ---
 
-## 4. Kết quả nhóm đã tự chạy và đối chiếu bài báo (Trọn bộ Task 8–15)
+## 4. Kết quả nhóm đã tự chạy và đối chiếu bài báo (Trọn bộ Task 8–16)
 
 ### 4.1. Tóm tắt số liệu nhóm tự chạy (Bảng 2 & Bảng 3)
 - **Bảng 2 — Khôi phục nhu cầu tiềm ẩn:**
@@ -161,7 +168,9 @@ Dự án này thực hiện tái lập quy trình nghiên cứu khoa học của
 
 ## 5. Kết Luận Thực Nghiệm & Hàm Ý Quản Trị Tồn Kho Đồ Tươi Sống
 
-Qua **15 Task** kiểm định dữ liệu, khám phá thống kê và thực thi độc lập hai giai đoạn khôi phục – dự báo trên toàn bộ $50.000$ chuỗi sản phẩm–cửa hàng ($4.850.000$ bản ghi ngày, $116.400.000$ điểm dữ liệu giờ), nhóm rút ra 4 kết luận cốt lõi đã được chứng minh bằng số liệu thực chạy:
+![Ma trận khuyến nghị quản trị tồn kho đồ tươi sống](../Task16_Final_Synthesis/results/figures/06_fresh_retail_inventory_strategy_matrix.png)
+
+Qua **16 Task** kiểm định dữ liệu, khám phá thống kê, thực thi độc lập hai giai đoạn khôi phục – dự báo và kiểm định giả thuyết thống kê IS403 trên toàn bộ $50.000$ chuỗi sản phẩm–cửa hàng ($4.850.000$ bản ghi ngày, $116.400.000$ điểm dữ liệu giờ), nhóm rút ra 4 kết luận cốt lõi đã được chứng minh bằng số liệu thực chạy:
 
 1. **Khôi phục nhu cầu tiềm ẩn là điều kiện tiên quyết để phá vỡ vòng xoáy hết hàng:** Dù dùng thuật toán thống kê (`SSA`), mạng tuyến tính (`DLinear`) hay kiến trúc Transformer đa biến hiện đại (`TFT`), nếu huấn luyện trực tiếp trên doanh số bị che khuất (`Raw Sales`) thì mọi mô hình đều mắc thiên lệch dự báo thiếu nghiêm trọng (`WPE` từ $-5.21\%$ đến $-10.50\%$ trên `Overall`, và lên tới **$-12.90\%$** ở nhóm mặt hàng chủ lực `High Sale`). Đưa bước khôi phục nhu cầu `TimesNet` vào trước giúp giảm đồng loạt WAPE `Overall` cho cả ba họ mô hình: `SSA` giảm **$2.18\text{ pp}$**, `DLinear` giảm **$0.99\text{ pp}$**, và `TFT` giảm sâu nhất tới **$3.03\text{ pp}$**.
 2. **Chất lượng tách rời hết hàng ở Giai đoạn 1 quyết định trần hiệu năng Giai đoạn 2:** `TimesNet` nắm bắt đồng thời chu kỳ nội nhật – liên tuần trên không gian 2D nên đẩy chỉ số tách rời $\rho_{DS}$ từ $-0.5664$ lên **$+0.0699$** (vượt xa mức $-0.1512$ của `DLinear` khôi phục tuyến tính), từ đó giúp mọi mô hình dự báo dùng đầu vào `TimesNet` đều vượt cấu hình dùng đầu vào `DLinear` tương ứng (`SSA`: $29.79\%$ vs $30.12\%$; `DLinear`: $30.55\%$ vs $30.76\%$).

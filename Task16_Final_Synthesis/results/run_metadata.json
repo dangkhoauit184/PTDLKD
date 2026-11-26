@@ -1,0 +1,53 @@
+{
+  "task": "Task 16 - Statistical Hypothesis Testing (IS403), Matrix Visualization & Final Synthesis",
+  "repo_base_commit": "2861fbf",
+  "timestamp_utc": "2026-11-26T12:45:42.062995+00:00",
+  "runtime_seconds": 16.29,
+  "environment": {
+    "python": "3.12.10",
+    "numpy": "2.2.5",
+    "pandas": "2.2.3",
+    "scipy": "1.15.2",
+    "pyarrow": "26.0.0",
+    "matplotlib": "3.10.1"
+  },
+  "verified_parquets_sha256": {
+    "train.parquet": "b7e01c711bc4fa0598c4a8cf4e8b97769275b1afa1792d98fd8428c76838bc96",
+    "eval.parquet": "61cfd3cb60d767d38ba9e640be64e982a15b2918ca0ba14fe0283c5a2eac6872",
+    "demand_timesnet.parquet": "c34f4eafe087d225865a624ef24d213af566496541458c3075f6e596d9f1d694",
+    "demand_dlinear.parquet": "2cd9091adec89b129d0c726e3be658b9becf027b4ece1e3b725feb74176ab65b"
+  },
+  "evaluation_sample_sizes": {
+    "valid_eval_observations": 206562,
+    "low_sale_observations": 153208,
+    "high_sale_observations": 53354,
+    "independent_sku_pairs_in_eval": 50000,
+    "eval_days": 7,
+    "published_table3_cells_compared": 20
+  },
+  "key_statistical_findings": {
+    "replication_fidelity_20cells_mean_abs_delta_pp": 0.1095,
+    "replication_fidelity_paired_t_pvalue": 0.82243,
+    "replication_fidelity_pearson_r": 0.999595,
+    "sota_config": "TFT_TimesNet",
+    "sota_overall_wape_pct": 28.93,
+    "sota_high_sale_wape_pct": 23.07,
+    "sota_low_sale_wape_pct": 37.06
+  },
+  "generated_csvs": [
+    "master_artifacts_index.csv",
+    "recovery_regime_mechanism.csv",
+    "ssa_daily_7days_metrics.csv",
+    "statistical_tests_is403.csv",
+    "table2_recovery_summary.csv",
+    "table3_all_8configs_summary.csv"
+  ],
+  "generated_figures": [
+    "01_stage1_recovery_table2_comparison.png",
+    "02_table3_wape_matrix_all8_configs.png",
+    "03_wape_vs_wpe_pareto_tradeoff.png",
+    "04_is403_anova_and_interaction_plots.png",
+    "05_paper_replication_fidelity_parity.png",
+    "06_fresh_retail_inventory_strategy_matrix.png"
+  ]
+}
